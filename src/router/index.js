@@ -11,7 +11,7 @@ import cmpKoreaWeather from "@/views/cmpUser/cmpKoreaWeather.vue";
 import cmpTab from "@/views/cmpUser/cmpTab.vue";
 import cmpInput from "@/views/cmpUser/cmpInput.vue";
 
-import cmpSwiper from "@/views/swiperCase/cmpSwiper.vue";
+// import cmpSwiper from "@/views/swiperCase/cmpSwiper.vue";
 
 import scrollEvent from "@/views/scrollEvent/scrollEvent.vue";
 
@@ -75,11 +75,11 @@ const routes = [
         name: "cmpInput",
         component: cmpInput,
     },   
-    {
-        path: "/cmpSwiper",
-        name: "cmpSwiper",
-        component: cmpSwiper,
-    },
+    // {
+    //     path: "/cmpSwiper",
+    //     name: "cmpSwiper",
+    //     component: cmpSwiper,
+    // },
     // 스크롤
     {
         path: "/scrollEvent",
