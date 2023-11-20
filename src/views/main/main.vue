@@ -37,6 +37,10 @@
 import { Swiper, SwiperSlide } from "swiper/vue";
 import luckCard from '@/components/minicard/card.vue'
 
+import SwiperCore, { Navigation, Pagination, A11y, Parallax } from "swiper"
+SwiperCore.use([Navigation, Pagination, A11y, Parallax])
+
+import "swiper/swiper.scss"
 import "swiper/components/navigation/navigation.scss"
 import "swiper/components/pagination/pagination.scss"
 

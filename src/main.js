@@ -4,14 +4,6 @@ import { router } from './router/index.js'
 import axios from 'axios'
 import ClickOutside from './utils/ClickOutsideDirective'
 
-// import Swiper core and required components
-import SwiperCore, { Navigation, Pagination, A11y, Parallax } from "swiper"
-// Import Swiper styles
-import "swiper/swiper.scss"
-
-// install Swiper components
-SwiperCore.use([Navigation, Pagination, A11y, Parallax])
-
 // Vuetify
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
