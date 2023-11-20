@@ -5,7 +5,7 @@
         alignType="center" 
         pageTitle="Swiper 예제"
     />
-    <div class="discription-text">
+    <!-- <div class="discription-text">
       swiper 의 사례들 정리 합니다.
     </div>    
     <Title 
@@ -31,7 +31,7 @@
         <swiper-slide>
           <img src="@/assets/images/main/main03.jpg" alt="">
         </swiper-slide>     
-      </swiper>
+      </swiper> -->
     </div>
     <Title 
         :level="3" 
@@ -54,8 +54,7 @@
         alignType="left" 
         pageTitle="모달창 내 실행"
     />    
-    <div class="guide-context">
-
+    <div class="guide-context">d
     </div>    
   </div>
 </template>

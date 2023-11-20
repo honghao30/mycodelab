@@ -1,63 +1,84 @@
 <template>
   <div class="main-container">
-    <el-card class="box-card main-weather">
-      <div class="text item">
-        안녕하세요?<br>
-        <strong>{{today}} 현재 시각 {{ current }}</strong> 서울 날씨 입니다.<br>
-        오늘은 <strong>{{ todayWeather  }}</strong>, 현재 온도는  <strong>{{ todaytemp }} °C</strong>,<br> 습도는 <strong>{{ todayhumidity }}</strong> 입니다.<br>
-        <strong>{{today}} 일출 {{ sunriseTimeIs  }}, 일몰 {{ sunsetTimeIs  }}</strong> 입니다.<br>
-        여러분이 계신곳은 어떠신가요?<br>
-        <router-link to="/cmpKoreaWeather">지역별 날씨 페이지</router-link>
-      </div>
-    </el-card>    
-    <luckCard />
+    <WeatherCard />
+    <luckCard
+      v-if="luckCardShow"
+     />
     <div class="main-swiper">
       <swiper
         :modules="modules"
         :slides-per-view="1"
-        :space-between="0"
-        :speed="600"
-        :parallax="true"
+        :space-between="0"     
+        :loop="true"
         navigation
+        :parallax="true"
+        :pagination="{ clickable: true }"             
+        @swiper="onSwiper"
+        @slideChange="onSlideChange"
       >
-        <swiper-slide>
-          <img src="@/assets/images/main/main02.jpg" alt="">
-        </swiper-slide>
-        <swiper-slide>
-          <img src="@/assets/images/main/main01.jpg" alt="">
-        </swiper-slide>
-        <swiper-slide>
-          <img src="@/assets/images/main/main03.jpg" alt="">
-        </swiper-slide>     
+        <swiper-slide
+          v-for="(slide, index) in MainImg"
+          :key="index"
+        >
+          <div class="swiper-inner">
+              <div class="inner-text">
+                <h3 data-swiper-parallax="-100">{{ slide.title }}</h3>
+                <p data-swiper-parallax="-200">{{ slide.description }}</p>
+              </div>
+              <img :src="slide.url" alt="">  
+          </div>          
+        </swiper-slide>   
       </swiper>
     </div>
   </div>
 </template>
 <script setup>
-import { Swiper, SwiperSlide } from "swiper/vue";
-import luckCard from '@/components/minicard/card.vue'
-
-import "swiper/components/navigation/navigation.scss"
-import "swiper/components/pagination/pagination.scss"
-
-import axios from 'axios'
 import { ref } from 'vue'
+import WeatherCard from './components/WeatherCard.vue'
+import luckCard from '@/components/minicard/card.vue'
+// :autoplay="{
+//           delay: 3500,
+//           disableOnInteraction: false,
+//         }"   
+ // import Swiper core and required modules
+ import { Navigation, Pagination, A11y, EffectFade, Autoplay, Parallax  } from 'swiper/modules';
 
-import { getWeathers } from '@/api/getWeather'
+// Import Swiper Vue.js components
+import { Swiper, SwiperSlide } from 'swiper/vue';
 
-const weatherData = getWeathers()
-const todayWeather = weatherData.todayWeather
-const todaytemp = weatherData.todaytemp
-const todaywind = weatherData.todaywind
-const todayhumidity = weatherData.todayhumidity
-const sunriseTimeIs = weatherData.sunriseTimeIs
-const sunsetTimeIs = weatherData.sunsetTimeIs
-const WeatherIcon = weatherData.WeatherIcon
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
 
-import { getTodayDate } from '@/utils/time'
-const [TodayDateFull, TodayData, currentTime] = getTodayDate()
-const today = TodayData
-const current = currentTime
+const modules = [Pagination, Navigation, A11y, EffectFade, Autoplay, Parallax ]
 
+const luckCardShow = ref(false)
+
+const onSwiper = (swiper) => {
+  console.log(swiper);
+};
+const onSlideChange = () => {
+  console.log('slide change');
+};
+
+const MainImg = ref([
+  {
+    title: '나래 함초롱하다 감또개 아름드리 아름드리',
+    description: '나래 함초롱하다 감또개 아름드리 아름드리 도담도담 아슬라 바나나 바나나 도서관 그루잠 도담도담 달볓 아련 늘품 여우별 로운 도르레 달볓 아련 도담도담 곰다시 사과 소솜 옅구름 아련',
+    url: '/src/assets/images/main/main02.jpg'
+  },
+  {
+    title: '옅구름 늘품 예그리나 여우별 다솜 아리아 별하',
+    description: '옅구름 늘품 예그리나 여우별 다솜 아리아 별하 가온누리 도서관 그루잠 여우비 달볓 그루잠 예그리나 아련 늘품 여우별 로운 도르레 달볓 아련 도담도담 곰다시 사과 소솜 옅구름 아련',
+    url: '/src/assets/images/main/main01.jpg'
+  },
+  {
+    title: '도르레 로운 산들림 이플 소록소록 함초롱하다',
+    description: '도르레 로운 산들림 이플 소록소록 함초롱하다 곰다시 안녕 미쁘다 노트북 아름드리 바나나 여우비 사과 산들림 바나나 아련 늘품 여우별 로운 도르레 달볓 아련 도담도담 곰다시 사과 소솜 옅구름 아련',
+    url: '/src/assets/images/main/main03.jpg'
+  }    
+])
 
 </script>
