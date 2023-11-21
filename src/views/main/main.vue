@@ -30,6 +30,18 @@
         </swiper-slide>   
       </swiper>
     </div>
+    <div class="text-ani__wrap">
+        
+    </div>
+    <div class="movie-card__wrap">
+        
+    </div>    
+    <div class="biz-card__wrap">
+        
+    </div>    
+    <div class="online-request__wrap">
+        
+    </div>    
   </div>
 </template>
 <script setup>
@@ -48,9 +60,10 @@ import { Swiper, SwiperSlide } from 'swiper/vue';
 
 // Import Swiper styles
 import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/scrollbar';
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
+import 'swiper/css/scrollbar'
+import 'swiper/css/parallax'
 
 const modules = [Pagination, Navigation, A11y, EffectFade, Autoplay, Parallax ]
 
