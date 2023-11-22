@@ -22,8 +22,8 @@
         >
           <div class="swiper-inner">
               <div class="inner-text">
-                <h3 data-swiper-parallax="-100">{{ slide.title }}</h3>
-                <p data-swiper-parallax="-200">{{ slide.description }}</p>
+                <h3 data-swiper-parallax="-100" data-swiper-parallax-duration="1000">{{ slide.title }}</h3>
+                <p data-swiper-parallax="-200" data-swiper-parallax-duration="1500">{{ slide.description }}</p>
               </div>
               <img :src="slide.url" alt="">  
           </div>          
