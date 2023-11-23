@@ -8,7 +8,12 @@
         여러분이 계신곳은 어떠신가요?<br>
         <div class="button__wrap">
           <router-link to="/cmpKoreaWeather" class="btn primary medium">지역별 날씨 페이지</router-link>
-          <router-link to="/cmpKoreaWeather" class="btn primary medium">행운카드 보기</router-link>
+          <Button
+            buttonName="행운카드 보기"
+            types="primary"
+            size="medium"
+            @click="showLuckyCard" 
+          />
         </div>
       </div>
     </el-card>   
@@ -16,7 +21,7 @@
 
 <script setup>
 import axios from 'axios'
-import { ref } from 'vue'
+import { ref, defineEmits } from 'vue'
 
 import { getWeathers } from '@/api/getWeather'
 const weatherData = getWeathers()
@@ -32,6 +37,10 @@ import { getTodayDate } from '@/utils/time'
 const [TodayDateFull, TodayData, currentTime] = getTodayDate()
 const today = TodayData
 const current = currentTime
+const emit = defineEmits(["luckCardShow"]);
+const showLuckyCard = () => {  
+  emit('luckCardShow', true)
+}
 </script>
 
 <style>

@@ -1,15 +1,22 @@
 <template>
   <div class="main-container">
-    <WeatherCard />
-    <luckCard
-      v-if="luckCardShow"
+    <WeatherCard
+      @luckCardShow="onLuckCardShow"
+      v-if="weatherShow"
+    />
+    <luckCard      
+      v-if="luckCardShow"      
      />
-    <div class="main-swiper">
+    <div class="main-swiper" ref="mainSwiper">
       <swiper
         :modules="modules"
         :slides-per-view="1"
         :space-between="0"     
         :loop="true"
+        :autoplay="{
+          delay: 3500,
+          disableOnInteraction: false,
+        }"
         navigation
         :parallax="true"
         :pagination="{ clickable: true }"             
@@ -45,19 +52,15 @@
   </div>
 </template>
 <script setup>
-import { ref } from 'vue'
+import { ref, onBeforeUnmount, onMounted, defineEmits  } from 'vue'
 import WeatherCard from './components/WeatherCard.vue'
 import luckCard from '@/components/minicard/card.vue'
-// :autoplay="{
-//           delay: 3500,
-//           disableOnInteraction: false,
-//         }"   
+
  // import Swiper core and required modules
  import { Navigation, Pagination, A11y, EffectFade, Autoplay, Parallax  } from 'swiper/modules';
 
 // Import Swiper Vue.js components
 import { Swiper, SwiperSlide } from 'swiper/vue';
-
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/navigation'
@@ -66,9 +69,6 @@ import 'swiper/css/scrollbar'
 import 'swiper/css/parallax'
 
 const modules = [Pagination, Navigation, A11y, EffectFade, Autoplay, Parallax ]
-
-const luckCardShow = ref(false)
-
 const onSwiper = (swiper) => {
   console.log(swiper);
 };
@@ -94,4 +94,30 @@ const MainImg = ref([
   }    
 ])
 
+// ref
+const luckCardShow = ref(false)
+const weatherShow = ref(true)
+const swiperHeight = ref(0)
+const mainSwiper = ref(null)
+const emits = defineEmits(['luckCardShow'])
+
+const onLuckCardShow = (value) => {
+  luckCardShow.value = value;
+}
+
+const mainHandleScroll = () => {
+    let scrollY = window.scrollY
+    swiperHeight.value = mainSwiper.value.clientHeight
+    console.log(scrollY, swiperHeight.value)
+    if(scrollY > (swiperHeight.value * 0.5)) {
+      weatherShow.value = false
+    }
+}
+onMounted(() => {
+    window.addEventListener('scroll', mainHandleScroll)
+})
+
+onBeforeUnmount(() => {
+    window.removeEventListener('scroll', mainHandleScroll)
+})
 </script>

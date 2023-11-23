@@ -13,6 +13,9 @@
             <div class="card-item__innerbox">
               <span>{{ selectCard }}</span>
             </div>
+            <div class="end-msg">
+              
+            </div>
         </div>
     </div>
   </div>
@@ -32,7 +35,7 @@
 
   const SelectCard = () => {
     if (!isActive.value) {
-      isActive.value = true
+      isActive.value = true 
       getRandomCard()  
     }
   }
