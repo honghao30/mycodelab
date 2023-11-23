@@ -5,6 +5,7 @@
       v-if="weatherShow"
     />
     <luckCard      
+      @luckCardShow="onLuckCardShow"
       v-if="luckCardShow"      
      />
     <div class="main-swiper" ref="mainSwiper">
