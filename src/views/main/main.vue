@@ -110,7 +110,7 @@ const mainHandleScroll = () => {
     let scrollY = window.scrollY
     swiperHeight.value = mainSwiper.value.clientHeight
     console.log(scrollY, swiperHeight.value)
-    if(scrollY > (swiperHeight.value * 0.5)) {
+    if(scrollY > (swiperHeight.value * 0.3)) {
       weatherShow.value = false
     }
 }
