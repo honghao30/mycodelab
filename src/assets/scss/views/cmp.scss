@@ -244,6 +244,9 @@
   margin: 50px auto;
   max-width: 90vw;
   .movie-item__info {
+    .rate {
+      @include fontoption(12px, #000, 400, 20px);
+    }
     .movie-item__info-title {
       @include fontoption(20px, #000, 500, 35px);
     }
