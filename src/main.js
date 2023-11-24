@@ -13,6 +13,14 @@ import * as directives from 'vuetify/directives'
 // import "@/plugins/myComponents";
 import globalComponents from './plugins/myComponents'
 
+// fontawesome import
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fas } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+library.add(fas)
+// createApp을 통해 생성한Application 인스턴스의 component API 활용
+app.component('font-awesome-icon', FontAwesomeIcon)
+
 const vuetify = createVuetify({
   components,
   directives,

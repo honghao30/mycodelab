@@ -50,10 +50,37 @@
       <MovieRangkings />
     </div>    
     <div class="biz-card__wrap">
-        
+        <Title 
+          pageTitle="하는 일"
+          :level="3" 
+          alignType="center"
+        />
+        <ul class="biz-list">
+          <li>
+            <div class="icon"></div>
+            <div class="title">퍼블리싱</div>
+            <div class="description">HTML, CSS, JAVASCRIPT</div>
+          </li>
+          <li>
+            <div class="icon"></div>
+            <div class="title">프레임웍</div>
+            <div class="description">Vue3.js & React</div>
+          </li>
+          <li>
+            <div class="icon"></div>
+            <div class="title">웹접근성</div>
+            <div class="description">인증 심사 컨설팅</div>
+          </li>          
+        </ul>
     </div>    
     <div class="online-request__wrap">
-        
+        <div class="button__wrap">
+          <Button
+            buttonName="프로젝트 가치 해요?"
+            types="primary"                              
+            @click="goMail"
+          />          
+        </div>
     </div>    
   </div>
 </template>

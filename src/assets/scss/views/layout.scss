@@ -95,6 +95,46 @@
 .movie-card__wrap {
   padding: 100px 0;
 }
+.online-request__wrap {
+  padding: 100px 0;
+}
+.biz-card__wrap {
+  padding: 100px 0;
+}
+.biz-list{
+  display: flex;
+  gap: 50px;
+  width: 100%;
+  justify-content: center;
+  max-width: 1000px;
+  margin: 50px auto;
+  li {
+    width: calc(100% / 3);
+    border: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 0;
+    gap: 0px;
+    .icon {
+      width: 150px;
+      height: 150px;
+      background-color: #f2f2f2;
+      border-radius: 50%     
+    }
+    .title {
+      margin-top: 30px;
+      @include fontoption(18px, #000, 500, 25px);
+    }
+    .description {
+      margin-top: 5px;
+      @include fontoption(14px, #000, 400, 20px);
+      @include ellipsis($line: 3);
+    }    
+  }
+}
+
 // animation
 .slideup {
   transform: translateY(25%);
