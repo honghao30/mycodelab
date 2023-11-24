@@ -42,7 +42,7 @@ const getMovie = () => {
       data.results.forEach(result => {
         nowPlayingList.value.push(result);
       });
-      console.log(nowPlayingList);
+      // console.log(nowPlayingList);
     } catch (error) {
       console.log(error.message);
     }

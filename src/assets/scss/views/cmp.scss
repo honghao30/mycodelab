@@ -240,7 +240,23 @@
     }
   }
 }
-
+.movie-popular__wrap {
+  margin: 50px auto;
+  max-width: 90vw;
+  .movie-item__info {
+    .movie-item__info-title {
+      @include fontoption(20px, #000, 500, 35px);
+    }
+    .movie-item__info-desc {
+      margin-top: 5px;
+      @include fontoption(16px, #000, 400, 28px);
+      @include ellipsis($line: 3);
+      .date {
+        font-size: 14px;
+      }
+    }
+  }
+}
 //행운카드 보기
 .card-option__wrap {
   position: fixed;

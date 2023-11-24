@@ -42,7 +42,12 @@
         
     </div>
     <div class="movie-card__wrap">
-        
+      <Title 
+        pageTitle="인기 영화"
+        :level="3" 
+        alignType="center"
+      />
+      <MovieRangkings />
     </div>    
     <div class="biz-card__wrap">
         
@@ -56,6 +61,7 @@
 import { ref, onBeforeUnmount, onMounted, defineEmits  } from 'vue'
 import WeatherCard from './components/WeatherCard.vue'
 import luckCard from '@/components/minicard/card.vue'
+import MovieRangkings from '@/views/movie/MovieRangkings.vue'
 
  // import Swiper core and required modules
  import { Navigation, Pagination, A11y, EffectFade, Autoplay, Parallax  } from 'swiper/modules';
