@@ -1,7 +1,9 @@
   //modal css
+  html.modal-open,
   body.modal-open {
     height:100%;
-    overflow:hidden;
+    overflow-y:hidden;
+    height:100%;
   }
   .overlay-mask {
     position: fixed;

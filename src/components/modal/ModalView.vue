@@ -30,7 +30,7 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue'
+import { defineProps, onBeforeUnmount, onMounted } from 'vue'
 
 const props = defineProps({
   modalTitle: {
@@ -41,14 +41,14 @@ const props = defineProps({
     type: Number,
     default: ''
   }
+}) 
 
-})  
-// export default {
-//   mounted() {
-//     document.body.classList.add('modal-open')
-//   },
-//   beforeDestroy() {
-//     document.body.classList.remove('modal-open')
-//   }
-// }
+onMounted(() => {
+  document.body.classList.add('modal-open')
+  document.documentElement.classList.add('modal-open')
+})
+onBeforeUnmount(() => {
+  document.body.classList.remove('modal-open')
+  document.documentElement.classList.remove('modal-open')
+})
 </script>
