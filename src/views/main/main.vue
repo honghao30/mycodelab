@@ -1,5 +1,5 @@
 <template>
-  <div class="main-container">
+  <div class="main-container"  ref="content">
     <WeatherCard
       @luckCardShow="onLuckCardShow"
       v-if="weatherShow"
@@ -41,7 +41,7 @@
     <div class="text-ani__wrap">
         
     </div>
-    <div class="movie-card__wrap">
+    <div class="movie-card__wrap slideup">
       <Title 
         pageTitle="인기 영화"
         :level="3" 
@@ -49,7 +49,7 @@
       />
       <MovieRangkings />
     </div>    
-    <div class="biz-card__wrap">
+    <div class="biz-card__wrap slideup">
         <Title 
           pageTitle="하는 일"
           :level="3" 
@@ -73,7 +73,7 @@
           </li>          
         </ul>
     </div>    
-    <div class="online-request__wrap">
+    <div class="online-request__wrap slideup">
         <div class="button__wrap">
           <Button
             buttonName="프로젝트 가치 해요?"
@@ -135,6 +135,8 @@ const swiperHeight = ref(0)
 const mainSwiper = ref(null)
 const emits = defineEmits(['luckCardShow'])
 
+const content = ref(null)
+
 const onLuckCardShow = (value) => {
   luckCardShow.value = value;
 }
@@ -146,6 +148,16 @@ const mainHandleScroll = () => {
     if(scrollY > (swiperHeight.value * 0.3)) {
       weatherShow.value = false
     }
+
+    const obj = content.value.querySelectorAll('.slideup')
+    const height = document.documentElement.clientHeight
+    obj.forEach(section => {
+      const { top, bottom } = section.getBoundingClientRect()
+      const isInViewport = top < height && bottom > 0
+      if (isInViewport && !section.classList.contains('slideInUp')) {
+        section.classList.add('slideInUp')
+      }
+    })    
 }
 onMounted(() => {
     window.addEventListener('scroll', mainHandleScroll)
