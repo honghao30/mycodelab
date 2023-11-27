@@ -28,6 +28,7 @@
     "@vitejs/plugin-vue": "^4.4.0",
     "eslint": "^8.52.0",
     "eslint-plugin-vue": "^9.18.1",
+    "material-design-icons-iconfont": "^6.7.0",
     "prettier": "3.0.3",
     "unplugin-auto-import": "^0.16.6",
     "unplugin-vue-components": "^0.25.2",
