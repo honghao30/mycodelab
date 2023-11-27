@@ -222,13 +222,25 @@
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  top: 100px;
+  top: 67px;
   z-index: 22;
+  min-width: initial;
+  height: initial;
+  max-width: initial;
   .icon-play {
     display: block;
     width:50px;
-    height: 50px;
-    background:url('@/assets/images/icon/icon_play.svg') no-repeat 50% 50%;
+    height: 50px;    
+      &::before {
+        content: '';
+        display: block;
+        width: 50px;
+        height: 50px;
+        background-image: url("@/assets/images/icon/icon-play-red.svg");
+        background-repeat: no-repeat;
+        background-position: center left;
+        background-size: contain;  
+      }
   }
 }
 .movie-rangking__wrap {

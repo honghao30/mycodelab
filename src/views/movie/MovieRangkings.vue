@@ -17,6 +17,7 @@
           >
             <div class="movie-item__img">
               <Button
+                v-if="movie.videoKey !== ''"
                 buttonName="재생"                                
                 iconName="icon-play"
                 iconOnly="true"
