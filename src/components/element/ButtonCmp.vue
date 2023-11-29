@@ -2,7 +2,7 @@
   <button
     type="button"
     class="btn"
-    :class="[types, size, iconName]"
+    :class="[iconOnly ? 'btn-' + iconName : [types, size, iconName]]"
     :disabled="disabled"
     @click="$emit('click')"
     @mousedown="$emit('mousedown')"
@@ -10,8 +10,12 @@
     <i
       v-if="iconName !== ''"
       :class="iconName"    
-    ></i>
-    {{ buttonName }}
+    >
+      <span v-if="iconOnly" class="irtext">{{ buttonName }}</span>
+    </i>
+    <template v-if="!iconOnly">
+      {{ buttonName }}
+    </template>    
     <!-- <slot></slot> -->
   </button>
 </template>
@@ -35,6 +39,10 @@ const props = defineProps({
   iconName: {
     type: String,
     default: ''
+  },
+  iconOnly: {
+    type: Boolean,
+    default: false
   }
 })
 </script>

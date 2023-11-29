@@ -1,15 +1,23 @@
 <template>
-  <div class="main-container">
-    <WeatherCard />
-    <luckCard
-      v-if="luckCardShow"
+  <div class="main-container"  ref="content">
+    <WeatherCard
+      @luckCardShow="onLuckCardShow"
+      v-if="weatherShow"
+    />
+    <luckCard      
+      @luckCardShow="onLuckCardShow"
+      v-if="luckCardShow"      
      />
-    <div class="main-swiper">
+    <div class="main-swiper" ref="mainSwiper">
       <swiper
         :modules="modules"
         :slides-per-view="1"
         :space-between="0"     
         :loop="true"
+        :autoplay="{
+          delay: 3500,
+          disableOnInteraction: false,
+        }"
         navigation
         :parallax="true"
         :pagination="{ clickable: true }"             
@@ -22,40 +30,79 @@
         >
           <div class="swiper-inner">
               <div class="inner-text">
-                <h3 data-swiper-parallax="-100">{{ slide.title }}</h3>
-                <p data-swiper-parallax="-200">{{ slide.description }}</p>
+                <h3 data-swiper-parallax="-100" data-swiper-parallax-duration="1000">{{ slide.title }}</h3>
+                <p data-swiper-parallax="-200" data-swiper-parallax-duration="1500">{{ slide.description }}</p>
               </div>
               <img :src="slide.url" alt="">  
           </div>          
         </swiper-slide>   
       </swiper>
     </div>
+    <div class="text-ani__wrap">
+        
+    </div>
+    <div class="movie-card__wrap slideup">
+      <Title 
+        pageTitle="인기 영화"
+        :level="3" 
+        alignType="center"
+      />
+      <MovieRangkings />
+    </div>    
+    <div class="biz-card__wrap slideup">
+        <Title 
+          pageTitle="하는 일"
+          :level="3" 
+          alignType="center"
+        />
+        <ul class="biz-list">
+          <li>
+            <div class="icon"></div>
+            <div class="title">퍼블리싱</div>
+            <div class="description">HTML, CSS, JAVASCRIPT</div>
+          </li>
+          <li>
+            <div class="icon"></div>
+            <div class="title">프레임웍</div>
+            <div class="description">Vue3.js & React</div>
+          </li>
+          <li>
+            <div class="icon"></div>
+            <div class="title">웹접근성</div>
+            <div class="description">인증 심사 컨설팅</div>
+          </li>          
+        </ul>
+    </div>    
+    <div class="online-request__wrap slideup">
+        <div class="button__wrap">
+          <Button
+            buttonName="프로젝트 가치 해요?"
+            types="primary"                              
+            @click="goMail"
+          />          
+        </div>
+    </div>    
   </div>
 </template>
 <script setup>
-import { ref } from 'vue'
+import { ref, onBeforeUnmount, onMounted, defineEmits  } from 'vue'
 import WeatherCard from './components/WeatherCard.vue'
 import luckCard from '@/components/minicard/card.vue'
-// :autoplay="{
-//           delay: 3500,
-//           disableOnInteraction: false,
-//         }"   
+import MovieRangkings from '@/views/movie/MovieRangkings.vue'
+
  // import Swiper core and required modules
  import { Navigation, Pagination, A11y, EffectFade, Autoplay, Parallax  } from 'swiper/modules';
 
 // Import Swiper Vue.js components
 import { Swiper, SwiperSlide } from 'swiper/vue';
-
 // Import Swiper styles
 import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/scrollbar';
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
+import 'swiper/css/scrollbar'
+import 'swiper/css/parallax'
 
 const modules = [Pagination, Navigation, A11y, EffectFade, Autoplay, Parallax ]
-
-const luckCardShow = ref(false)
-
 const onSwiper = (swiper) => {
   console.log(swiper);
 };
@@ -81,4 +128,42 @@ const MainImg = ref([
   }    
 ])
 
+// ref
+const luckCardShow = ref(false)
+const weatherShow = ref(true)
+const swiperHeight = ref(0)
+const mainSwiper = ref(null)
+const emits = defineEmits(['luckCardShow'])
+
+const content = ref(null)
+
+const onLuckCardShow = (value) => {
+  luckCardShow.value = value;
+}
+
+const mainHandleScroll = () => {
+    let scrollY = window.scrollY
+    swiperHeight.value = mainSwiper.value.clientHeight
+    console.log(scrollY, swiperHeight.value)
+    if(scrollY > (swiperHeight.value * 0.3)) {
+      weatherShow.value = false
+    }
+
+    const obj = content.value.querySelectorAll('.slideup')
+    const height = document.documentElement.clientHeight
+    obj.forEach(section => {
+      const { top, bottom } = section.getBoundingClientRect()
+      const isInViewport = top < height && bottom > 0
+      if (isInViewport && !section.classList.contains('slideInUp')) {
+        section.classList.add('slideInUp')
+      }
+    })    
+}
+onMounted(() => {
+    window.addEventListener('scroll', mainHandleScroll)
+})
+
+onBeforeUnmount(() => {
+    window.removeEventListener('scroll', mainHandleScroll)
+})
 </script>

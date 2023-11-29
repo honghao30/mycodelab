@@ -13,6 +13,12 @@ import * as directives from 'vuetify/directives'
 // import "@/plugins/myComponents";
 import globalComponents from './plugins/myComponents'
 
+// fontawesome import
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fas } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+library.add(fas)
+
 const vuetify = createVuetify({
   components,
   directives,
@@ -24,5 +30,6 @@ import './assets/scss/index.scss'
 
 const app = createApp(App)
 app.provide('$axios', axios)
+app.component('font-awesome-icon', FontAwesomeIcon)
 createApp(App).use(ElementPlus).use(vuetify).use(router).use(globalComponents).mount('#app')
 app.directive('click-outside', ClickOutside)
