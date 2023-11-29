@@ -196,11 +196,13 @@
   display: flex;
   flex-wrap: wrap;
   gap: 50px;
+  padding-top: 30px;
   .movie-item {        
     width: 20%;
   }
   .movie-item__img {
     width: 100%;
+    position: relative;
     img {width: 100%}
   }
   .movie-item__info {
@@ -217,7 +219,31 @@
     }
   }
 }
-
+.btn-icon-play {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 67px;
+  z-index: 22;
+  min-width: initial;
+  height: initial;
+  max-width: initial;
+  .icon-play {
+    display: block;
+    width:50px;
+    height: 50px;    
+      &::before {
+        content: '';
+        display: block;
+        width: 50px;
+        height: 50px;
+        background-image: url("@/assets/images/icon/icon-play-red.svg");
+        background-repeat: no-repeat;
+        background-position: center left;
+        background-size: contain;  
+      }
+  }
+}
 .movie-rangking__wrap {
   margin: 30px 0 100px;
   width: 100%;
@@ -240,7 +266,26 @@
     }
   }
 }
-
+.movie-popular__wrap {
+  margin: 50px auto;
+  max-width: 90vw;
+  .movie-item__info {
+    .rate {
+      @include fontoption(12px, #000, 400, 20px);
+    }
+    .movie-item__info-title {
+      @include fontoption(20px, #000, 500, 35px);
+    }
+    .movie-item__info-desc {
+      margin-top: 5px;
+      @include fontoption(16px, #000, 400, 28px);
+      @include ellipsis($line: 3);
+      .date {
+        font-size: 14px;
+      }
+    }
+  }
+}
 //행운카드 보기
 .card-option__wrap {
   position: fixed;

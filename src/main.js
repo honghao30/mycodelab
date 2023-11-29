@@ -4,14 +4,6 @@ import { router } from './router/index.js'
 import axios from 'axios'
 import ClickOutside from './utils/ClickOutsideDirective'
 
-// import Swiper core and required components
-import SwiperCore, { Navigation, Pagination, A11y, Parallax } from "swiper"
-// Import Swiper styles
-import "swiper/swiper.scss"
-
-// install Swiper components
-SwiperCore.use([Navigation, Pagination, A11y, Parallax])
-
 // Vuetify
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
@@ -20,6 +12,12 @@ import * as directives from 'vuetify/directives'
 
 // import "@/plugins/myComponents";
 import globalComponents from './plugins/myComponents'
+
+// fontawesome import
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fas } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+library.add(fas)
 
 const vuetify = createVuetify({
   components,
@@ -32,5 +30,6 @@ import './assets/scss/index.scss'
 
 const app = createApp(App)
 app.provide('$axios', axios)
+app.component('font-awesome-icon', FontAwesomeIcon)
 createApp(App).use(ElementPlus).use(vuetify).use(router).use(globalComponents).mount('#app')
 app.directive('click-outside', ClickOutside)

@@ -60,6 +60,24 @@ const calcHuos = (times) => {
     return sunHous ;
 }
 
-export { dailyData, calcTime,calcHuos,WeeklyData,todayData,getTodayLabel,ydate7,todayPrint,hh,prevDay,nextDay};
+// 일주일 계산
+const getCurrentWeek = () => {
+    const day = new Date();
+    const sunday = day.getTime() - 86400000 * day.getDay();
+  
+    day.setTime(sunday);
+  
+    const result = [day.toISOString().slice(0, 10)];
+  
+    for (let i = 1; i < 7; i++) {
+      day.setTime(day.getTime() + 86400000);
+      result.push(day.toISOString().slice(0, 10));
+    }
+  
+    return result;
+}
+  
+
+export { getCurrentWeek, dailyData, calcTime,calcHuos,WeeklyData,todayData,getTodayLabel,ydate7,todayPrint,hh,prevDay,nextDay};
 
  
