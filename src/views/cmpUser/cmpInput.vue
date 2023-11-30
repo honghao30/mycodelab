@@ -22,15 +22,18 @@
     <div class="guide-context">
         <MySelect
            label="셀렉트박스 컴포넌트" 
-           searchable="searchable"          
+           searchable="searchable"                
           :filteredOption="options"
+          @selectedOption="changeSelected"
          />
+         <p>선택된 항목 : {{ selected  }}</p>
     </div>
 
   </div>
 </template>
 
 <script setup>
+import { ref, defineProps, defineEmits, onBeforeMount, onUnmounted } from 'vue'
 const options = [
   {
     title: '카테고리명1',
@@ -49,6 +52,11 @@ const options = [
     code: '카테고리명4',
   }
 ]
+const selected = ref('')
+const changeSelected = (option) => {
+  console.log('왔니?', option)
+  selected.value = option.title
+}
 </script>
 
 <style lang="scss">
