@@ -9,6 +9,7 @@ import cmpKoreaMap from "@/views/cmpUser/cmpSvgMap.vue";
 import cmpAccordion from "@/views/cmpUser/cmpAccMenu.vue";
 import cmpKoreaWeather from "@/views/cmpUser/cmpKoreaWeather.vue";
 import cmpTab from "@/views/cmpUser/cmpTab.vue";
+import cmpTable from "@/views/cmpUser/cmpTable.vue";
 import cmpInput from "@/views/cmpUser/cmpInput.vue";
 
 // import cmpSwiper from "@/views/swiperCase/cmpSwiper.vue";
@@ -70,6 +71,11 @@ const routes = [
         name: "cmpTab",
         component: cmpTab,
     },
+    {
+        path: "/cmpTable",
+        name: "cmpTable",
+        component: cmpTable,
+    },    
     {
         path: "/cmpInput",
         name: "cmpInput",
