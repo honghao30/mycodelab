@@ -17,7 +17,7 @@
         <template #input>
           <InputEl
             label="아이디 입력"
-            v-model="userName"
+            v-model="userName"            
             placeholder="아이디를 입력하세요"
             errorMsg="아이디를 입력하세요"            
           />
@@ -36,6 +36,20 @@
     <Title 
       :level="3" 
       pageTitle="Select"
+    />
+    <div class="guide-context" style="padding-bottom: 50px;">
+        <VSelect
+            label="항목 선택"
+            v-model="vselected"
+            :options="options"
+            placeholder="항목 선택 선택하세요"
+            errorMsg="필수 선택입니다."           
+        />
+        <p>선택: {{ vselected }}</p>
+    </div>    
+    <Title 
+      :level="3" 
+      pageTitle="커스텀 Select"
     />
     <div class="guide-context">
         <MySelect
@@ -73,6 +87,7 @@ const options = [
     code: '카테고리명4',
   }
 ]
+const vselected = ref('선택하세요')
 const selected = ref('')
 const changeSelected = (option) => {  
   selected.value = option.title

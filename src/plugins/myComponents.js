@@ -4,6 +4,7 @@ import ModalView from "@/components/modal/ModalView.vue"
 import ToolTip from "@/components/modal/Tooltip.vue"
 import MySelect from "@/components/form/CustomSelect.vue"
 import MyInput from "@/components/form/input.vue"
+import VSelect from "@/components/form/Select.vue"
 import InputEl from "@/components/form/inputEl.vue"
 import MyTable from "@/components/element/tableCmp.vue"
 
@@ -15,6 +16,7 @@ export default {
     app.component('ToolTip', ToolTip)  
     app.component('MySelect', MySelect) 
     app.component('MyInput', MyInput) 
+    app.component('VSelect', VSelect) 
     app.component('InputEl', InputEl) 
     app.component('MyTable', MyTable) 
   }
