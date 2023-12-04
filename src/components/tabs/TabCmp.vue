@@ -8,23 +8,22 @@
         class="tab-item"    
         v-for="(tab, index) in tabs"
         :key="index"    
-        :class="['tab', selected === index && ' active']"    
+        :class="[selected === index ? 'active' : '']"    
         @click="handleSelected(index)"             
       >
-          <span>
+          <a href="#" role="button">
             {{ tab.title }}
-          </span>
+          </a>
       </li>
     </ul>
     <div class="tab-contents">
-      <slot name="tabCont"></slot>
+      <slot name="content"></slot>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { defineProps, defineEmits } from 'vue'
+import { ref, defineProps, defineEmits } from 'vue';
 
 const props = defineProps({
   tabs: {
@@ -36,9 +35,9 @@ const props = defineProps({
     default: 0
   }
 })
-const emit = defineEmits(['click: handleSelected(index)'])
+const emit = defineEmits(['click:selectIndex'])
 const handleSelected = (index) => {  
-  emit('click:handleSelected', index)
-  console.log(handleSelected)
+  emit('click:selectIndex', index)
+  console.log(index)
 };
 </script>

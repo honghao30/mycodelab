@@ -7,6 +7,8 @@ import MyInput from "@/components/form/input.vue"
 import VSelect from "@/components/form/Select.vue"
 import InputEl from "@/components/form/inputEl.vue"
 import MyTable from "@/components/element/tableCmp.vue"
+import TabsCmp from "@/components/tabs/TabCmp.vue"
+import TabItem from "@/components/tabs/TabItem.vue"
 
 export default {
   install(app) {
@@ -19,5 +21,7 @@ export default {
     app.component('VSelect', VSelect) 
     app.component('InputEl', InputEl) 
     app.component('MyTable', MyTable) 
+    app.component('TabsCmp', TabsCmp) 
+    app.component('TabItem', TabItem) 
   }
 }
