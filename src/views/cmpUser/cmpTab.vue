@@ -5,45 +5,19 @@
       pageTitle="탭 메뉴"
     />
     <div class="discription-text">
-      탭 메뉴에 대한 가이드입니다.(작업)
+      탭 메뉴에 대한 가이드입니다.
     </div>
-    <TabsCmp :tabs="tabsList" @handleClicked="updataSelected">
-        <template #content>
-          <components :is="curContent"></components>
-        </template>
-    </TabsCmp>
+    <TabsCmp :titles="['탭1', '탭2']" :tabs="[TabConta, TabContb]"> </TabsCmp>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import TabsCmp from "@/components/tabs/TabCmp.vue"
+import { markRaw } from 'vue'
+import TabCont1 from "./TabCont1.vue"
+import TabCont2 from "./TabCont2.vue"
 
-
-const tabsList = ref([
-  {
-    title: 'tab1',
-    icon: '',
-    content: 'tab1'
-  },
-  {
-    title: 'tab2',
-    icon: '',
-    content: 'tab2'
-  },
-  {
-    title: 'tab3',
-    icon: '',
-    content: 'tab3'
-  }
-])
-const selected = ref(0)
-const curContent = ref('tab1')
-
-const updataSelected = (index) => {
-  selected.value = index
-  curContent.value = tabsList.value[index].content
-}
+const TabConta = markRaw(TabCont1)
+const TabContb = markRaw(TabCont2)
 
 </script>
 
