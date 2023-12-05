@@ -6,38 +6,34 @@
     >
       <li        
         class="tab-item"    
-        v-for="(tab, index) in tabs"
-        :key="index"    
-        :class="[selected === index ? 'active' : '']"    
-        @click="handleSelected(index)"             
+        v-for="(title, index) in titles"
+        :key="index"        
+        :class="[index === activeIndex ? 'active' : '']"    
+        @click="activeIndex = index"         
       >
-          <a href="#" role="button">
-            {{ tab.title }}
-          </a>
+          <a href="#" role="button" v-text="title"></a>
       </li>
     </ul>
     <div class="tab-contents">
-      <slot name="content"></slot>
+      <component :is="activeTab"></component>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, defineProps, defineEmits } from 'vue';
+import { onMounted, ref, computed } from 'vue'
 
 const props = defineProps({
+  titles: {
+    type: Array,
+    default: () => [],
+  },
   tabs: {
     type: Array,
-    required: true
+    default: () => [],
   },
-  selected: {
-    type: Number,
-    default: 0
-  }
 })
-const emit = defineEmits(['click:selectIndex'])
-const handleSelected = (index) => {  
-  emit('click:selectIndex', index)
-  console.log(index)
-};
+
+const activeTab = computed(() => props.tabs[activeIndex.value])
+const activeIndex = ref(0)
 </script>
