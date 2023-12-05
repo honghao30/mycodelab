@@ -29,7 +29,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps,  onBeforeMount, onUnmounted } from 'vue'
+import { ref, defineProps, defineEmits, onBeforeMount, onUnmounted } from 'vue'
 
 const props = defineProps({
   filteredOption: {
@@ -50,17 +50,20 @@ const props = defineProps({
   }
 })
 
-const selectedOption = ref('선택하세요')
 const isOpen = ref(false)
 const searchPlaceholder = ref('검색어를 입력하세요')
+const selectedOption = ref('선택하세요')
+
+const emit = defineEmits(["selectedOption"])
 
 const toggleSelect = () => {
   isOpen.value = !isOpen.value
 }
-const selectOption = (option) => {
+const selectOption = (option) => {  
+  emit('selectedOption', option)
+  console.log(option)  
   selectedOption.value = option.title
   isOpen.value = !isOpen.value
-  console.log(option)
 }
 
 const onClickOutside = () => {  

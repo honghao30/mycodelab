@@ -24,7 +24,7 @@
       pageTitle="주간 날씨"
       noTicText="지역별 5일간 날씨입니다."
     />
-    <p>금일은 {{todayPrint }} 입니다.</p>
+    <p>금일은 {{todayPrint }} 입니다. (추후 정리 예정)</p>
     <div class="table__wrap--list">
         <table class="table-list">
             <caption>일로 구성된 주간 날씨 표</caption>
@@ -71,6 +71,7 @@ const result = getCurrentWeek()
 const weekly = result
 
 const RankBaseUrl = 'https://api.openweathermap.org/data/2.5/weather?q=';
+const WeeklyUrl = 'http://api.openweathermap.org/data/2.5/forecast/daily?';
 const Mykey = '13b55b2bf5bf4b64df063ddbfe1f3c5c'
 let citis1 = 'Seoul'
 let citis2 = 'Busan'
@@ -111,10 +112,10 @@ let baseImgUrl = 'http://openweathermap.org/img/w/'
             axios.get(`${RankBaseUrl}${citis14}&APPID=${Mykey}&units=metric`),
             axios.get(`${RankBaseUrl}${citis15}&APPID=${Mykey}&units=metric`),
             axios.get(`${RankBaseUrl}${citis16}&APPID=${Mykey}&units=metric`),
-            axios.get(`${RankBaseUrl}${citis17}&APPID=${Mykey}&units=metric`)
+            axios.get(`${RankBaseUrl}${citis17}&APPID=${Mykey}&units=metric`)            
         ])        
         .then(
-            axios.spread((res1, res2, res3, res4, res5, res6, res7, res8, res9, res10, res11, res12, res13, res14, res15, res16, res17) => {                
+            axios.spread((res1, res2, res3, res4, res5, res6, res7, res8, res9, res10, res11, res12, res13, res14, res15, res16, res17) => {                            
                 WeatherList.value = [
                     {
                         'area': '서울',
@@ -201,8 +202,7 @@ let baseImgUrl = 'http://openweathermap.org/img/w/'
                         'data': res17.data.main.temp + '°C'  + ' / ' + weatherDescKo[res17.data.weather[0].id],
                         'id': 'KR-50'
                     }
-                ]                     
-               console.log(WeatherList._rawValue)
+                ] 
             })
         )
         .catch(err => {
