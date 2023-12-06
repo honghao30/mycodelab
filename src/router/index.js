@@ -12,7 +12,8 @@ import cmpTab from "@/views/cmpUser/cmpTab.vue";
 import cmpTable from "@/views/cmpUser/cmpTable.vue";
 import cmpInput from "@/views/cmpUser/cmpInput.vue";
 
-// import cmpSwiper from "@/views/swiperCase/cmpSwiper.vue";
+import cmpSwiper from "@/views/swiperCase/cmpSwiper.vue";
+import TikTok from "@/views/swiperCase/TikTok.vue";
 
 import scrollEvent from "@/views/scrollEvent/scrollEvent.vue";
 
@@ -81,11 +82,16 @@ const routes = [
         name: "cmpInput",
         component: cmpInput,
     },   
-    // {
-    //     path: "/cmpSwiper",
-    //     name: "cmpSwiper",
-    //     component: cmpSwiper,
-    // },
+    {
+        path: "/cmpSwiper",
+        name: "cmpSwiper",
+        component: cmpSwiper,
+    },
+    {
+        path: "/TikTok",
+        name: "TikTok",
+        component: TikTok,
+    },    
     // 스크롤
     {
         path: "/scrollEvent",

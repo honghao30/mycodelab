@@ -303,3 +303,49 @@ $iconBsUrl: '../assets/images/icon/';
     }  
   }
 }
+.btn-icon_play_video {
+  position: absolute;
+  left: 50%;
+  top:50%;
+  transform: translate(-50%, -50%);  
+  display: block;
+  padding:0;
+  width: 80px;
+  height: 80px;
+  max-width: 80%;
+  min-width: 80px;
+  z-index: 20;
+  &::before {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 80px;
+    background-image: url("/src/assets/images/icon/icon_play_video.svg");
+    background-repeat: no-repeat;
+    background-position: center left;
+    background-size: contain;  
+  }  
+}
+.btn-icon_pause_video {
+  position: absolute;
+  left: 50%;
+  top:50%;
+  transform: translate(-50%, -50%);  
+  display: block;
+  padding:0;
+  width: 80px;
+  height: 80px;
+  max-width: 80%;
+  min-width: 80px;
+  z-index: 20;
+  &::before {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 80px;
+    background-image: url("/src/assets/images/icon/icon_pause_video.svg");
+    background-repeat: no-repeat;
+    background-position: center left;
+    background-size: contain;  
+  }  
+}
