@@ -3,6 +3,11 @@
         <div class="tiktok__wrap--inner">
             <div class="top-search">
                 <MyBtn                            
+                    buttonName="추천영상"                           
+                    @click="recommendVideo"                                                                       
+                >
+                </MyBtn>                
+                <MyBtn                            
                     buttonName="검색"
                     iconOnly="true"                    
                     @click="openSeach"                                                                       
@@ -16,6 +21,7 @@
                     </template>
                 </MyBtn>
             </div>
+            <LoadingDot v-if="Loading" />
             <swiper
                 :direction="'vertical'"
                 :slidesPerView="1"
@@ -33,11 +39,8 @@
                     v-for="(video, index) in videoList"
                     :key="index"
                 >
-                    <div class="video__wrap" 
-                        :Counter="video.statistics.like_count"
-                        @click="screenEvent(video)"
-                    >
-                        <div class="screen-heart" v-if="bigHeart">
+                    <div class="video__wrap">
+                        <div class="screen-heart" :class="{'is-active': video.bigHeart == true}">
                             <div class="heart__wrap">
                                 <div class="left"></div>
                                 <div class="right"></div>
@@ -65,7 +68,7 @@
                                     buttonName="댓글" 
                                     iconOnly="true"     
                                     :Counter="video.statistics.comment_count"  
-                                    @click="videoComment(video)"                                                                  
+                                    @click="commandLyOpen(video)"                                                                  
                                 >
                                 <template #svg-icon>
                                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="50px" height="50px" viewBox="0 0 50 50" version="1.1">
@@ -122,7 +125,9 @@
                             x5-playsinline
                             :src="video.url"
                             muted
+                            loop="true"
                             ref="videoRef"
+                            @click="screenEvent(video, index)"
                         ></video>
                     </div>
                 </swiper-slide>  
@@ -134,15 +139,109 @@
                 >
                 </MyBtn>      
                 <MyBtn                            
-                    buttonName="업로드"                                                                          
+                    buttonName="업로드"
+                    @click="videoUpload()"                                                                                             
                 >
                 </MyBtn>
                 <MyBtn                            
-                    buttonName="마이페이지"                                                                          
+                    buttonName="마이페이지"
+                    @click="mypageOpen()"                                                                        
                 >
                 </MyBtn>                                 
-            </div>            
-        </div>
+            </div>
+            <!-- // layer 검색-->
+            <MyLy                
+                height="100%"
+                left="0"
+                bottom="0"
+                v-if="topSearch"
+                @closeLy="topSearch = false" 
+            >
+                <template #layerContent>
+                    <div class="video-upload">
+                        <Title 
+                            pageTitle="검색"
+                            :level="3" 
+                        />
+                    </div>                    
+                </template>
+
+            </MyLy>                                
+            <!-- // layer 영상 업로드-->
+            <MyLy                
+                height="100%"
+                left="0"
+                bottom="0"
+                v-if="uploadLy"
+                @closeLy="uploadLy = false" 
+            >
+                <template #layerContent>
+                    <div class="video-upload">
+                        <Title 
+                            pageTitle="영상 업로드"
+                            :level="3" 
+                        />
+                    </div>                    
+                </template>
+
+            </MyLy>     
+            <!-- // layer 영상 마이페이지-->
+            <MyLy                
+                height="100%"
+                left="0"
+                bottom="0"
+                v-if="mypageLy"
+                @closeLy="mypageLy = false" 
+            >
+                <template #layerContent>
+                    <div class="video-upload">
+                        <Title 
+                            pageTitle="마이 페이지"
+                            :level="3" 
+                        />
+                    </div>                    
+                </template>
+
+            </MyLy>      
+            <!-- // layer 영상 댓글-->
+            <MyLy                
+                height="100%"
+                left="0"
+                bottom="0"
+                v-if="commandLy"
+                @closeLy="commandLy = false" 
+            >
+                <template #layerContent>
+                    <div class="video-upload">
+                        <Title 
+                            pageTitle="댓글"
+                            :level="3" 
+                        />
+                        {{ SelectVideo.title }}
+                    </div>                    
+                </template>
+
+            </MyLy>     
+            <!-- // layer 영상 공유-->
+            <MyLy                
+                height="50%"
+                left="0"
+                bottom="0"
+                v-if="videoShareLy"
+                @closeLy="videoShareLy = false" 
+            >
+                <template #layerContent>
+                    <div class="video-upload">
+                        <Title 
+                            pageTitle="공유"
+                            :level="3" 
+                        />
+                        {video}
+                    </div>                    
+                </template>
+
+            </MyLy>                                  
+        </div>          
     </div>  
 </template>
 
@@ -165,79 +264,19 @@ const timer = ref(null)
 const db_star = ref(0)
 const videoRef = ref([])
 const bigHeart = ref(false)
+const heart = ref([])
+const SelectVideo = ref('')
 
-const videoList = ref([
-    {
-        id: 1,
-        title: '싸이 춤 따라하는 어머니! 멋지다',
-        url: './video/1.mp4',
-        nickName: '@Jone',
-        statistics: {
-            comment_count: 0,
-            like_count: 0,
-            play_count: 0,
-            share_count: 0
-        },
-        playing: false,
-        active: false
-    },
-    {
-        id: 2,
-        title: '이 사람 정말 천재인데...생수병으로 이런걸다',
-        url: './video/2.mp4',
-        nickName: '@Mari',
-        statistics: {
-            comment_count: 0,
-            like_count: 0,
-            play_count: 0,
-            share_count: 0
-        },
-        playing: false,
-        active: false
-    },
-    {
-        id: 3,
-        title: '안녕하세요 이제 시작해주세요3',
-        url: './video/3.mp4',
-        nickName: '@YYY',
-        statistics: {
-            comment_count: 0,
-            like_count: 0,
-            play_count: 0,
-            share_count: 0
-        },
-        playing: false,
-        active: false
-    },
-    {
-        id: 4,
-        title: '안녕하세요 이제 시작해주세요4',
-        url: './video/4.mp4',
-        nickName: '@KKK',        
-        statistics: {
-            comment_count: 0,
-            like_count: 0,
-            play_count: 0,
-            share_count: 0
-        },
-        playing: false,
-        active: false
-    },
-    {
-        id: 5,
-        title: '안녕하세요 이제 시작해주세요5',
-        url: './video/5.mp4',
-        nickName: '@gp1',
-        statistics: {
-            comment_count: 0,
-            like_count: 0,
-            play_count: 0,
-            share_count: 0
-        },
-        playing: false,
-        active: false
-    }
-])
+const Loading = ref(false)
+const uploadLy = ref(false)
+const topSearch = ref(false)
+const mypageLy = ref(false)
+const commandLy = ref(false)
+const videoShareLy = ref(false)
+
+import VideoData from './videoList'
+
+const videoList = ref(VideoData)
 
 const videoLength = videoList.value.length
 
@@ -283,31 +322,74 @@ const videoLike = (video) => {
     video.statistics.like_count++     
     video.active = true     
 }
-const screenEvent = (video) => {
-    console.log(video)
-    video.statistics.like_count++    
-    bigHeart.value = true 
-    setTimeout (() => {
-        bigHeart.value = false 
-    },1000)       
-    video.active = true  
+const screenEvent = (video,index) => {  
+    const videoElement = videoRef.value[index]  
+    clearTimeout(timer.value)
+    timer.value = setTimeout(() => {
+      clearTimeout(timer.value)      
+      db_star.value = 0
+      if(videoElement.paused) {        
+         videoElement.play()
+         video.playing = true
+      } else {
+         videoElement.pause()
+         video.playing = false
+      }      
+    }, 300)
+    if (db_star.value === 0) {
+        db_star.value = new Date().getTime()
+    } else {
+      let now = new Date().getTime()
+      let del = now - db_star.value
+      if (del <= 300) {        
+        clearTimeout(timer.value)
+        console.log('더블클릭')        
+        video.statistics.like_count++ 
+        video.bigHeart = true     
+        video.active = true    
+        setTimeout (() => {            
+            video.bigHeart = false
+        },1000) 
+      }
+      db_star.value = 0
+    }
 }
-const videoComment = (video) => {
-    console.log(video)
-    video.statistics.comment_count++
-}
+// const videoComment = (video) => {
+//     console.log(video)
+//     video.statistics.comment_count++
+// }
 const videoShare = (video) => {
-    console.log(video)
-    video.statistics.share_count++
+    videoShareLy.value = true
+    SelectVideo.value = video
+    console.log(SelectVideo)
+    //video.statistics.share_count++
 }
 const goHome = () => { 
     console.log(videoList.value.length, videoLength)
     if(videoList.value.length === videoLength) {
+        Loading.value = true
         setTimeout (() => {
             alert('새로운 비디오가 없습니다.')
             window.location.reload()
         },500)    
     }
+}
+const videoUpload = () => {
+    uploadLy.value = true
+}
+const openSeach  = () => {
+    topSearch.value = true
+}
+const mypageOpen = () => {
+    mypageLy.value = true
+}
+const recommendVideo = () => {
+    alert('추천 영상 순으로 보시겠습니까?')
+}
+const commandLyOpen = (video) => {
+    commandLy.value = true
+    SelectVideo.value = video
+    console.log(SelectVideo)    
 }
 </script>
 
@@ -345,7 +427,9 @@ const goHome = () => {
             z-index: 20;
             display: flex;
             align-items: center;
-            justify-content: flex-end;
+            justify-content: space-between;
+            color: #fff;
+            font-size: 18px;
         }        
     }
     .swiper-vertical {
@@ -384,7 +468,7 @@ const goHome = () => {
         }
     }
     .user-action {
-        position: fixed;
+        position: absolute;
         right: 10px;
         bottom: 20%;
         display: flex;
@@ -407,21 +491,29 @@ const goHome = () => {
     .screen-heart {
         display: flex;
         width: 100%;
-        height: 100%;
+        height: 40%;
         align-items: center;
         justify-content: center;
-        position: fixed;
+        position: absolute;
         left: 0;
         top: 0;
         z-index: 24;
+        display: none;
+        opacity: 0;
+        &.is-active {
+            opacity: 1;
+            display: flex;
+            .heart__wrap {
+                animation: Beat 2s infinite ease-in-out;      
+            }
+        }
         .heart__wrap {
             position: relative;
             max-width: 5vw;
             aspect-ratio: 1;
             display: flex;
             align-items: center;
-            justify-content: center;
-            animation: Beat 2s forwards ease-in-out;                       
+            justify-content: center;                             
         }
 
         .left {
