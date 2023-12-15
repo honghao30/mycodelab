@@ -5,6 +5,8 @@
             width: width ? width : '',
             height: height ? height : '',
             top: top ? top : '',
+            left: left ? left : '',
+            right: right ? right : '',
             bottom: bottom ? bottom : ''
         }"
     >
