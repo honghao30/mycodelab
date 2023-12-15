@@ -236,7 +236,7 @@
                             pageTitle="공유"
                             :level="3" 
                         />
-                        {video}
+                        {{ SelectVideo.title }}
                     </div>                    
                 </template>
 
