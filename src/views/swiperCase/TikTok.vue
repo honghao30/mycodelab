@@ -180,7 +180,72 @@
                         <Title 
                             pageTitle="영상 업로드"
                             :level="3" 
-                        />
+                        />                        
+                        <div class="video-upload-form">
+                            <MyInput >
+                                <template #input>
+                                    <InputEl
+                                        label="제목"
+                                        v-model="videoTitle"            
+                                        placeholder="제목 입력하세요"                                              
+                                    />
+                                </template>
+                            </MyInput>
+                            <MyInput >
+                                <template #input>
+                                    <InputEl
+                                        label="영상 소개"
+                                        v-model="videoDescription"            
+                                        placeholder="영상소개 입력하세요"                                              
+                                    />
+                                </template>
+                            </MyInput>                            
+                            <MyInput >
+                                <template #input>
+                                    <InputEl
+                                        label="태그"
+                                        v-model="videoTag"            
+                                        placeholder="태그 입력하세요"                                              
+                                    />
+                                </template>
+                            </MyInput> 
+                            <MyInput >
+                                <template #input>
+                                    <InputEl
+                                        types="file"
+                                        label="영상 업로드"
+                                        v-model="videoUploadForm"            
+                                        placeholder="영상 선택하세요"                                              
+                                    />
+                                </template>
+                            </MyInput>
+                            <MyInput >
+                                <template #input>
+                                    <InputEl
+                                        types="file"
+                                        label="영상 썸네일"
+                                        v-model="videoThumbnail"            
+                                        placeholder="영상 썸네일 선택하세요"                                              
+                                    />
+                                </template>
+                            </MyInput>                                                                                                   
+                        </div>
+                        {{ videoTitle }} {{ videoDescription  }} {{ videoTag }}
+                        {{ videoUploadForm }} {{ videoThumbnail }}
+                        <div class="button__wrap">
+                            <Button
+                                buttonName="업로드"
+                                types="btn-primary-line"
+                                size="medium"
+                                @click="uploadVideoConfirm"
+                            />
+                            <Button
+                                buttonName="취소"
+                                types="btn-line"
+                                size="medium"
+                                @click="cancelUploadVideo"
+                            />                            
+                        </div>
                     </div>                    
                 </template>
 
@@ -212,12 +277,43 @@
                 @closeLy="commandLy = false" 
             >
                 <template #layerContent>
-                    <div class="video-upload">
+                    <div class="command__wrap">
                         <Title 
                             pageTitle="댓글"
                             :level="3" 
                         />
-                        {{ SelectVideo.title }}
+                        <div class="command__list--wrap">
+                            <p class="article-list">{{ SelectVideo.title }}</p>
+                            <ul class="command__list">
+                                <li v-for="item in SelectVideo.comments.slice().reverse()" :key="item">
+                                    <p class="info">
+                                        {{ item.nickName }} / 
+                                        {{ item.writeTime }} |
+                                        <MyBtn                            
+                                            buttonName="수정"    
+                                            @click="ModifyCommand(SelectVideo)"  
+                                        >
+                                        </MyBtn> / 
+                                        <MyBtn                            
+                                            buttonName="삭제"    
+                                            @click="DellCommand(SelectVideo)"  
+                                        >
+                                        </MyBtn>
+                                    </p>
+                                    <p class="ino-text">
+                                        {{ item.user_comment }}
+                                    </p>
+                                </li>
+                            </ul>
+                            <div class="command__write">
+                                <textarea v-model="user_command"></textarea>
+                                <MyBtn                            
+                                    buttonName="댓글등록"    
+                                    @click="addCommand(SelectVideo)"  
+                                >
+                                </MyBtn>
+                            </div>
+                        </div>                        
                     </div>                    
                 </template>
 
@@ -266,6 +362,7 @@ const videoRef = ref([])
 const bigHeart = ref(false)
 const heart = ref([])
 const SelectVideo = ref('')
+const user_command =ref('')
 
 const Loading = ref(false)
 const uploadLy = ref(false)
@@ -273,6 +370,12 @@ const topSearch = ref(false)
 const mypageLy = ref(false)
 const commandLy = ref(false)
 const videoShareLy = ref(false)
+
+const videoTitle = ref('')
+const videoDescription = ref('')
+const videoTag = ref('')
+const videoUploadForm = ref('')
+const videoThumbnail = ref('')
 
 import VideoData from './videoList'
 
@@ -354,15 +457,10 @@ const screenEvent = (video,index) => {
       db_star.value = 0
     }
 }
-// const videoComment = (video) => {
-//     console.log(video)
-//     video.statistics.comment_count++
-// }
 const videoShare = (video) => {
     videoShareLy.value = true
     SelectVideo.value = video
-    console.log(SelectVideo)
-    //video.statistics.share_count++
+    console.log(SelectVideo)    
 }
 const goHome = () => { 
     console.log(videoList.value.length, videoLength)
@@ -374,8 +472,30 @@ const goHome = () => {
         },500)    
     }
 }
+const addCommand = (SelectVideo) => {
+    let new_command = {
+        nickName: '@manage',
+        writeTime: '2023-12-12 16:44',
+        user_comment: user_command.value
+    }      
+    SelectVideo.comments.push(new_command)
+    SelectVideo.statistics.comment_count++
+    user_command.value = ''    
+}
+const ModifyCommand = (SelectVideo) => {
+    alert('수정')
+}
+const DellCommand = (SelectVideo) => {
+    alert('정말 삭제 하시겠습니까?')
+}
 const videoUpload = () => {
     uploadLy.value = true
+}
+const uploadVideoConfirm = () => {
+    alert('업로드 하시겠습니까?')
+}
+const cancelUploadVideo = () => {
+    uploadLy.value = false
 }
 const openSeach  = () => {
     topSearch.value = true
@@ -383,7 +503,7 @@ const openSeach  = () => {
 const mypageOpen = () => {
     mypageLy.value = true
 }
-const recommendVideo = () => {
+const recommendVideo = (SelectVideo) => {
     alert('추천 영상 순으로 보시겠습니까?')
 }
 const commandLyOpen = (video) => {
@@ -391,6 +511,7 @@ const commandLyOpen = (video) => {
     SelectVideo.value = video
     console.log(SelectVideo)    
 }
+
 </script>
 
 <style lang="scss">
@@ -596,6 +717,48 @@ const commandLyOpen = (video) => {
             background-position: center left;
             background-size: contain;  
         }  
-    }    
+    }   
+    .command__wrap {
+        padding: 20px;
+        .command__list--wrap {
+            display: flex;
+            flex-direction: column;
+            padding: 20px 0;
+            .command__write {
+                height: 50px;
+                textarea {
+                    width: 100%;
+                    height: 40px;
+                    border: 1px solid #ccc;
+                    padding: 0;
+                }
+            }
+            .article-list {
+                font-size: 20px;
+            }
+            .command__list {
+                margin-top: 10px;
+                border-top: 1px solid #ccc;
+                max-height: 420px;
+                overflow-y: scroll;
+                padding: 0 10px;
+                li {
+                    padding: 15px 0;
+                    border-bottom: 1px solid #ccc;
+                }
+            }
+        }
+    } 
+    .video-upload-form {
+        padding: 20px 0;
+        .input__wrap {
+            label {
+                font-size: 16px;
+                font-weight: 500;
+                margin-bottom: 5px;
+                display: block;                
+            }
+        }
+    }
 }
 </style>
