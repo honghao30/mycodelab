@@ -5,7 +5,8 @@
             :type="types"                                        
             :placeholder="placeholder" 
             :title="placeholder" 
-            :id="randomId"       
+            :id="randomId"      
+            :ref="refInfo" 
             value=""     
             @input="$emit('update:modelValue', $event.target.value)"     
          >
@@ -29,7 +30,11 @@ const props = defineProps({
   types: {
     type: String,
     default: 'text'
-  },  
+  },
+  refInfo: {
+    type: String,
+    default: ''
+  },
   guideMsg: {
     type: Array,
     default: ''

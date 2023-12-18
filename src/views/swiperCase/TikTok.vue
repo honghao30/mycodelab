@@ -4,7 +4,7 @@
             <div class="top-search">
                 <MyBtn                            
                     buttonName="추천영상"                           
-                    @click="recommendVideo"                                                                       
+                    @click="sortVideos"                                                                       
                 >
                 </MyBtn>                
                 <MyBtn                            
@@ -36,7 +36,7 @@
                 @slideChangeTransitionEnd="onSlideChangeTransitionEnd"               
             >
                 <swiper-slide
-                    v-for="(video, index) in videoList"
+                    v-for="(video, index) in displayVideos"
                     :key="index"
                 >
                     <div class="video__wrap">
@@ -159,7 +159,7 @@
             <MyLy                
                 height="100%"
                 left="0"
-                bottom="0"
+                top="0"
                 v-if="topSearch"
                 @closeLy="topSearch = false" 
             >
@@ -169,6 +169,49 @@
                             pageTitle="검색"
                             :level="3" 
                         />
+                        <div class="video-upload-form">
+                            <MyInput >
+                                <template #input>
+                                    <InputEl                                        
+                                        v-model="searchText"                                                 
+                                        placeholder="검색어를 입력하세요"
+                                    />
+                                    <Button
+                                        buttonName="검색"
+                                        types="btn-primary-line"
+                                        size="medium"
+                                        :disabled="searchText.length <= 2"
+                                        @click="fileteredVideos"
+                                    />
+                                </template>
+                            </MyInput>                        
+                        </div>
+                        <div class="search-results">
+                            <strong>{{ SearchResults.length }}</strong> 건의 비디오가 검색 되었습니다.
+                            <ul>
+                                <li v-for="(video, index) in SearchResults" :key="index">
+                                    <div v-if="SearchResults.length > 0">
+                                        <div class="small-video">
+                                            <video 
+                                            :id="'v-' + video.id"
+                                            x5-video-player-fullscreen="true"
+                                            webkit-playsinline="true"
+                                            x-webkit-airplay="true"
+                                            playsinline="true"
+                                            x5-playsinline
+                                            :src="video.url"
+                                            muted                                                                                                                                 
+                                        ></video>                                            
+                                        </div>
+                                        <p class="tit">{{ video.title }}</p>
+                                        <p class="info">{{ video.nickName }} | {{ video.statistics.like_count }}</p>                                    
+                                    </div>
+                                    <div v-else class="nodata">
+                                        비디오가 없습니다.
+                                    </div>                                    
+                                </li>
+                            </ul>
+                        </div>
                     </div>                    
                 </template>
 
@@ -335,7 +378,26 @@
                             pageTitle="공유"
                             :level="3" 
                         />
-                        {{ SelectVideo.title }}
+                        <div class="sns__sharing--wrap">
+                            <p>{{ SelectVideo.title }}</p>
+                            <p>
+                                <img src="images/temp/sns.jpg" alt="">
+                            </p>
+                        </div>
+                        <div class="button__wrap">
+                            <Button
+                                buttonName="공유"
+                                types="btn-primary-line"
+                                size="medium"
+                                @click="videoShareConfirm(SelectVideo)"
+                            />
+                            <Button
+                                buttonName="취소"
+                                types="btn-line"
+                                size="medium"
+                                @click="videoShareLy = false"
+                            />                            
+                        </div>
                     </div>                    
                 </template>
 
@@ -363,11 +425,16 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, computed, onMounted, nextTick } from 'vue'
  // import Swiper core and required modules
 import { Mousewheel  } from 'swiper/modules'
 import getTodayDate from '@/utils/time'
 const [TodayDateFull, TodayData, currentTime, TodayDateFullDash] = getTodayDate()
+
+// 비디오 리스트
+import VideoData from './videoList'
+const videoList = ref(VideoData)
+let sorted = ref(false); 
 
 // Import Swiper Vue.js components
 import { Swiper, SwiperSlide } from 'swiper/vue'
@@ -386,6 +453,8 @@ const bigHeart = ref(false)
 const heart = ref([])
 const SelectVideo = ref('')
 const user_command =ref('')
+const searchText = ref('')
+const searchInput = ref(null)
 
 const Loading = ref(false)
 const uploadLy = ref(false)
@@ -406,9 +475,7 @@ const videoUploadForm = ref('')
 const uploadtime = ref(TodayData)
 const videoThumbnail = ref('')
 
-import VideoData from './videoList'
-
-const videoList = ref(VideoData)
+const SearchResults = ref([])
 
 const videoLength = videoList.value.length
 
@@ -486,11 +553,7 @@ const screenEvent = (video,index) => {
       db_star.value = 0
     }
 }
-const videoShare = (video) => {
-    videoShareLy.value = true
-    SelectVideo.value = video
-    console.log(SelectVideo)    
-}
+
 const goHome = () => { 
     console.log(videoList.value.length, videoLength)
     if(videoList.value.length === videoLength) {
@@ -500,6 +563,12 @@ const goHome = () => {
             window.location.reload()
         },500)    
     }
+}
+// 댓글
+const commandLyOpen = (video) => {
+    commandLy.value = true
+    SelectVideo.value = video
+    console.log(SelectVideo)    
 }
 const addCommand = (SelectVideo) => {
     let new_command = {
@@ -529,6 +598,18 @@ const DellCommand = (SelectVideo, index) => {
     SelectVideo.comments.splice(index, 1)
     SelectVideo.statistics.comment_count--
 }
+// 영상 공유
+const videoShare = (video) => {
+    SelectVideo.value = video
+    console.log('비디오', video, '선택비디오', SelectVideo)
+    videoShareLy.value = true
+}
+const videoShareConfirm = (SelectVideo) => { 
+    console.log(SelectVideo)
+    SelectVideo.statistics.share_count++ 
+    videoShareLy.value = false    
+}
+// 영상 업로드
 const videoUpload = () => {
     uploadLy.value = true
 }
@@ -578,30 +659,47 @@ const uploadVideoConfirm = () => {
 const cancelUploadVideo = () => {
     uploadLy.value = false
 }
-const openSeach  = () => {
-    topSearch.value = true
-}
+
 const mypageOpen = () => {
     mypageLy.value = true
 }
-const recommendVideo = (SelectVideo) => {
-    alert('추천 영상 순으로 보시겠습니까?')
+// 추천영상 정렬
+const displayVideos = computed(() => {
+    if (sorted.value) {
+        return [...videoList.value].sort((a, b) => b.statistics.like_count - a.statistics.like_count);
+    } else {
+        return videoList.value;
+    }
+})
+const sortVideos = () => {    
+    sorted.value = !sorted.value;
 }
-const commandLyOpen = (video) => {
-    commandLy.value = true
-    SelectVideo.value = video
-    console.log(SelectVideo)    
+// 검색
+const openSeach  = () => {
+    topSearch.value = true
+    nextTick(() => {
+        console.log(searchInput.value)
+        // setTimeout (() => {            
+        //     searchInput.value.$el.focus()
+        // },1000)
+    })        
+}
+const fileteredVideos = () => {
+    const filteredVideos = videoList.value.filter(video => {
+    return video.title.includes(searchText.value);
+  });
+
+  SearchResults.value = filteredVideos;
 }
 
 </script>
 
 <style lang="scss">
 .tiktok__wrap {
-    padding: 50px 0;
+    width: 100%;
+    height: 100%;
     .tiktok__wrap--inner {
         position: relative;
-        border-radius: 12px;
-        border: 5px solid #ccc;
         width: 100%;
         max-width: 360px;
         margin: 0 auto;
@@ -861,5 +959,24 @@ const commandLyOpen = (video) => {
 .loading__wrap--round {
     background-color: rgba(0,0,0,0.5);
     z-index: 25; 
+}
+.search-results {
+    padding: 10px 0;
+    height: 500px;
+    ul {
+        padding-top: 5px;
+        height: 100%;
+        overflow-y: auto;
+        li {
+                padding: 15px 0;
+                border-bottom: 1px solid #ccc;
+                .small-video {
+                    width: 50%;
+                }
+                .nodata {
+                    text-anchor: center;
+                }
+            }  
+    }
 }
 </style>

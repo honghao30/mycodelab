@@ -91,6 +91,9 @@ const routes = [
         path: "/TikTok",
         name: "TikTok",
         component: TikTok,
+        meta: {
+            onlyBody: true
+        }
     },    
     // 스크롤
     {

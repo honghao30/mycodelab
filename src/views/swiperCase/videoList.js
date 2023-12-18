@@ -9,7 +9,7 @@
             videoTag: '#태그1',
             statistics: {
                 comment_count: 3,
-                like_count: 0,
+                like_count: 5,
                 play_count: 0,
                 share_count: 0
             },
@@ -43,7 +43,7 @@
             videoTag: '#태그1',
             statistics: {
                 comment_count: 6,
-                like_count: 0,
+                like_count: 2,
                 play_count: 0,
                 share_count: 0
             },
@@ -92,7 +92,7 @@
             videoTag: '#태그1',
             statistics: {
                 comment_count: 2,
-                like_count: 0,
+                like_count: 10,
                 play_count: 0,
                 share_count: 0
             },
@@ -119,7 +119,7 @@
             uploadtime: '2023-12-11 11:10',
             statistics: {
                 comment_count: 6,
-                like_count: 0,
+                like_count: 8,
                 play_count: 0,
                 share_count: 0
             },
@@ -168,7 +168,7 @@
             videoTag: '#태그1',
             statistics: {
                 comment_count: 3,
-                like_count: 0,
+                like_count: 101,
                 play_count: 0,
                 share_count: 0
             },
