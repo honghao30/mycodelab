@@ -113,6 +113,12 @@
                         <div class="video-info">
                             <p class="tit">{{ video.title }}</p>
                             <p class="description">
+                                {{ video.videoDescription }}
+                            </p>                            
+                            <p class="description">
+                                {{ video.videoTag }}
+                            </p>                             
+                            <p class="description">
                                 <strong>{{ video.nickName }}</strong> |  {{ video.statistics.play_count }}
                             </p>
                         </div>                                     
@@ -211,27 +217,16 @@
                             </MyInput> 
                             <MyInput >
                                 <template #input>
-                                    <InputEl
-                                        types="file"
+                                    <InputEl                                        
                                         label="영상 업로드"
                                         v-model="videoUploadForm"            
                                         placeholder="영상 선택하세요"                                              
                                     />
                                 </template>
-                            </MyInput>
-                            <MyInput >
-                                <template #input>
-                                    <InputEl
-                                        types="file"
-                                        label="영상 썸네일"
-                                        v-model="videoThumbnail"            
-                                        placeholder="영상 썸네일 선택하세요"                                              
-                                    />
-                                </template>
-                            </MyInput>                                                                                                   
+                            </MyInput>                                                                                                  
                         </div>
                         {{ videoTitle }} {{ videoDescription  }} {{ videoTag }}
-                        {{ videoUploadForm }} {{ videoThumbnail }}
+                        {{ videoUploadForm }} 
                         <div class="button__wrap">
                             <Button
                                 buttonName="업로드"
@@ -251,7 +246,7 @@
 
             </MyLy>     
             <!-- // layer 영상 마이페이지-->
-            <MyLy                
+            <MyLy           
                 height="100%"
                 left="0"
                 bottom="0"
@@ -285,24 +280,32 @@
                         <div class="command__list--wrap">
                             <p class="article-list">{{ SelectVideo.title }}</p>
                             <ul class="command__list">
-                                <li v-for="item in SelectVideo.comments.slice().reverse()" :key="item">
+                                <li v-for="(item, index) in SelectVideo.comments.slice().reverse()" :key="item">
                                     <p class="info">
                                         {{ item.nickName }} / 
                                         {{ item.writeTime }} |
                                         <MyBtn                            
                                             buttonName="수정"    
-                                            @click="ModifyCommand(SelectVideo)"  
+                                            @click="ModifyCommand(index)"  
                                         >
                                         </MyBtn> / 
                                         <MyBtn                            
                                             buttonName="삭제"    
-                                            @click="DellCommand(SelectVideo)"  
+                                            @click="DellCommand(SelectVideo, index)"  
                                         >
                                         </MyBtn>
                                     </p>
-                                    <p class="ino-text">
+                                    <p class="ino-text" v-if="!isEditing(index)">
                                         {{ item.user_comment }}
                                     </p>
+                                    <div class="command__write" v-else>
+                                        <textarea v-model="item.user_comment"></textarea>
+                                        <MyBtn                            
+                                            buttonName="수정"    
+                                            @click="ModifySave(SelectVideo, index, item.user_comment)"  
+                                        >
+                                        </MyBtn>                                        
+                                    </div>                                    
                                 </li>
                             </ul>
                             <div class="command__write">
@@ -336,7 +339,25 @@
                     </div>                    
                 </template>
 
-            </MyLy>                                  
+            </MyLy>    
+            <!-- 신규 영상 알림 -->
+            <MyLy         
+                width="80%"       
+                height="0px"
+                left="10%"
+                right="10%"
+                bottom="50%"
+                :closeBtn="false"
+                v-if="newVideoAlert"
+                @closeLy="newVideoAlert = false" 
+            >
+                <template #layerContent>
+                    <div class="new-video-msg-box">
+                        새로운 영상이 있습니다.
+                    </div>                    
+                </template>
+
+            </MyLy>                              
         </div>          
     </div>  
 </template>
@@ -345,6 +366,8 @@
 import { ref, watch } from 'vue'
  // import Swiper core and required modules
 import { Mousewheel  } from 'swiper/modules'
+import getTodayDate from '@/utils/time'
+const [TodayDateFull, TodayData, currentTime, TodayDateFullDash] = getTodayDate()
 
 // Import Swiper Vue.js components
 import { Swiper, SwiperSlide } from 'swiper/vue'
@@ -370,11 +393,17 @@ const topSearch = ref(false)
 const mypageLy = ref(false)
 const commandLy = ref(false)
 const videoShareLy = ref(false)
+const newVideoAlert = ref(false)
 
+let editMode = ref([])
+const isEditing = (index) => editMode.value.includes(index)
+
+const videoRandomId = ref('')
 const videoTitle = ref('')
 const videoDescription = ref('')
 const videoTag = ref('')
 const videoUploadForm = ref('')
+const uploadtime = ref(TodayData)
 const videoThumbnail = ref('')
 
 import VideoData from './videoList'
@@ -482,17 +511,69 @@ const addCommand = (SelectVideo) => {
     SelectVideo.statistics.comment_count++
     user_command.value = ''    
 }
-const ModifyCommand = (SelectVideo) => {
-    alert('수정')
+const ModifyCommand = (index) => {    
+    const idx = editMode.value.indexOf(index)
+    console.log(index, idx)
+    if (idx === -1) {
+        editMode.value.push(index)
+    } else {
+        editMode.value.splice(idx, 1)
+    }    
 }
-const DellCommand = (SelectVideo) => {
-    alert('정말 삭제 하시겠습니까?')
+const ModifySave = (SelectVideo,index, newComment) => {
+    SelectVideo.comments[index].user_comment = newComment
+    ModifyCommand(index)    
+}
+const DellCommand = (SelectVideo, index) => {
+    console.log(SelectVideo,index)    
+    SelectVideo.comments.splice(index, 1)
+    SelectVideo.statistics.comment_count--
 }
 const videoUpload = () => {
     uploadLy.value = true
 }
+const randomId = () => {
+  let N = 1000000;
+  let M = 1;
+  let tt = Math.random()*N;
+  return Math.floor(tt)+M;
+}
+
 const uploadVideoConfirm = () => {
-    alert('업로드 하시겠습니까?')
+    videoRandomId.value = randomId()
+    let newVideo = {
+        id: videoRandomId.value,
+        title: videoTitle.value,
+        url: videoUploadForm.value,    
+        nickName: 'manage',      
+        uploadtime: TodayDateFullDash,  
+        videoDescription: videoDescription.value,
+        videoTag: videoTag.value,  
+        statistics: {
+                comment_count: 0,
+                like_count: 0,
+                play_count: 0,
+                share_count: 0
+            },
+        comments: [],
+        playing: false,
+        active: false                             
+    }
+    videoList.value.push(newVideo)    
+    videoTitle.value = ''   
+    videoDescription.value = ''
+    videoTag.value = ''
+    videoUploadForm.value = ''    
+    console.log(VideoData)
+    Loading.value = true
+        setTimeout (() => {            
+            Loading.value = false
+            uploadLy.value = false
+            newVideoAlert.value = true
+    },3000)
+    setTimeout (() => {            
+        newVideoAlert.value = false
+    },5000)     
 }
 const cancelUploadVideo = () => {
     uploadLy.value = false
@@ -573,15 +654,22 @@ const commandLyOpen = (video) => {
             }
         }
         .video-info {
-            background-color: rgba(0,0,0,0.7);
+            background-color: rgba(0,0,0,0.3);
             color:#fff;
-            width: 100%;
+            width: calc(100% - 20px);
             padding: 5px 10px;
-            position: fixed;
+            position: absolute;
             left:0;
-            bottom:0;
+            bottom:20px;
             .tit {
                 font-size: 16px;
+            }
+            .description {
+                display: -webkit-box;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp:1;
             }
         }
         video {
@@ -760,5 +848,18 @@ const commandLyOpen = (video) => {
             }
         }
     }
+}
+.new-video-msg-box {
+    text-align: center;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    background: #000;
+    color: #fff;
+    height: 30px;
+}
+.loading__wrap--round {
+    background-color: rgba(0,0,0,0.5);
+    z-index: 25; 
 }
 </style>

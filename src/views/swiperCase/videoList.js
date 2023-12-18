@@ -5,6 +5,8 @@
             url: './video/4.mp4',
             nickName: '@Jone',
             uploadtime: '2023-12-08 12:00',
+            videoDescription: '나래 컴퓨터 아슬라 도서관 다솜 아리아 나비잠 가온누리 소솜 사과 아리아 별하 그루잠 소록소록 가온해 산들림 로운 컴퓨터',
+            videoTag: '#태그1',
             statistics: {
                 comment_count: 3,
                 like_count: 0,
@@ -37,6 +39,8 @@
             url: './video/2.mp4',
             nickName: '@Mari',
             uploadtime: '2023-12-09 10:05',
+            videoDescription: '나래 컴퓨터 아슬라 도서관 다솜 아리아 나비잠 가온누리 소솜 사과 아리아 별하 그루잠 소록소록 가온해 산들림 로운 컴퓨터',
+            videoTag: '#태그1',
             statistics: {
                 comment_count: 6,
                 like_count: 0,
@@ -84,6 +88,8 @@
             url: './video/3.mp4',
             nickName: '@YYY',
             uploadtime: '2023-12-10 10:00',
+            videoDescription: '나래 컴퓨터 아슬라 도서관 다솜 아리아 나비잠 가온누리 소솜 사과 아리아 별하 그루잠 소록소록 가온해 산들림 로운 컴퓨터',
+            videoTag: '#태그1',
             statistics: {
                 comment_count: 2,
                 like_count: 0,
@@ -158,6 +164,8 @@
             url: './video/5.mp4',
             nickName: '@gp1',
             uploadtime: '2023-12-11 12:00',
+            videoDescription: '나래 컴퓨터 아슬라 도서관 다솜 아리아 나비잠 가온누리 소솜 사과 아리아 별하 그루잠 소록소록 가온해 산들림 로운 컴퓨터',
+            videoTag: '#태그1',
             statistics: {
                 comment_count: 3,
                 like_count: 0,

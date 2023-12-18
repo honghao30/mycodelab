@@ -17,7 +17,8 @@
                 buttonName="닫기" 
                 iconOnly="true"  
                 iconName="close-layer"                   
-                @click="$emit('closeLy')"                  
+                @click="$emit('closeLy')"      
+                v-if="closeBtn"            
             >
             <template #svg-icon>                
                 <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -60,6 +61,10 @@ const props = defineProps({
   bottom: {
     type: Number,
     default: ''
+  },
+  closeBtn: {
+    type: Boolean,
+    default: true
   }      
 }) 
 
