@@ -1,7 +1,7 @@
 <template>
   <button
     type="button"    
-    :class="[iconOnly ? 'btn-' + iconName : [types, color, size, iconName]]"
+    :class="[iconOnly ? 'btn-' + iconName : [types, color, size, 'btn-' + iconName, iconDirection]]"
     :disabled="disabled"    
   >
     <slot name="svg-icon"></slot>
@@ -10,6 +10,7 @@
       v-if="iconName !== ''"
       :class="iconName"    
     >
+      <img v-if="svgIcon" :src="`/images/icon/${svgIcon}.svg`" :alt="buttonName" />
       <span v-if="iconOnly" class="irtext">{{ buttonName }}</span>
     </i>
     <template v-if="!iconOnly">
@@ -54,6 +55,14 @@ const props = defineProps({
   iconOnly: {
     type: Boolean,
     default: false
+  },
+  iconDirection: {
+    type: String,
+    default: ''
+  },
+  svgIcon: {
+    type: String,
+    default: ''
   }
 })
 </script>

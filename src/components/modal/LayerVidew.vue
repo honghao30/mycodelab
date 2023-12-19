@@ -10,7 +10,9 @@
             bottom: bottom ? bottom : ''
         }"
     >
-        <div class="layer__container">
+        <div class="layer__container"
+          :tabindex="tabindex ? '0' : ''"
+        >
             <slot name="layerContent">
             </slot>
             <MyBtn
@@ -31,7 +33,9 @@
 </template>
 
 <script setup>
-import { defineProps, onBeforeUnmount, onMounted } from 'vue'
+import { defineProps, onBeforeUnmount, onMounted, ref } from 'vue'
+
+const tabindex = ref(false)
 
 const props = defineProps({
   mask: {
@@ -67,7 +71,16 @@ const props = defineProps({
     default: true
   }      
 }) 
-
+onMounted(() => {
+  document.body.classList.add('modal-open')
+  document.documentElement.classList.add('modal-open')
+  tabindex.value = true
+})
+onBeforeUnmount(() => {
+  document.body.classList.remove('modal-open')
+  document.documentElement.classList.remove('modal-open')
+  tabindex.value = false
+})
 </script>
 
 <style>

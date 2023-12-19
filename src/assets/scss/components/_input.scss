@@ -43,3 +43,17 @@ $textareaHeight: 100px;
       margin-top:10px;
   } 
 }
+
+.select__wrap {
+  display: flex;  
+  flex-direction: column;
+  width: 100%;
+  gap: 5px;
+  align-items: flex-start;
+  label {
+    @include fontoption(16px, #000, 500, 25px);
+  }
+  select {
+    padding: 4px 40px 8px 16px;
+  }
+}

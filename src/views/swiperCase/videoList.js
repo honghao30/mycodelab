@@ -2,7 +2,7 @@
         {
             id: 1,
             title: '싸이 춤 따라하는 어머니! 멋지다',
-            url: './video/4.mp4',
+            url: './video/2.mp4',
             nickName: '@Jone',
             uploadtime: '2023-12-08 12:00',
             videoDescription: '나래 컴퓨터 아슬라 도서관 다솜 아리아 나비잠 가온누리 소솜 사과 아리아 별하 그루잠 소록소록 가온해 산들림 로운 컴퓨터',
@@ -36,7 +36,7 @@
         {
             id: 2,
             title: '이 사람 정말 천재인데...생수병으로 이런걸다',
-            url: './video/2.mp4',
+            url: './video/4.mp4',
             nickName: '@Mari',
             uploadtime: '2023-12-09 10:05',
             videoDescription: '나래 컴퓨터 아슬라 도서관 다솜 아리아 나비잠 가온누리 소솜 사과 아리아 별하 그루잠 소록소록 가온해 산들림 로운 컴퓨터',

@@ -1,6 +1,8 @@
 <template>
     <div class="input">
-        <label :for="randomId" v-if="label">{{ label }}</label>
+        <label :for="randomId" v-if="label">{{ label }}
+          <span v-if="required" :class="required">*</span>
+        </label>
         <input 
             :type="types"                                        
             :placeholder="placeholder" 
@@ -8,9 +10,10 @@
             :id="randomId"      
             :ref="refInfo" 
             value=""     
-            @input="$emit('update:modelValue', $event.target.value)"     
+            @input="$emit('update:modelValue', $event.target.value)"    
+            @focusout="checkValue($event)" 
          >
-        <div class="guide-text__input--bottom" v-if="errorMsg">                  
+        <div class="guide-text__input--bottom" v-if="required && errorMsgCheck">                  
             <p class="error-text">{{ errorMsg }}</p>            
         </div>
     </div>
@@ -43,6 +46,10 @@ const props = defineProps({
     type: String,
     default: ''
   },  
+  required: {
+    type: Boolean,
+    default: false
+  },
   modelValue: String,
   disabled: {
     type: Boolean,
@@ -61,6 +68,16 @@ const randomNumber = () => {
   return Math.floor(tt)+M;
 }
 randomId.value = randomNumber()
+
+const errorMsgCheck = ref(null)
+
+const checkValue = (event) => {
+  if (event.target.value === '') {
+    errorMsgCheck.value = true
+  } else {
+    errorMsgCheck.value = false
+  }
+}
 </script>
 
 <style>
