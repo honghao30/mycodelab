@@ -21,78 +21,27 @@
                     :key="index"
                 >
                     <div class="video__wrap">
-                        <div class="screen-heart" :class="{'is-active': video.bigHeart == true}">
-                            <div class="heart__wrap">
-                                <div class="left"></div>
-                                <div class="right"></div>
-                            </div>                             
-                        </div>
-                        <ul class="user-action">
-                            <li>
-                                <MyBtn                            
-                                    buttonName="좋아요"
-                                    iconOnly="true"
-                                    :Counter="video.statistics.like_count"
-                                    @click="videoLike(video)"                                                                       
-                                >
-                                    <template #svg-icon>
-                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="50px" height="50px" viewBox="0 0 50 50" version="1.1">
-                                        <g id="surface1">
-                                            <path class="basic-color" :class="{'active-color': video.active == true}" style="stroke:none;fill-rule:nonzero;fill-opacity:1;" d="M 36.015625 1.5625 C 31.09375 1.5625 26.953125 4.375 25 8.4375 C 23.046875 4.375 18.90625 1.5625 13.984375 1.5625 C 7.1875 1.5625 1.5625 7.34375 1.5625 13.984375 C 1.5625 25.3125 25 48.4375 25 48.4375 C 25 48.4375 48.4375 25.3125 48.4375 13.984375 C 48.4375 7.34375 42.8125 1.5625 36.015625 1.5625 Z M 36.015625 1.5625 "/>
-                                        </g>
-                                        </svg>
-                                    </template>
-                                </MyBtn>
-                            </li>
-                            <li>
-                                <MyBtn                            
-                                    buttonName="댓글" 
-                                    iconOnly="true"     
-                                    :Counter="video.statistics.comment_count"  
-                                    @click="commandLyOpen(video)"                                                                  
-                                >
-                                    <template #svg-icon>
-                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="50px" height="50px" viewBox="0 0 50 50" version="1.1">
-                                        <g id="surface1">
-                                        <path class="basic-color" style=" stroke:none;fill-rule:nonzero;fill-opacity:1;" d="M 8.332031 2.082031 C 4.882812 2.082031 2.082031 4.882812 2.082031 8.332031 L 2.082031 31.25 C 2.082031 34.703125 4.882812 37.5 8.332031 37.5 L 12.5 37.5 L 12.5 45.832031 C 12.5 46.640625 12.96875 47.378906 13.699219 47.71875 C 14.433594 48.0625 15.296875 47.953125 15.917969 47.433594 L 27.835938 37.5 L 41.667969 37.5 C 45.117188 37.5 47.917969 34.703125 47.917969 31.25 L 47.917969 8.332031 C 47.917969 4.882812 45.117188 2.082031 41.667969 2.082031 Z M 8.332031 2.082031 "/>
-                                        </g>
-                                        </svg>
-                                    </template>
-                                </MyBtn>
-                            </li>
-                            <li>
-                                <MyBtn                            
-                                    buttonName="공유하기"                                    
-                                    iconOnly="true"     
-                                    :Counter="video.statistics.share_count"  
-                                    @click="videoShare(video)"                                                                                                                                    
-                                >
-                                    <template #svg-icon>
-                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="50px" height="50px" viewBox="0 0 50 50" version="1.1">
-                                        <g id="surface1">
-                                        <path class="basic-color" style="stroke:none;fill-rule:nonzero;fill-opacity:1;" d="M 41.671875 33.328125 C 38.828125 33.328125 36.320312 34.765625 34.8125 36.933594 L 16.347656 27.160156 C 16.53125 26.464844 16.671875 25.753906 16.671875 25 C 16.671875 24.25 16.542969 23.535156 16.347656 22.84375 L 34.8125 13.066406 C 36.320312 15.246094 38.820312 16.671875 41.671875 16.671875 C 46.269531 16.671875 50 12.9375 50 8.339844 C 50 3.742188 46.269531 0 41.671875 0 C 37.070312 0 33.339844 3.730469 33.339844 8.328125 C 33.339844 8.40625 33.359375 8.484375 33.359375 8.5625 L 13.925781 18.859375 C 12.441406 17.507812 10.496094 16.671875 8.339844 16.671875 C 3.730469 16.671875 0 20.398438 0 25 C 0 29.601562 3.730469 33.328125 8.328125 33.328125 C 10.488281 33.328125 12.429688 32.492188 13.914062 31.144531 L 33.351562 41.4375 C 33.351562 41.515625 33.328125 41.59375 33.328125 41.671875 C 33.328125 46.269531 37.0625 50 41.660156 50 C 46.261719 50 49.992188 46.269531 49.992188 41.671875 C 49.992188 37.070312 46.269531 33.328125 41.671875 33.328125 Z M 41.671875 33.328125 "/>
-                                        </g>
-                                        </svg>
-                                    </template>
-                                </MyBtn>
-                            </li>                                                                                 
-                        </ul>
-                        <Button                            
-                            buttonName="재생"                                
-                            iconName="icon_play_video"
-                            iconOnly="true"
-                            @click="playVideo(video, index)"
-                            v-if="!video.playing"
-                        />                 
-                        <Button                            
-                            buttonName="정지"                                
-                            iconName="icon_pause_video"
-                            iconOnly="true"
-                            @click="pauseVideo(video, index)"
-                            v-else
-                        />
-                        <VideoInfo :video="video" />                                   
+                        <Heart :likeCondition="video.bigHeart" />
+                        <UserTool :video="video" @videoShare="videoShare" @commandLyOpen="commandLyOpen" @videoLike="videoLike"  />           
+                        <template v-if="video.videoType === 'mp4' || !video.videoType">
+                            <Button                            
+                                buttonName="재생"                                
+                                iconName="icon_play_video"
+                                iconOnly="true"
+                                @click="playVideo(video, index)"
+                                v-if="!video.playing"
+                            />                 
+                            <Button                            
+                                buttonName="정지"                                
+                                iconName="icon_pause_video"
+                                iconOnly="true"
+                                @click="pauseVideo(video, index)"
+                                v-else
+                            />
+                        </template>                         
+                        <VideoInfo :video="video" />                                                                      
                        <video 
+                            v-if="video.videoType === 'mp4' || !video.videoType"
                             :id="'v-' + video.id"
                             x5-video-player-fullscreen="true"
                             webkit-playsinline="true"
@@ -105,6 +54,12 @@
                             ref="videoRef"
                             @click="screenEvent(video, index)"
                         ></video>
+                        <div class="shorts-container"
+                            v-else
+                        >
+                            <iframe class="shorts-iframe" :src="`https://www.youtube.com/embed/${video.youtubeUrl}`" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
+                            </iframe>
+                        </div>                        
                     </div>
                 </swiper-slide>  
             </swiper>    
@@ -227,7 +182,7 @@
                 @closeLy="uploadLy = false" 
             >
                 <template #layerContent>
-                    <VideoUpload :UpLoadForm="UpLoadForm" :user_command="user_command" @uploadVideoConfirm="uploadVideoConfirm" @cancelUploadVideo="cancelUploadVideo" />                   
+                    <VideoUpload :UpLoadForm="UpLoadForm" :user_command="user_command" @uploadVideoHandler="uploadVideoHandler" @cancelUploadVideo="cancelUploadVideo" />                   
                 </template>
 
             </MyLy>     
@@ -261,12 +216,12 @@ import ShareVideo from './components/ShareVideo.vue'
 import Command from './components/Command.vue'
 import VideoInfo from './components/VideoInfo.vue'
 import TopToolBar from './components/TopToolBar.vue'
+import Heart from './components/Heart.vue'
+import UserTool from './components/UserTool.vue'
 
 import { ref, watch, computed, onMounted, nextTick } from 'vue'
  // import Swiper core and required modules
 import { Mousewheel  } from 'swiper/modules'
-import getTodayDate from '@/utils/time'
-const [TodayDateFull, TodayData, currentTime, TodayDateFullDash] = getTodayDate()
 
 // 비디오 리스트
 import VideoData from './videoList'
@@ -287,7 +242,6 @@ const timer = ref(null)
 const db_star = ref(0)
 const videoRef = ref([])
 const bigHeart = ref(false)
-const heart = ref([])
 const SelectVideo = ref('')
 
 const searchText = ref('')
@@ -443,13 +397,13 @@ const goHome = () => {
 // 등록 v-model
 const UpLoadForm = ref([
   {
-    vselected: ref(''),
+    videoType: ref(''),
     videoRandomId: ref(''),
     videoTitle: ref(''),
     videoDescription: ref(''),
     videoTag: ref(''),
     videoUploadForm: ref(''),
-    uploadtime: ref(TodayData),
+    uploadtime: ref(),
     videoThumbnail: ref(''),
     videoUrl: ref(''),
     youtubeUrl: ref('')
@@ -466,33 +420,30 @@ const randomId = () => {
   return Math.floor(tt)+M;
 }
 
-const uploadVideoConfirm = () => {
-    videoRandomId.value = randomId()
-    let newVideo = {
-        id: videoRandomId.value,
-        title: videoTitle.value,
-        url: videoUrl.value,   
-        videoUploadForm: videoUploadForm.value,        
-        nickName: 'manage',      
-        uploadtime: TodayDateFullDash,  
-        videoDescription: videoDescription.value,
-        videoTag: videoTag.value,  
-        youtubeUrl: youtubeUrl.value,
-        statistics: {
-                comment_count: 0,
-                like_count: 0,
-                play_count: 0,
-                share_count: 0
-            },
-        comments: [],
-        playing: false,
-        active: false                             
-    }
-    videoList.value.push(newVideo)    
-    videoTitle.value = ''   
-    videoDescription.value = ''
-    videoTag.value = ''
-    videoUploadForm.value = ''    
+const uploadVideoHandler = (newVideo) => {
+    // let videoRandomId = randomId();
+    // let newVideo = {
+    //     id: videoRandomId,
+    //     videoType: UpLoadForm.vselected,
+    //     title: UpLoadForm.videoTitle,
+    //     url: UpLoadForm.videoUrl,   
+    //     videoUploadForm: UpLoadForm.videoUploadForm,        
+    //     nickName: 'manage',      
+    //     uploadtime: TodayDateFullDash,  
+    //     videoDescription: UpLoadForm.videoDescription,
+    //     videoTag: UpLoadForm.videoTag,  
+    //     youtubeUrl: UpLoadForm.youtubeUrl,
+    //     statistics: {
+    //             comment_count: 0,
+    //             like_count: 0,
+    //             play_count: 0,
+    //             share_count: 0
+    //         },
+    //     comments: [],
+    //     playing: false,
+    //     active: false                             
+    // }
+    videoList.value.push(newVideo)      
     console.log(VideoData)
     Loading.value = true
         setTimeout (() => {            
@@ -599,65 +550,7 @@ body,
             fill:red;
         }
     }
-    .screen-heart {
-        display: flex;
-        width: 100%;
-        height: 40%;
-        align-items: center;
-        justify-content: center;
-        position: absolute;
-        left: 0;
-        top: 0;
-        z-index: 24;
-        display: none;
-        opacity: 0;
-        &.is-active {
-            opacity: 1;
-            display: flex;
-            .heart__wrap {
-                animation: Beat 2s infinite ease-in-out;      
-            }
-        }
-        .heart__wrap {
-            position: relative;
-            max-width: 5vw;
-            aspect-ratio: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;                             
-        }
 
-        .left {
-            background-color: red;
-            height: 10vw;
-            aspect-ratio: 1/1.5;
-            border-radius: 50% 50% 0% 0%;
-            rotate: -47deg;
-            translate: 30%;
-            }
-        .right {
-            background-color: red;
-            height: 10vw;
-            aspect-ratio: 1/1.5;
-            border-radius: 50% 50% 0% 0%;
-            rotate: 47deg;
-            translate: -30%;
-        }
-    }
-    @keyframes Beat {
-        0% {
-            opacity: 0;
-            transform: scale(120%);
-        }
-        40% {
-            opacity: 1;
-            transform: scale(100%);
-        }
-        100% {
-            opacity: 0;
-            transform: scale(120%);
-        }
-    }
     .btn-icon_play_video {
         position: absolute;
         left: 50%;
@@ -766,5 +659,19 @@ body,
         background: url('@/assets/images/icon/icon-arrow-upload.svg') no-repeat  50%;
         background-size: 100% auto;
     }
+}
+.shorts-container {
+ position: relative;
+ width: 100%;
+ height: 0;
+ padding-bottom: 177.78%;
+    .shorts-iframe {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        border: none;
+    } 
 }
 </style>

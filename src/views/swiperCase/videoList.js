@@ -1,6 +1,7 @@
     let VideoData = [
         {
             id: 1,
+            videoType: 'mp4',
             title: '싸이 춤 따라하는 어머니! 멋지다',
             url: './video/2.mp4',
             nickName: '@Jone',
@@ -35,6 +36,7 @@
         },
         {
             id: 2,
+            videoType: 'mp4',
             title: '이 사람 정말 천재인데...생수병으로 이런걸다',
             url: './video/4.mp4',
             nickName: '@Mari',
@@ -84,6 +86,7 @@
         },
         {
             id: 3,
+            videoType: 'mp4',
             title: '안녕하세요 이제 시작해주세요3',
             url: './video/3.mp4',
             nickName: '@YYY',
@@ -113,6 +116,7 @@
         },
         {
             id: 4,
+            videoType: 'mp4',
             title: '안녕하세요 이제 시작해주세요4',
             url: './video/1.mp4',
             nickName: '@KKK',        
@@ -160,6 +164,7 @@
         },
         {
             id: 5,
+            videoType: 'mp4',
             title: '안녕하세요 이제 시작해주세요5',
             url: './video/5.mp4',
             nickName: '@gp1',

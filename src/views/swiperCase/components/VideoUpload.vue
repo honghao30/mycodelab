@@ -7,10 +7,10 @@
     <div class="video-upload-form">
         <VSelect
             label="영상 선택"
-            v-model="vselected"
+            v-model="UpLoadForm.vselected"
             :options="options"
             placeholder="영상 종류를 선택하세요"              
-        />      
+        />
         <MyInput >
             <template #input>
                 <InputEl
@@ -68,13 +68,13 @@
                 />
             </template>
         </MyInput>                                                                                                        
-    </div>
+    </div>    
     <div class="button__wrap">
         <Button
             buttonName="업로드"
             types="btn-primary-line"
             size="medium"
-            :disabled="!UpLoadForm.videoTitle || !UpLoadForm.videoUploadForm && !UpLoadForm.videoUrl"
+            :disabled="!UpLoadForm.videoTitle || !UpLoadForm.videoUploadForm && !UpLoadForm.videoUrl && !UpLoadForm.youtubeUrl"
             @click="uploadVideoConfirm"
         />
         <Button
@@ -84,17 +84,19 @@
             @click="cancelUploadVideo"
         />                            
     </div>
-    {{ UpLoadForm.videoTitle }}
+    {{ UpLoadForm.vselected }} {{ UpLoadForm.videoTitle }}
 </div>
 </template>
 
 <script setup>
 import { defineEmits, defineProps, ref } from 'vue'
+import getTodayDate from '@/utils/time'
+const [TodayDateFull, TodayData, currentTime, TodayDateFullDash] = getTodayDate()
 
 const props = defineProps({
   UpLoadForm: {
-    type: Array,
-    default: () => []
+    type: Object,
+    default: () => ({})
   },
   error:  {
     type: Array,
@@ -104,27 +106,49 @@ const props = defineProps({
 const options = [   
   {
     title: '직접 업로드',
-    code: '직접 업로드',
+    code: 'mp4',
   },    
   {
     title: '유튜브',
-    code: '유튜브',
+    code: 'youtube',
   }
 ]
 const vselected = ref('선택하세요')
 const selected = ref('')
-const changeSelected = (option) => {  
-  selected.value = option.title
-}
-const onChangeNumber = (value) => {
-  console.log('수신정보', value)
-  userName.value = value
-}
 
-const emit = defineEmits(['uploadVideoConfirm', 'cancelUploadVideo'])
+const emit = defineEmits(['uploadVideoHandler', 'cancelUploadVideo'])
+
+const randomId = () => {
+  let N = 1000000;
+  let M = 1;
+  let tt = Math.random()*N;
+  return Math.floor(tt)+M;
+}
 
 const uploadVideoConfirm = () => {
-  emit('uploadVideoConfirm')
+    let videoRandomId = randomId();
+    let newVideo = {
+        id: videoRandomId,
+        videoType: props.UpLoadForm.vselected,
+        title: props.UpLoadForm.videoTitle,
+        url: props.UpLoadForm.videoUrl,   
+        videoUploadForm: props.UpLoadForm.videoUploadForm,        
+        nickName: 'manage',      
+        uploadtime: TodayDateFullDash,  
+        videoDescription: props.UpLoadForm.videoDescription,
+        videoTag: props.UpLoadForm.videoTag,  
+        youtubeUrl: props.UpLoadForm.youtubeUrl,
+        statistics: {
+                comment_count: 0,
+                like_count: 0,
+                play_count: 0,
+                share_count: 0
+            },
+        comments: [],
+        playing: false,
+        active: false                              
+    }
+    emit('uploadVideoHandler', newVideo)
 }
 
 const cancelUploadVideo = () => {
