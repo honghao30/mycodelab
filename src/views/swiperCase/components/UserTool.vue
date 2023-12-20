@@ -2,7 +2,7 @@
     <ul class="user-action">
         <li>            
             <div class="profile__wrap">
-                <img src="./images/temp/icon-profile-user.svg" alt="">
+                <img src="https://raw.githubusercontent.com/honghao30/mycodelab/d25318e503b7b51c4cb818b629a1c699a93f911b/public/images/temp/icon-profile-user.svg" alt="">
                 <MyBtn                            
                     buttonName="구독"
                     iconOnly="true"
