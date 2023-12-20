@@ -46,7 +46,7 @@
             </ul>
             <div class="command__write">
                 <div class="profile__wrap">
-                    <img src="images/temp/icon-profile-user.svg" alt="">
+                    <img src="./images/temp/icon-profile-user.svg" alt="">
                 </div>
                 <div class="textarea__wrap">
                     <textarea v-model="user_command" maxlength="20"></textarea>
