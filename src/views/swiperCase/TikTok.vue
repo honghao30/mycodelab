@@ -78,7 +78,7 @@
                             pageTitle="검색"
                             :level="3" 
                         />
-                        <div class="video-upload-form">
+                        <div class="video-upload-form search__wrap">
                             <MyInput >
                                 <template #input>
                                     <InputEl                                        
@@ -421,28 +421,6 @@ const randomId = () => {
 }
 
 const uploadVideoHandler = (newVideo) => {
-    // let videoRandomId = randomId();
-    // let newVideo = {
-    //     id: videoRandomId,
-    //     videoType: UpLoadForm.vselected,
-    //     title: UpLoadForm.videoTitle,
-    //     url: UpLoadForm.videoUrl,   
-    //     videoUploadForm: UpLoadForm.videoUploadForm,        
-    //     nickName: 'manage',      
-    //     uploadtime: TodayDateFullDash,  
-    //     videoDescription: UpLoadForm.videoDescription,
-    //     videoTag: UpLoadForm.videoTag,  
-    //     youtubeUrl: UpLoadForm.youtubeUrl,
-    //     statistics: {
-    //             comment_count: 0,
-    //             like_count: 0,
-    //             play_count: 0,
-    //             share_count: 0
-    //         },
-    //     comments: [],
-    //     playing: false,
-    //     active: false                             
-    // }
     videoList.value.push(newVideo)      
     console.log(VideoData)
     Loading.value = true
@@ -611,6 +589,9 @@ body,
                 margin-bottom: 5px;
                 display: block;                
             }
+        }
+        &.search__wrap {
+            width: 100%;
         }
     }
 }
