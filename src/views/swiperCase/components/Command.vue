@@ -10,7 +10,7 @@
                 <li v-for="(item, index) in SelectVideo.comments.slice().reverse()" :key="item">
                     <div class="command__item--wrap">
                         <div class="profile__wrap">
-                            <img src="images/temp/icon-profile-user.svg" alt="">
+                            <img src="./images/temp/icon-profile-user.svg" alt="">
                         </div>
                         <div class="command__item--info">
                             <p class="name">{{ item.nickName }}</p>
