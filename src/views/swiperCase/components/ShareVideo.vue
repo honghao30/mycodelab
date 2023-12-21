@@ -7,7 +7,7 @@
         <div class="sns__sharing--wrap">
             <p>{{ SelectVideo.title }}</p>
             <p>
-                <img src="https://raw.githubusercontent.com/honghao30/mycodelab/dev/public/images/temp/sns.png" alt="">
+                <img src="https://raw.githubusercontent.com/honghao30/mycodelab/dev/public/images/temp/sns.jpg" alt="">
             </p>
         </div>
         <div class="button__wrap">

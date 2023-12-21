@@ -8,11 +8,19 @@
             :placeholder="placeholder" 
             :title="placeholder" 
             :id="randomId"      
-            :ref="refInfo" 
-            value=""     
+            :ref="refInfo"        
+            :value="modelValue"     
             @input="$emit('update:modelValue', $event.target.value)"    
             @focusout="checkValue($event)" 
          >
+         <MyBtn                            
+            buttonName="검색어 삭제"
+            iconOnly="true"
+            iconName="btn-close-circle"     
+            v-if="modelValue"                        
+            @click="ClearInput($event)"                                                                      
+        >  
+        </MyBtn>           
         <div class="guide-text__input--bottom" v-if="required && errorMsgCheck">                  
             <p class="error-text">{{ errorMsg }}</p>            
         </div>
@@ -42,6 +50,14 @@ const props = defineProps({
     type: Array,
     default: ''
   },  
+  autoComplete: {
+    type: Boolean,
+    default: ''
+  },
+  videoList: {
+    type: Object,
+    default: () => ({})
+  },
   errorMsg: {
     type: String,
     default: ''
@@ -77,6 +93,9 @@ const checkValue = (event) => {
   } else {
     errorMsgCheck.value = false
   }
+}
+const ClearInput = (event) => {  
+  emit('update:modelValue')    
 }
 </script>
 

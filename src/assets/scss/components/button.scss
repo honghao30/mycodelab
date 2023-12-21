@@ -121,6 +121,17 @@ $radius: 6px;
     }
   }            
 }
+.secondary {
+  @include btntype(16px, #6a6969, #6a6969,#fff, 6px, #6a6969,#fff, #6a6969);
+  &:disabled {
+    background-color:#ccc;
+    border-color:#ccc;
+    &:hover, &:active {
+      background-color:#ccc;
+      border-color:#ccc;
+    }
+  }      
+}
 .btn-line {
   @include btntype(16px,#999,#fff,#999, 6px,  #fff,#777, #777);       
   &:disabled {

@@ -73,55 +73,7 @@
                 @closeLy="topSearch = false" 
             >
                 <template #layerContent>
-                    <div class="video-upload">
-                        <Title 
-                            pageTitle="검색"
-                            :level="3" 
-                        />
-                        <div class="video-upload-form search__wrap">
-                            <MyInput >
-                                <template #input>
-                                    <InputEl                                        
-                                        v-model="searchText"                                                 
-                                        placeholder="검색어를 입력하세요"
-                                    />
-                                    <Button
-                                        buttonName="검색"
-                                        types="btn-primary-line"
-                                        size="medium"
-                                        :disabled="searchText.length <= 2"
-                                        @click="fileteredVideos"
-                                    />
-                                </template>
-                            </MyInput>                        
-                        </div>
-                        <div class="search-results">
-                            <strong>{{ SearchResults.length }}</strong> 건의 비디오가 검색 되었습니다.
-                            <ul>
-                                <li v-for="(video, index) in SearchResults" :key="index">
-                                    <div v-if="SearchResults.length > 0">
-                                        <div class="small-video">
-                                            <video 
-                                            :id="'v-' + video.id"
-                                            x5-video-player-fullscreen="true"
-                                            webkit-playsinline="true"
-                                            x-webkit-airplay="true"
-                                            playsinline="true"
-                                            x5-playsinline
-                                            :src="video.url"
-                                            muted                                                                                                                                 
-                                        ></video>                                            
-                                        </div>
-                                        <p class="tit">{{ video.title }}</p>
-                                        <p class="info">{{ video.nickName }} | {{ video.statistics.like_count }}</p>                                    
-                                    </div>
-                                    <div v-else class="nodata">
-                                        비디오가 없습니다.
-                                    </div>                                    
-                                </li>
-                            </ul>
-                        </div>
-                    </div>                    
+                    <Search :videoList="videoList" />
                 </template>
 
             </MyLy>
@@ -195,12 +147,7 @@
                 @closeLy="mypageLy = false" 
             >
                 <template #layerContent>
-                    <div class="video-upload">
-                        <Title 
-                            pageTitle="마이 페이지"
-                            :level="3" 
-                        />
-                    </div>                    
+                   <LoginPage @submit="handleLogin" @closeLy="mypageLy = false"  />
                 </template>
 
             </MyLy>             
@@ -218,6 +165,8 @@ import VideoInfo from './components/VideoInfo.vue'
 import TopToolBar from './components/TopToolBar.vue'
 import Heart from './components/Heart.vue'
 import UserTool from './components/UserTool.vue'
+import Search from './components/Search.vue'
+import LoginPage from './components/Login.vue'
 
 import { ref, watch, computed, onMounted, nextTick } from 'vue'
  // import Swiper core and required modules
@@ -244,8 +193,7 @@ const videoRef = ref([])
 const bigHeart = ref(false)
 const SelectVideo = ref('')
 
-const searchText = ref('')
-const searchInput = ref(null)
+
 
 const Loading = ref(false)
 const uploadLy = ref(false)
@@ -254,9 +202,6 @@ const mypageLy = ref(false)
 const commandLy = ref(false)
 const videoShareLy = ref(false)
 const newVideoAlert = ref(false)
-
-
-const SearchResults = ref([])
 
 const videoLength = videoList.value.length
 
@@ -366,21 +311,9 @@ const sortVideos = () => {
 }
 // 검색
 const openSeach  = () => {
-    topSearch.value = true
-    nextTick(() => {
-        console.log(searchInput.value)
-        // setTimeout (() => {            
-        //     searchInput.value.$el.focus()
-        // },1000)
-    })        
+    topSearch.value = true     
 }
-const fileteredVideos = () => {
-    const filteredVideos = videoList.value.filter(video => {
-    return video.title.includes(searchText.value);
-  });
 
-  SearchResults.value = filteredVideos;
-}
 // 하단 바 이벤트 처리
 const goHome = () => { 
     console.log(videoList.value.length, videoLength)
@@ -436,7 +369,10 @@ const uploadVideoHandler = (newVideo) => {
 const cancelUploadVideo = () => {
     uploadLy.value = false
 }
-
+// 마이페이지
+const handleLogin = (data) => {
+    console.log(data.id, data.password)
+}
 const mypageOpen = () => {
     mypageLy.value = true
 }
@@ -607,25 +543,6 @@ body,
 .loading__wrap--round {
     background-color: rgba(0,0,0,0.5);
     z-index: 25; 
-}
-.search-results {
-    padding: 10px 0;
-    height: 500px;
-    ul {
-        padding-top: 5px;
-        height: 100%;
-        overflow-y: auto;
-        li {
-                padding: 15px 0;
-                border-bottom: 1px solid #ccc;
-                .small-video {
-                    width: 50%;
-                }
-                .nodata {
-                    text-anchor: center;
-                }
-            }  
-    }
 }
 .layer__container {
     height: 100%;
