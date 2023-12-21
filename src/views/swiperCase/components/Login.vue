@@ -55,13 +55,15 @@
 
 <script setup>
 import { ref, watch, computed, onMounted, nextTick, defineProps, defineEmits } from 'vue'
+import memberInfo from '@/api/getMember'
+const [ memberList, memberData ] = memberInfo()
 const member = ref({
     id: '',
     password: ''
 })
 
 const submitForm = () => {
-    console.log(member, member.value.id)
+    console.log(memberList)
 }
 </script>
 

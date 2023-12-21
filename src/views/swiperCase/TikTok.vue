@@ -147,7 +147,7 @@
                 @closeLy="mypageLy = false" 
             >
                 <template #layerContent>
-                   <LoginPage @submit="handleLogin" @closeLy="mypageLy = false"  />
+                   <LoginPage @closeLy="mypageLy = false"  />
                 </template>
 
             </MyLy>             
@@ -210,11 +210,11 @@ const onSwiper = (swiper) => {
     const videoElement = videoRef.value[i]    
     videoElement.play()  
     console.log(videoList.value[i], swiper.activeIndex)
-    videoList.value[i].playing = true
+    videoList.value[i].playing = true    
 }
 const onSlideChange = () => {
   console.log('slide change') 
-
+  videoShareLy.value = false
 }
 const onSlideChangeTransitionEnd = () => {        
     console.log('slide changeaaa')
@@ -370,9 +370,6 @@ const cancelUploadVideo = () => {
     uploadLy.value = false
 }
 // 마이페이지
-const handleLogin = (data) => {
-    console.log(data.id, data.password)
-}
 const mypageOpen = () => {
     mypageLy.value = true
 }
