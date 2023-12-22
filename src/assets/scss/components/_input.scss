@@ -35,8 +35,12 @@ $textareaHeight: 100px;
   width: 100%;    
   gap: 5px;
   .input {
+    position: relative;
       &:only-child {
           width: 100%;
+      }
+      .btn-close-circle {
+        right: 10px;
       }
   }
   &+.input__wrap {

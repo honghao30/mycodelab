@@ -6,7 +6,8 @@
                 <MyBtn                            
                     buttonName="구독"
                     iconOnly="true"
-                    iconName="icon-subscribe"                                                       
+                    iconName="icon-subscribe"  
+                    @click="userSubscription()"                                                       
                 >
                     <template #svg-icon>
                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15px" height="15px" viewBox="0 0 15 15" version="1.1">
@@ -55,7 +56,8 @@
             <MyBtn                            
                 buttonName="즐겨찾기"                                    
                 iconOnly="true"   
-                :Counter="0"                                                                                                                                                    
+                :Counter="0"   
+                @click="addFavorite(video)"                                                                                                                                                 
             >
                 <template #svg-icon>
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="36px" height="36px" viewBox="0 0 36 36" version="1.1">
@@ -87,7 +89,7 @@
 
 <script setup>
 import { defineProps, defineEmits,onMounted } from 'vue'
-const emit = defineEmits(['videoShare', 'commandLyOpen','videoLike'])
+const emit = defineEmits(['videoShare', 'commandLyOpen','videoLike', 'addFavorite', 'userSubscription'])
 
 const props = defineProps({
   video: {
@@ -106,6 +108,14 @@ const commandLyOpen = () => {
 
 const videoLike = () => {
   emit('videoLike', props.video)
+}
+
+const addFavorite = () => {
+  emit('addFavorite', props.video)
+}
+
+const userSubscription = () => {
+  emit('userSubscription', props.video)
 }
 </script>
 

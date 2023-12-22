@@ -22,7 +22,7 @@
                 >
                     <div class="video__wrap">
                         <Heart :likeCondition="video.bigHeart" />
-                        <UserTool :video="video" @videoShare="videoShare" @commandLyOpen="commandLyOpen" @videoLike="videoLike"  />           
+                        <UserTool :video="video" @userSubscription="userSubscription" @addFavorite="addFavorite"  @videoShare="videoShare" @commandLyOpen="commandLyOpen" @videoLike="videoLike"  />           
                         <template v-if="video.videoType === 'mp4' || !video.videoType">
                             <Button                            
                                 buttonName="재생"                                
@@ -52,6 +52,8 @@
                             muted
                             loop="true"
                             ref="videoRef"
+                            @play="updateCount(video, index)"
+                            @timeupdate="VideoUpdateTime(video, index)"
                             @click="screenEvent(video, index)"
                         ></video>
                         <div class="shorts-container"
@@ -147,7 +149,7 @@
                 @closeLy="mypageLy = false" 
             >
                 <template #layerContent>
-                   <LoginPage @closeLy="mypageLy = false"  />
+                   <LoginPage :member="member" @closeLy="mypageLy = false"  />
                 </template>
 
             </MyLy>             
@@ -193,6 +195,12 @@ const videoRef = ref([])
 const bigHeart = ref(false)
 const SelectVideo = ref('')
 
+const videoInfo = ref([
+    {
+       duration: ref(0),
+       currentTime: ref(0)
+    }
+])
 
 
 const Loading = ref(false)
@@ -216,14 +224,14 @@ const onSlideChange = () => {
   console.log('slide change') 
   videoShareLy.value = false
 }
+// 비디오 제어
 const onSlideChangeTransitionEnd = () => {        
     console.log('slide changeaaa')
     const allvideoElement = document.querySelectorAll('.swiper-slide video')        
     allvideoElement.forEach((video, index) => {
         if(video.parentElement.parentElement.classList.contains('swiper-slide-active')) {
             video.play()
-            videoList.value[index].playing = true
-            console.log('찾았다', index)
+            videoList.value[index].playing = true            
         } else {
             video.pause()
             videoList.value[index].playing = false
@@ -267,8 +275,7 @@ const screenEvent = (video,index) => {
       let now = new Date().getTime()
       let del = now - db_star.value
       if (del <= 300) {        
-        clearTimeout(timer.value)
-        console.log('더블클릭')        
+        clearTimeout(timer.value)              
         video.statistics.like_count++ 
         video.bigHeart = true     
         video.active = true    
@@ -279,6 +286,18 @@ const screenEvent = (video,index) => {
       db_star.value = 0
     }
 }
+const VideoUpdateTime = (video, index) => {
+    const videoElement = videoRef.value[index]
+    const videoDurationInMinutes = Math.floor(videoElement.duration / 60)
+    const videoSeconds = Math.floor(videoElement.duration % 60)
+    videoInfo.duration = videoDurationInMinutes + ':' + videoSeconds
+
+    const videoWatchTime = videoElement.currentTime    
+}
+
+const updateCount = (video, index) => {    
+    video.statistics.play_count++    
+}
 
 // 댓글
 const commandLyOpen = (video) => {
@@ -286,7 +305,6 @@ const commandLyOpen = (video) => {
     SelectVideo.value = video
     console.log(SelectVideo)    
 }
-
 // 영상 공유
 const videoShare = (video) => {
     SelectVideo.value = video    
@@ -370,8 +388,22 @@ const cancelUploadVideo = () => {
     uploadLy.value = false
 }
 // 마이페이지
+const member = ref([
+  {
+    id: ref(''),
+    password: ref(''),
+    memberStatus: ref(false)
+  }
+])
 const mypageOpen = () => {
     mypageLy.value = true
+}
+// 즐겨찾기
+const addFavorite = (video) => {
+    console.log('로그인이후 이용 가능합니다.')
+}
+const userSubscription = (video) => {
+    console.log('로그인이후 이용 가능합니다.')
 }
 </script>
 
