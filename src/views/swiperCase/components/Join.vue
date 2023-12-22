@@ -1,12 +1,12 @@
 <template>
     <div class="video-upload">
         <Title 
-            pageTitle="로그인"
+            pageTitle="회원가입"
             :level="3" 
         />
         <div class="login-page__wrap">        
             <div class="login-page__form">
-                <p class="title">로그인이 필요한 서비스입니다.</p>
+                <p class="title">간편 회원가입을 진행합니다.</p>
                 <form @submit.prevent="submitForm">
                     <ul>
                         <li>
@@ -14,8 +14,9 @@
                                 <template #input>
                                     <InputEl                                        
                                         v-model="userId"
+                                        label="이메일 아이디"
                                         required                                                
-                                        placeholder="아이디를 입력하세요"    
+                                        placeholder="이메일 주소를 입력하세요"    
                                         errorMsg="아이디를 입력하세요"                                                                   
                                     />                
                                 </template>         
@@ -24,7 +25,8 @@
                         <li>
                             <MyInput >
                                 <template #input>
-                                    <InputEl                                        
+                                    <InputEl         
+                                        label="비밀번호"                               
                                         v-model="password"
                                         required     
                                         types="password"                                          
@@ -33,7 +35,34 @@
                                     />                
                                 </template>         
                             </MyInput>                          
-                        </li>                    
+                        </li>    
+                        <li>
+                            <MyInput >
+                                <template #input>
+                                    <InputEl     
+                                        label="비밀번호 확인"
+                                        v-model="passwordRe"
+                                        required     
+                                        types="password"                                          
+                                        placeholder="비밀번호를 다시 한번 입력하세요"  
+                                        errorMsg="비밀번호 다시 한번 입력하세요"                                                                          
+                                    />                
+                                </template>         
+                            </MyInput>                          
+                        </li>
+                        <li>
+                            <MyInput >
+                                <template #input>
+                                    <InputEl            
+                                        label="이름"                            
+                                        v-model="userName"
+                                        required                                             
+                                        placeholder="이름을 입력하세요"  
+                                        errorMsg="이름을 입력하세요."                                                                          
+                                    />                
+                                </template>         
+                            </MyInput>                          
+                        </li>                                                                    
                     </ul>                
                     <div class="button__wrap">
                         <MyBtn                            
@@ -51,58 +80,17 @@
                             @click="$emit('closeLy')" 
                         >  
                         </MyBtn>                    
-                    </div>   
-                    <div>
-                        <MyBtn                            
-                            buttonName="회원가입"                                                                                
-                            @click="joinForm" 
-                        >  
-                        </MyBtn> 
-                        <p>아이디/비번을 잃어버리면 찾을 수 없습니다.</p>                           
-                    </div>          
+                    </div>             
                 </form>
             </div>
         </div>
-    </div> 
+    </div>   
 </template>
 
 <script setup>
-import axios from 'axios';
-// import vue from "@vitejs/plugin-vue"
-import { ref, watch, computed, onMounted, nextTick, defineProps, defineEmits } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useUserStore } from "@/stores/user"
-const userStore = useUserStore()
 
-const props = defineProps({
- member: {
-    type: Object,
-    default: () => ({})
-  }
-})
-
-const userId = ref('')
-const password = ref('')
-
-const submitForm  = async () => {                
-    await userStore.signIn(userId.value, password.value)       
-}
 </script>
 
-<style lang="scss">
-.login-page__form {
-    padding: 100px 0;
-    width: 100%;
-    max-width: 70%;
-    margin: 0 auto;
-    .title {
-        font-size: 18px;
-        margin-bottom:10px;
-    }
-    ul {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
-}
+<style>
+
 </style>

@@ -127,6 +127,33 @@
 
             </MyLy>    
             <!-- // 하단 기능 -->
+            <!-- 공통 알림 -->
+            <MyLy         
+                width="80%"       
+                height="20%"
+                left="10%"
+                right="10%"
+                bottom="50%"                
+                v-if="cookieAlert"                             
+                @closeLy="cookieAlert = false" 
+            >
+                <template #layerContent>
+                    <div class="cookie-wrap">
+                        보다 더 원활한 서비스를 위하여<br> X-VIDEO는 쿠키를 사용합니다
+                    </div>          
+                    <div class="button__wrap">
+                        <MyBtn                            
+                            buttonName="허용"                    
+                            color="btn primary"                    
+                            size="medium"    
+                            @click="allowCookie"                    
+                        >  
+                        </MyBtn>  
+                    </div>                                  
+                </template>
+
+            </MyLy>    
+            <!-- // 쿠키 허용 -->            
             <!-- // layer 영상 업로드-->
             <MyLy                
                 height="100%"
@@ -153,7 +180,6 @@
                    <LoginPage @closeLy="mypageLy = false" v-if="!userStore.isLoggedIn" />
                    <Mypage  @closeLy="mypageLy = false" v-else />
                 </template>
-
             </MyLy>             
         </div>          
     </div>  
@@ -162,7 +188,9 @@
 <script setup>
 import { storeToRefs } from 'pinia'
 import { useUserStore } from "@/stores/user"
+import { useLikeStore } from "@/stores/like"
 const userStore = useUserStore()
+const likeStore = useLikeStore()
 
 // 컴포넌트 호출
 import BottomBar from './components/BottomBar.vue'
@@ -201,6 +229,8 @@ const db_star = ref(0)
 const videoRef = ref([])
 const bigHeart = ref(false)
 const SelectVideo = ref('')
+
+const cookieAlert = ref(true)
 
 const videoInfo = ref([
     {
@@ -257,10 +287,19 @@ const pauseVideo = (video, index) => {
     videoElement.pause()     
     video.playing = false
 }
+
+// likeStore.videoLike(video)
+const likeVideo = ref([])
 const videoLike = (video) => {
-    console.log(video)
-    video.statistics.like_count++     
-    video.active = true     
+    if(userStore.isLoggedIn) {
+        video.statistics.like_count++     
+        video.active = true      
+        let newLikes = video     
+        likeVideo.value.push(newLikes)
+        console.log('좋아요', likeVideo, newLikes)        
+    } else {
+        alert('로그인 후 이용하실수 있습니다.')
+    }
 }
 const screenEvent = (video,index) => {  
     const videoElement = videoRef.value[index]  
@@ -411,6 +450,12 @@ const addFavorite = (video) => {
 }
 const userSubscription = (video) => {
     console.log('로그인이후 이용 가능합니다.')
+}
+
+const allowCookie = () => {
+    const videoList = JSON.stringify(VideoData)
+    window.localStorage.setItem('video', videoList)
+    cookieAlert.value = false
 }
 </script>
 
@@ -582,6 +627,7 @@ body,
 }
 .layer__container {
     height: 100%;
+    z-index: 23;
 }
 .btn-icon-arrow-upload {
     width: 40px;
@@ -607,5 +653,11 @@ body,
         top: 0;
         border: none;
     } 
+}
+.cookie-wrap {
+    font-size: 18px;
+    font-weight: 500;
+    text-align: center;
+    padding: 50px 0 20px 0;
 }
 </style>

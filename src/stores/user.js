@@ -17,11 +17,14 @@ export const useUserStore = defineStore('alerts', {
             if (user) {
                 this.userId = user.userId;
                 this.userName = user.name;
+                this.userUploaded = user.uploaded;
+                this.userLiked = user.liked;
+                this.userSubscribed = user.subscribed;
                 localStorage.setItem('userId', user.userId);
                 localStorage.setItem('userName', user.name);                
-                localStorage.setItem('uploaded', user.uploaded);      
-                localStorage.setItem('liked', user.liked);      
-                localStorage.setItem('subscribed', user.subscribed); 
+                localStorage.setItem('userUploaded', user.uploaded);      
+                localStorage.setItem('userLiked', user.liked);      
+                localStorage.setItem('userSubscribed', user.subscribed); 
                 alert('로그인 성공');
             } else {
                 alert('입력하신 회원정보가 없군요~.당분간 회원가입을 받지 않습니다.');
@@ -32,9 +35,9 @@ export const useUserStore = defineStore('alerts', {
             this.userName = null;
             localStorage.removeItem('userId');
             localStorage.removeItem('userName');            
-            localStorage.removeItem('uploaded');  
-            localStorage.removeItem('liked');  
-            localStorage.removeItem('subscribed'); 
+            localStorage.removeItem('userUploaded');  
+            localStorage.removeItem('userLiked');  
+            localStorage.removeItem('userSubscribed'); 
             alert('로그아웃 성공');
         }
     },

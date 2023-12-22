@@ -79,7 +79,7 @@
                     :level="4" 
                 />
                 <div class="mypage-result">
-                    
+                    {{ userLiked }}
                 </div>                            
             </div>
         </div>
