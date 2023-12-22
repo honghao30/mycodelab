@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import { router } from './router/index.js'
 import axios from 'axios'
-import { createPinia } from 'pinia'
+import { createPinia } from "pinia"
 import ClickOutside from './utils/ClickOutsideDirective'
 
 // Vuetify

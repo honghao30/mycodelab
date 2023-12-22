@@ -136,7 +136,8 @@
                 @closeLy="uploadLy = false" 
             >
                 <template #layerContent>
-                    <VideoUpload :UpLoadForm="UpLoadForm" :user_command="user_command" @uploadVideoHandler="uploadVideoHandler" @cancelUploadVideo="cancelUploadVideo" />                   
+                    <LoginPage @closeLy="mypageLy = false" v-if="!userStore.isLoggedIn" />
+                    <VideoUpload v-else :UpLoadForm="UpLoadForm" :user_command="user_command" @uploadVideoHandler="uploadVideoHandler" @cancelUploadVideo="cancelUploadVideo" />                   
                 </template>
 
             </MyLy>     
@@ -149,7 +150,8 @@
                 @closeLy="mypageLy = false" 
             >
                 <template #layerContent>
-                   <LoginPage :member="member" @closeLy="mypageLy = false"  />
+                   <LoginPage @closeLy="mypageLy = false" v-if="!userStore.isLoggedIn" />
+                   <Mypage  @closeLy="mypageLy = false" v-else />
                 </template>
 
             </MyLy>             
@@ -158,6 +160,10 @@
 </template>
 
 <script setup>
+import { storeToRefs } from 'pinia'
+import { useUserStore } from "@/stores/user"
+const userStore = useUserStore()
+
 // 컴포넌트 호출
 import BottomBar from './components/BottomBar.vue'
 import VideoUpload from './components/VideoUpload.vue'
@@ -169,6 +175,7 @@ import Heart from './components/Heart.vue'
 import UserTool from './components/UserTool.vue'
 import Search from './components/Search.vue'
 import LoginPage from './components/Login.vue'
+import Mypage from './components/Mypage.vue'
 
 import { ref, watch, computed, onMounted, nextTick } from 'vue'
  // import Swiper core and required modules

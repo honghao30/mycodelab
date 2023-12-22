@@ -1,31 +1,31 @@
 <template>
 <div class="video-upload">
     <Title 
-        pageTitle="마이 페이지"
+        pageTitle="로그인"
         :level="3" 
     />
-    <div class="login-page__wrap" v-if="!props.member.memberStatus">        
+    <div class="login-page__wrap">        
         <div class="login-page__form">
             <p class="title">로그인이 필요한 서비스입니다.</p>
             <form @submit.prevent="submitForm">
                 <ul>
                     <li>
                         <MyInput >
-                        <template #input>
-                            <InputEl                                        
-                                v-model="member.id"
-                                required                                                
-                                placeholder="아이디를 입력하세요"    
-                                errorMsg="아이디를 입력하세요"                                                                   
-                            />                
-                        </template>         
-                    </MyInput>                          
+                            <template #input>
+                                <InputEl                                        
+                                    v-model="userId"
+                                    required                                                
+                                    placeholder="아이디를 입력하세요"    
+                                    errorMsg="아이디를 입력하세요"                                                                   
+                                />                
+                            </template>         
+                        </MyInput>                          
                     </li>
                     <li>
                         <MyInput >
                             <template #input>
                                 <InputEl                                        
-                                    v-model="member.password"
+                                    v-model="password"
                                     required     
                                     types="password"                                          
                                     placeholder="비밀번호를 입력하세요"  
@@ -40,7 +40,7 @@
                         buttonName="로그인"
                         type="submit"
                         color="btn primary"
-                        :disabled="!member.id || !member.password"
+                        :disabled="!userId || !password"
                         size="medium"                        
                     >  
                     </MyBtn>   
@@ -55,17 +55,16 @@
             </form>
         </div>
     </div>
-    <div class="myPage__wrap" v-else>
-        마이 페이지
-    </div>
 </div> 
 </template>
 
 <script setup>
-
 import axios from 'axios';
+// import vue from "@vitejs/plugin-vue"
 import { ref, watch, computed, onMounted, nextTick, defineProps, defineEmits } from 'vue'
-// import { useUserStore } from "@/store/user"
+import { storeToRefs } from 'pinia'
+import { useUserStore } from "@/stores/user"
+const userStore = useUserStore()
 
 const props = defineProps({
  member: {
@@ -74,23 +73,11 @@ const props = defineProps({
   }
 })
 
-const submitForm = () => {        
-    initList()
-    console.log(props.member.id, props.member.password)
-    props.member.memberStatus = true
-}
-const initList = () => {
-    axios.get('https://raw.githubusercontent.com/honghao30/mycodelab/dev/public/member.json')
-        .then((response) => {
-            if (response.status === 200) {                
-                console.log(response);
-            } else {
-                console.log('error');
-            }
-        })
-        .catch((error) => {
-            console.log(error);            
-    });
+const userId = ref('')
+const password = ref('')
+
+const submitForm  = async () => {                
+    await userStore.signIn(userId.value, password.value)       
 }
 </script>
 
