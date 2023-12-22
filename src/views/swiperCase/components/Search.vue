@@ -21,7 +21,7 @@
                     >  
                     </MyBtn>
                 </template>    
-                <template #autoComplete>
+                <template #autoComplete v-if="searchText.value">
                     <div class="autocomplete">
                         <ul class="autocomplete__list">
                             <li v-for="video in SearchResults" :key="video">
@@ -82,8 +82,7 @@ const regExp = /\s/g;
 const autoComplete = ref(false)
 
 const fileteredVideos = () => { 
-    if(searchText.value === '') {
-        console.log('검색어가 없습니다.', searchText.value)
+    if(searchText.value === '') {        
         return
     }  else {
         const filteredVideos = props.videoList.filter(video => {

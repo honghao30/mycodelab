@@ -62,8 +62,10 @@
 </template>
 
 <script setup>
+
 import axios from 'axios';
 import { ref, watch, computed, onMounted, nextTick, defineProps, defineEmits } from 'vue'
+// import { useUserStore } from "@/store/user"
 
 const props = defineProps({
  member: {
