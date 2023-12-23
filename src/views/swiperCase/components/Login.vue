@@ -53,11 +53,9 @@
                         </MyBtn>                    
                     </div>   
                     <div>
-                        <MyBtn                            
-                            buttonName="회원가입"                                                                                
-                            @click="joinForm" 
-                        >  
-                        </MyBtn> 
+                        <router-link to="/Join">
+                            회원가입
+                        </router-link>
                         <p>아이디/비번을 잃어버리면 찾을 수 없습니다.</p>                           
                     </div>          
                 </form>

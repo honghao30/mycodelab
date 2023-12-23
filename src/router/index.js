@@ -25,6 +25,10 @@ import PubSummary from "@/views/pubGuid/PubSummary.vue";
 import PubRoll from "@/views/pubGuid/PubRoll.vue";
 import PubList from "@/views/pubGuid/PubList.vue";
 
+// 회원
+import Login from "@/views/member/Login.vue";
+import Join from "@/views/member/Join.vue";
+
 // 라우터 
 const routes = [
     {
@@ -94,7 +98,23 @@ const routes = [
         meta: {
             onlyBody: true
         }
-    },    
+    },  
+    {
+        path: "/Login",
+        name: "/Login",
+        component: Login,
+        meta: {
+            onlyBody: true
+        }
+    },      
+    {
+        path: "/Join",
+        name: "/Join",
+        component: Join,
+        meta: {
+            onlyBody: true
+        }
+    },       
     // 스크롤
     {
         path: "/scrollEvent",

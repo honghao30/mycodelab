@@ -130,7 +130,7 @@
             <!-- 공통 알림 -->
             <MyLy         
                 width="80%"       
-                height="20%"
+                height="30%"
                 left="10%"
                 right="10%"
                 bottom="50%"                
@@ -296,7 +296,7 @@ const videoLike = (video) => {
         video.active = true      
         let newLikes = video     
         likeVideo.value.push(newLikes)
-        console.log('좋아요', likeVideo, newLikes)        
+        console.log('좋아요', userStore)        
     } else {
         alert('로그인 후 이용하실수 있습니다.')
     }
@@ -451,10 +451,12 @@ const addFavorite = (video) => {
 const userSubscription = (video) => {
     console.log('로그인이후 이용 가능합니다.')
 }
-
+import userData from '@/views/swiperCase/member.json'
 const allowCookie = () => {
     const videoList = JSON.stringify(VideoData)
     window.localStorage.setItem('video', videoList)
+    const memberData = JSON.stringify(userData)
+    window.localStorage.setItem('member', memberData)     
     cookieAlert.value = false
 }
 </script>

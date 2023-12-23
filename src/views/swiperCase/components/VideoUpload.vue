@@ -92,6 +92,10 @@
 import { defineEmits, defineProps, ref } from 'vue'
 import getTodayDate from '@/utils/time'
 const [TodayDateFull, TodayData, currentTime, TodayDateFullDash] = getTodayDate()
+import { storeToRefs } from 'pinia'
+import { useUserStore } from "@/stores/user"
+const userStore = useUserStore()
+const userName = ref(userStore.userName)
 
 const props = defineProps({
   UpLoadForm: {
@@ -133,7 +137,7 @@ const uploadVideoConfirm = () => {
         title: props.UpLoadForm.videoTitle,
         url: props.UpLoadForm.videoUrl,   
         videoUploadForm: props.UpLoadForm.videoUploadForm,        
-        nickName: 'manage',      
+        nickName: userName,      
         uploadtime: TodayDateFullDash,  
         videoDescription: props.UpLoadForm.videoDescription,
         videoTag: props.UpLoadForm.videoTag,  
