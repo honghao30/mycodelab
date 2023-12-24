@@ -1,10 +1,17 @@
+import axios from 'axios'
 import { defineStore } from 'pinia'
-import userData from '@/views/swiperCase/member.json' 
+import { getShort } from '@/views/shortsApp/api/getData'
+import { router } from '../router'
+const MemberList = await getShort()
 
-export const useUsersStore = defineStore('alerts', {
+export const useUsersStore = defineStore('auth', {
     state: () => ({
-        userId: localStorage.getItem('userId'),  // 초기 상태를 로컬스토리지에서 가져옵니다.
-        userName: localStorage.getItem('userName'),  // 초기 상태를 로컬스토리지에서 가져옵니다.
+        userId: null,
+        userName: null,
+        userUploaded: null,
+        userLiked: null,
+        userSubscribed: null,
+        users: []
     }),
     getters: {
         isLoggedIn: (state) => {
@@ -13,31 +20,41 @@ export const useUsersStore = defineStore('alerts', {
     },
     actions: {
         signIn: async function(userId, password) {
-            const user = userData.users.find(user => user.userId === userId && user.password === password);
+            console.log('로그인시',MemberList)            
+            const user = MemberList.value.find(user => user.userId === userId && user.password === password);
             if (user) {
                 this.userId = user.userId;
                 this.userName = user.name;
                 this.userUploaded = user.uploaded;
                 this.userLiked = user.liked;
                 this.userSubscribed = user.subscribed;
-                localStorage.setItem('userId', user.userId);
-                localStorage.setItem('userName', user.name);                
-                localStorage.setItem('userUploaded', user.uploaded);      
-                localStorage.setItem('userLiked', user.liked);      
-                localStorage.setItem('userSubscribed', user.subscribed); 
-                alert('로그인 성공');
+                alert('로그인 성공 했습니다.');                
             } else {
-                alert('입력하신 회원정보가 없군요~.당분간 회원가입을 받지 않습니다.');
+                confirm('회원가입 페이지로 이동하시겠습니까?');
+                router.push("/Register")
             }
+        },
+        registrations: async function(userId, password, Name) {
+            let newUser = {
+                "userId": userId,
+                "password": password,
+                "Name": Name
+            };
+            console.log('전달완료', MemberList, newUser)
+            await axios.post('https://chivalrous-utopian-lawyer.glitch.me/users', newUser)            
+            .then(function (response) {
+                console.log('가입완료', response);
+            })
+            .catch(function (error) {
+                console.log('오류 발생', error);
+            });            
         },
         logOut: function() {
             this.userId = null;
             this.userName = null;
-            localStorage.removeItem('userId');
-            localStorage.removeItem('userName');            
-            localStorage.removeItem('userUploaded');  
-            localStorage.removeItem('userLiked');  
-            localStorage.removeItem('userSubscribed'); 
+            this.userUploaded = null;
+            this.userLiked = null;
+            this.userSubscribed = null;
             alert('로그아웃 성공');
         }
     },
