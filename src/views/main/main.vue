@@ -82,6 +82,11 @@
           />          
         </div>
     </div>    
+    <div class="online-request__wrap slideup">
+        <div class="button__wrap">
+          <router-link to="/shortsApp">쇼츠앱</router-link>         
+        </div>
+    </div>     
   </div>
 </template>
 <script setup>
