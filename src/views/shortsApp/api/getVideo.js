@@ -4,7 +4,7 @@ import { ref } from 'vue';
 export function getVideo() {
     const videoList = ref([])
     axios
-    .get('https://vigorous-malleable-moustache.glitch.me/db',)
+    .get('https://chivalrous-utopian-lawyer.glitch.me/db',)
     .then(res => {            
         console.log(res.data)  
 
