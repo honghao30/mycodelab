@@ -41,7 +41,13 @@ export const useUsersStore = defineStore('auth', {
                 "Name": Name
             };
             console.log('전달완료', MemberList, newUser)
-            await axios.post('https://chivalrous-utopian-lawyer.glitch.me/users', newUser)            
+            // MemberList.push(newUser)
+            axios({
+                method: 'post',
+                url: 'https://new-2c9g.onrender.com/users',
+                data: newUser,
+                headers: {'Content-Type': 'application/json;charset=UTF-8'}
+            })
             .then(function (response) {
                 console.log('가입완료', response);
             })
