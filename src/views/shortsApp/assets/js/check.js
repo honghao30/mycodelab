@@ -49,4 +49,19 @@ export function isPw(pw) {
     }  
     return false 
   }
-  
+  // 특수문자 체크
+  export function chSp(value) {
+    const regCh = /[~!@#$%<>^&*()]/g;
+    if (regCh.test(value)) {
+      return true
+    }  
+    return false 
+  }
+
+  // 유틸 
+  export function randomId() {
+    let N = 1000000;
+    let M = 1;
+    let tt = Math.random()*N;
+    return Math.floor(tt)+M;
+  }

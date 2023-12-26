@@ -10,6 +10,7 @@
             :id="randomId"      
             :ref="refInfo"        
             :value="modelValue"     
+            :maxlength="maxlength"
             @input="$emit('update:modelValue', $event.target.value)"    
             @focusout="$emit('update:modelValue', $event.target.value)" 
          >
@@ -53,6 +54,10 @@ const props = defineProps({
     type: String,
     default: ''
   },
+  maxlength: {
+    type: Number,
+    default: ''
+  },  
   guideMsg: {
     type: Array,
     default: ''
@@ -104,9 +109,6 @@ randomId.value = randomNumber()
 const ClearInput = (event) => {  
   emit('update:modelValue')    
 }
-onMounted(() => {
-    console.log(props.errorMsg);
-});
 </script>
 
 <style>

@@ -36,8 +36,7 @@ export const useUsersStore = defineStore('auth', {
                 alert('로그인 성공 했습니다.')
                 router.push("/shortsApp")
             } else {
-                confirm('회원가입 페이지로 이동하시겠습니까?');
-                router.push("/Register")
+                alert('회원 정보가 없습니다.')  
             }
         },
         getUserInfo() {            
