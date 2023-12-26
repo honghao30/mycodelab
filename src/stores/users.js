@@ -1,8 +1,11 @@
 import axios from 'axios'
 import { defineStore } from 'pinia'
-import { getShort } from '@/views/shortsApp/api/getData'
+const getMember = JSON.parse(localStorage.getItem('member'))
+const MemberList = getMember._value
+
 import { router } from '../router'
-const MemberList = await getShort()
+// import { getShort } from '@/views/shortsApp/api/getData'
+// const MemberList = await getShort()
 
 export const useUsersStore = defineStore('auth', {
     state: () => ({
@@ -11,7 +14,8 @@ export const useUsersStore = defineStore('auth', {
         userUploaded: null,
         userLiked: null,
         userSubscribed: null,
-        users: []
+        isLogin: false,
+        returnUrl: null
     }),
     getters: {
         isLoggedIn: (state) => {
@@ -20,47 +24,49 @@ export const useUsersStore = defineStore('auth', {
     },
     actions: {
         signIn: async function(userId, password) {
-            console.log('로그인시',MemberList)            
-            const user = MemberList.value.find(user => user.userId === userId && user.password === password);
+            console.log('로그인시',MemberList, userId, password)            
+            const user = MemberList.find(user => user.userId === userId && user.password === password);
             if (user) {
                 this.userId = user.userId;
-                this.userName = user.name;
-                this.userUploaded = user.uploaded;
-                this.userLiked = user.liked;
-                this.userSubscribed = user.subscribed;
-                alert('로그인 성공 했습니다.');                
+                this.userName = user.name;      
+                const token = Math.random().toString(36).substring(2)
+                localStorage.setItem("access_token", token)       
+                localStorage.setItem("access_id", userId) 
+                this.getUserInfo()                
+                alert('로그인 성공 했습니다.')
+                router.push("/shortsApp")
             } else {
                 confirm('회원가입 페이지로 이동하시겠습니까?');
                 router.push("/Register")
             }
         },
+        getUserInfo() {            
+            let token = localStorage.getItem("access_token")
+            let userId = localStorage.getItem("access_id") 
+            let config = {
+                headers: {
+                  "access-token": token,
+                }
+            }            
+            if(token !== null && userId !== null) {
+                this.isLogin = true
+                console.log(userId)
+            }
+        },        
         registrations: async function(userId, password, Name) {
             let newUser = {
                 "userId": userId,
                 "password": password,
                 "Name": Name
             };
-            console.log('전달완료', MemberList, newUser)
-            // MemberList.push(newUser)
-            axios({
-                method: 'post',
-                url: 'https://new-2c9g.onrender.com/users',
-                data: newUser,
-                headers: {'Content-Type': 'application/json;charset=UTF-8'}
-            })
-            .then(function (response) {
-                console.log('가입완료', response);
-            })
-            .catch(function (error) {
-                console.log('오류 발생', error);
-            });            
+            console.log('전달완료', newUser)
+            getMember._value.push(newUser)
+            localStorage.setItem('member', JSON.stringify(getMember));
+            console.log('insert', MemberList)
         },
         logOut: function() {
             this.userId = null;
             this.userName = null;
-            this.userUploaded = null;
-            this.userLiked = null;
-            this.userSubscribed = null;
             alert('로그아웃 성공');
         }
     },

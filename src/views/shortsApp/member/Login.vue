@@ -17,7 +17,9 @@
                                         v-model="userId"
                                         required                                                
                                         placeholder="아이디를 입력하세요"    
-                                        errorMsg="아이디를 입력하세요"                                                                   
+                                        @focusout="Validation"
+                                        guideMsg="이메일 아이디를 입력하세요" 
+                                        :errorMsg="error.idErrorMsg"                                                                   
                                     />                
                                 </template>         
                             </MyInput>                          
@@ -30,7 +32,7 @@
                                         required     
                                         types="password"                                          
                                         placeholder="비밀번호를 입력하세요"  
-                                        errorMsg="비밀번호를 입력하세요"                                                                          
+                                        :errorMsg="error.pwErrorMsg"                                                                          
                                     />                
                                 </template>         
                             </MyInput>                          
@@ -54,7 +56,7 @@
                         </MyBtn>                    
                     </div>   
                     <div class="help-msg">
-                        <router-link to="/Join">
+                        <router-link to="/Register">
                             회원가입
                         </router-link>
                         <router-link to="#" @click="isAlert(event)">
@@ -79,11 +81,32 @@ import { storeToRefs } from 'pinia'
 import { useUsersStore } from "@/stores/users"
 const userStore = useUsersStore()
 
+import {isKor, isPw, isEmail} from "@/views/shortsApp/assets/js/check"
+
+const error = ref({
+    idErrorMsg: '',
+    pwErrorMsg: '' 
+  }
+)
+
 const userId = ref('')
 const password = ref('')
 
-const submitForm  = async () => {                
-    await userStore.signIn(userId.value, password.value)       
+const Validation = async () => { 
+    if(isKor(userId.value)) {
+        error.value.idErrorMsg = '한글로 된 이메일 주소는 지원하지 않습니다.'        
+        userId.value = ''
+    } else {
+        error.value.idErrorMsg = ''
+    }    
+}
+const submitForm  = async () => {       
+    if(!isEmail(userId.value)) {
+        error.value.pwErrorMsg = '정확한 이메일 형식을 입력하세요'        
+    } else {
+        await userStore.signIn(userId.value, password.value)
+    }
+    
 }
 const isAlert = (event) => {
     alert('준비중입니다.')

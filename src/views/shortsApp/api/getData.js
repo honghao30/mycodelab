@@ -3,15 +3,17 @@ import { ref } from 'vue';
 
 export function getShort() {    
     const MemberList = ref([])
+    const VideoList = ref([])
     axios
-    .get('https://new-2c9g.onrender.com/users',)
+    .get('./db.json',)
     .then(res => {                    
-        MemberList.value = res.data
-        console.log('회원정보', MemberList.value)  
+        MemberList.value = res.data.users
+        VideoList.value = res.data.posts
+        console.log('회원정보', MemberList)  
         
     })
     .catch(err => {
         console.log(err.message);
     }) 
-    return MemberList
+    return { MemberList, VideoList }
 }

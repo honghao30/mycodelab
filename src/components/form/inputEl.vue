@@ -11,27 +11,34 @@
             :ref="refInfo"        
             :value="modelValue"     
             @input="$emit('update:modelValue', $event.target.value)"    
-            @focusout="checkValue($event)" 
+            @focusout="$emit('update:modelValue', $event.target.value)" 
          >
          <MyBtn                            
-            buttonName="검색어 삭제"
+            buttonName="삭제"
             iconOnly="true"
             iconName="btn-close-circle"     
             v-if="modelValue"                        
             @click="ClearInput($event)"                                                                      
         >  
-        </MyBtn>           
-        <div class="guide-text__input--bottom" v-if="required && errorMsgCheck">                  
+        </MyBtn>   
+        <div class="guide-text__input--bottom" v-if="guideMsg">                  
+            <p class="guide-text">{{ guideMsg }}</p>            
+        </div>                
+        <div class="guide-text__input--bottom" v-if="errorMsg">                  
             <p class="error-text">{{ errorMsg }}</p>            
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref, defineProps, defineEmits, onBeforeMount, onUnmounted } from 'vue'
+import { ref, defineProps, defineEmits, onMounted, onBeforeMount, onUnmounted } from 'vue'
 const props = defineProps({
   label: {
     type: String,
+    default: ''
+  },
+  guideMsg: { 
+    type: String, 
     default: ''
   },
   placeholder: {
@@ -85,18 +92,21 @@ const randomNumber = () => {
 }
 randomId.value = randomNumber()
 
-const errorMsgCheck = ref(null)
+// const errorMsgCheck = ref(null)
 
-const checkValue = (event) => {
-  if (event.target.value === '') {
-    errorMsgCheck.value = true
-  } else {
-    errorMsgCheck.value = false
-  }
-}
+// const checkValue = (event) => {
+//   if (event.target.value === '') {
+//     errorMsgCheck.value = true
+//   } else {
+//     errorMsgCheck.value = false
+//   }
+// }
 const ClearInput = (event) => {  
   emit('update:modelValue')    
 }
+onMounted(() => {
+    console.log(props.errorMsg);
+});
 </script>
 
 <style>
