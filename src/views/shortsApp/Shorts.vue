@@ -1,5 +1,10 @@
 <template>
-    <div>
+    <div class="tiktok__wrap">
+        <div class="tiktok__wrap--inner">
+
+        </div>
+    </div>    
+    <!-- <div>
         <VideoPost />
         <MyBtn                            
             buttonName="허용"                    
@@ -8,13 +13,13 @@
             @click="allowCookie"                    
         >  
         </MyBtn> 
-        <!-- <MyBtn                            
+        <MyBtn                            
             buttonName="업로드"                    
             color="btn primary"                    
             size="medium"    
             @click="upLoadVideo"                    
         >  
-        </MyBtn>  -->
+        </MyBtn> 
         <div>
             <MyBtn                            
             buttonName="마이페이지"                    
@@ -25,9 +30,9 @@
         >  
         </MyBtn>
             <div v-if="isActive && usersStore.isLoggedIn">{{ userName }}마이페이지</div>            
-        </div>
+        </div> -->
         <!-- // layer 영상 업로드 && usersStore.isLoggedIn-->
-        <MyLy                
+        <!-- <MyLy                
             height="100%"
             left="0"
             bottom="0"
@@ -38,10 +43,10 @@
                 <VideoUpload  @cancelUploadVideo="cancelUploadVideo" />                   
             </template>
 
-        </MyLy>     
+        </MyLy>      -->
         <!-- // layer 영상 마이페이지-->
 
-    </div>
+    <!-- </div> -->
 </template>
 
 <script setup>
@@ -64,7 +69,7 @@ import VideoUpload from './components/VideoUpload.vue'
 
 // ref && v-model
 const isActive = ref(false)
-const uploadLy = ref(true)
+const uploadLy = ref(false)
 
 // function
 const upLoadVideo = () => {
