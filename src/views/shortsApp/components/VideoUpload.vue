@@ -52,17 +52,20 @@
                                 label="영상 업로드"
                                 types="file"
                                 v-model="uploadFrom.videoFile"            
-                                placeholder="영상을 선택하세요"   
-                                @change="uploadFile"                                         
+                                placeholder="영상을 선택하세요"                                   
+                                @input="onChange"                                 
+                                accept=".mp4"                                       
                             />
                         </template>
-                    </MyInput>        
+                    </MyInput>       
                     <MyInput  v-else-if="uploadFrom.vselected === 'MP4 링크'">
                         <template #input>
                             <InputEl                                        
                                 label="영상 URL"
-                                v-model="uploadFrom.url"            
-                                placeholder="영상 URL 선택하세요"                                              
+                                v-model="uploadFrom.url"        
+                                @focusout="checkUrl"    
+                                placeholder="영상 URL 선택하세요"   
+                                :errorMsg="error.urlError"                                            
                             />
                         </template>
                     </MyInput>           
@@ -70,12 +73,25 @@
                         <template #input>
                             <InputEl                                        
                                 label="유튜브 영상"
-                                v-model="uploadFrom.youtubeLink"            
+                                v-model="uploadFrom.youtubeLink"       
+                                @focusout="checkYoutubeLink"         
                                 placeholder="유튜브 영상 정보를 입력하세요"                                              
                             />
                         </template>
-                    </MyInput>                                                                                                        
+                    </MyInput>
+                    <!-- <div class="input__wrap">
+                        <div class="input">
+                            <label for="videoDescription">미리보기</label>
+                            <video 
+                                autoplay
+                                loop
+                                muted                                
+                                :src="fileDisplay" 
+                            />
+                        </div>
+                    </div>                                                                                                                             -->
                 </div>    
+                
                 <div class="button__wrap">
                     <MyBtn                            
                         buttonName="업로드"
@@ -109,7 +125,10 @@ import { router } from '../../../router'
 
 const getVideo = JSON.parse(localStorage.getItem('video'))
 const VideoList = getVideo._value
-console.log(VideoList)
+const getMember = JSON.parse(localStorage.getItem('member'))
+const MemberList = getMember._value
+
+console.log('비디오', getVideo)
 
 import getTodayDate from '@/utils/time'
 const [TodayDateFull, TodayData, currentTime, TodayDateFullDash] = getTodayDate()
@@ -119,15 +138,16 @@ import { useUsersStore } from "@/stores/users"
 const usersStore = useUsersStore()
 const userName = ref(usersStore.userName)
 
-import {isKor, isPw, isEmail, chSp, randomId} from "@/views/shortsApp/assets/js/check"
+import {isUrl, chSp, randomId} from "@/views/shortsApp/assets/js/check"
 let token = localStorage.getItem("access_token")
 let userId = localStorage.getItem("access_id")
 let nickName = localStorage.getItem('userName')
 
-const file = ref(null)
-const fileName = computed(() => file.value?.name);
-const fileExtension = computed(() => fileName.value?.substr(fileName.value?.lastIndexOf(".") + 1));
-const fileMimeType = computed(() => file.value?.type);
+// const file = ref(null)
+// let fileDisplay = ref(null)
+// let errorType = ref(null)
+// let fileData = ref(null)
+// let isUploading = ref(false)
 
 // v-model && ref
 const uploadState = ref(true)
@@ -164,7 +184,8 @@ const uploadFrom = ref(
     }
 )    
 const error = ref({
-    titleErrorMsg: ''    
+    titleErrorMsg: '',
+    urlError: ''
   }
 )
 // function
@@ -184,9 +205,19 @@ const Validation = async () => {
         error.value.idErrorMsg = ''
     }    
 }
+const checkUrl = () => {
+    if(!isUrl(uploadFrom.url)) {
+        error.value.urlError = '정상적인 url이 아닙니다.'
+        uploadFrom.value.url = ''
+    } else {
+        error.value.urlError = ''
+    }  
+}
 
-const uploadFile = (event) => {     
-    console.log(event.target.files[0])
+const onChange = () => {
+    alert('업로드는 지원하지 않습니다.')
+    // fileDisplay.value = URL.createObjectURL(file.value.files[0])
+    // fileData.value = file.value.files[0]
 }
 
 const videoUpload = () => {
@@ -219,9 +250,16 @@ const videoUpload = () => {
     } 
     console.log(newVideo)
     uploadState.value = false    
-    VideoList.push(newVideo)    
-    localStorage.setItem('video', JSON.stringify(VideoList));
-    console.log(JSON.parse(localStorage.getItem('video')))
+    getVideo.push(newVideo)    
+    localStorage.setItem('video', JSON.stringify(getVideo));    
+    console.log(userId, getMember)    
+    let user = getMember.users.find(member => member.userId === userId)
+    console.log(user)
+    if (user) {        
+        user.uploaded.push(newVideo)
+    } else {
+        console.log('해당 userId를 가진 사용자를 찾을 수 없습니다.');
+    }    
     Loading.value = true
     setTimeout(() => {
         Loading.value = false
@@ -251,8 +289,14 @@ const cancelUploadVideo = () => {
             border: 1px solid #ccc;
             padding: 10px;
             border-radius: 6px;
-        }
-    }
+        }        
+      }
+      video {
+        width: 300px;
+        height: auto;
+        margin: 0 auto;
+
+      }
     }
 }
 .upload-msg {
