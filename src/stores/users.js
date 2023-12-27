@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { defineStore } from 'pinia'
 const getMember = JSON.parse(localStorage.getItem('member'))
-const MemberList = getMember._value
+const MemberList = getMember
 
 import { router } from '../router'
 // import { getShort } from '@/views/shortsApp/api/getData'
