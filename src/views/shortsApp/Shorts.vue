@@ -1,5 +1,6 @@
 <template>
     <div>
+        <VideoPost />
         <MyBtn                            
             buttonName="허용"                    
             color="btn primary"                    
@@ -58,6 +59,7 @@ const { MemberList, VideoList } = getShort()
 import { router } from '../../router'
 
 // cmp import 
+import VideoPost from './components/VideoPost.vue'
 import VideoUpload from './components/VideoUpload.vue'
 
 // ref && v-model

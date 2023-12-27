@@ -9,6 +9,8 @@ import { router } from '../router'
 
 export const useUsersStore = defineStore('auth', {
     state: () => ({
+        userId: localStorage.getItem('userId'),
+        userName: localStorage.getItem('userName'),        
         userId: null,
         userName: null,
         userUploaded: null,
@@ -32,7 +34,9 @@ export const useUsersStore = defineStore('auth', {
                 const token = Math.random().toString(36).substring(2)
                 localStorage.setItem("access_token", token)       
                 localStorage.setItem("access_id", userId) 
-                this.getUserInfo()                
+                localStorage.setItem('userId', user.userId); // 로컬 스토리지에 userId 저장
+                localStorage.setItem('userName', user.name); // 로컬 스토리지에 userName 저장
+                this.getUserInfo()            
                 alert('로그인 성공 했습니다.')
                 router.push("/shortsApp")
             } else {
@@ -42,13 +46,13 @@ export const useUsersStore = defineStore('auth', {
         getUserInfo() {            
             let token = localStorage.getItem("access_token")
             let userId = localStorage.getItem("access_id") 
+            let nickName = localStorage.getItem("userName") 
             let config = {
                 headers: {
                   "access-token": token,
                 }
             }            
-            if(token !== null && userId !== null) {
-                this.isLogin = true
+            if(token !== null && userId !== null) {                
                 console.log(userId)
             }
         },        
@@ -64,8 +68,12 @@ export const useUsersStore = defineStore('auth', {
             console.log('insert', MemberList)
         },
         logOut: function() {
-            this.userId = null;
-            this.userName = null;
+            this.userId = null
+            this.userName = null
+            localStorage.removeItem("access_token")       
+            localStorage.removeItem("access_id") 
+            localStorage.removeItem('userId')
+            localStorage.removeItem('userName')
             alert('로그아웃 성공');
         }
     },
