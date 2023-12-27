@@ -124,9 +124,9 @@ import { defineEmits, defineProps, ref, computed } from 'vue'
 import { router } from '../../../router'
 
 const getVideo = JSON.parse(localStorage.getItem('video'))
-const VideoList = getVideo._value
+const VideoList = getVideo
 const getMember = JSON.parse(localStorage.getItem('member'))
-const MemberList = getMember._value
+const MemberList = getMember
 
 console.log('비디오', getVideo)
 
