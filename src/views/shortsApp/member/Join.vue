@@ -96,7 +96,6 @@ import { storeToRefs } from 'pinia'
 import { useUserStore } from "@/stores/user"
 const userStore = useUserStore()
 import {isKor, isPw, isEmail} from "@/views/shortsApp/assets/js/check"
-
 const getMember = JSON.parse(localStorage.getItem('member'))
 const MemberList = getMember._value
 
