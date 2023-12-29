@@ -1,12 +1,12 @@
 <template>
-  <div class="join__wrap">
-    <div class="join__wrap--inner">
+  <div class="member__wrap">
+    <div class="member__wrap--inner">
         <Title 
             :level="2" 
             pageTitle="로그인"
         />
-        <div class="login-page__wrap">        
-            <div class="login-page__form">
+        <div class="member-page__wrap">        
+            <div class="member-page__form">
                 <p class="title">로그인이 필요한 서비스입니다.</p>
                 <form @submit.prevent="submitForm">
                     <ul>
@@ -17,7 +17,9 @@
                                         v-model="userId"
                                         required                                                
                                         placeholder="아이디를 입력하세요"    
-                                        errorMsg="아이디를 입력하세요"                                                                   
+                                        @focusout="Validation"
+                                        guideMsg="이메일 아이디를 입력하세요" 
+                                        :errorMsg="error.idErrorMsg"                                                                   
                                     />                
                                 </template>         
                             </MyInput>                          
@@ -30,7 +32,7 @@
                                         required     
                                         types="password"                                          
                                         placeholder="비밀번호를 입력하세요"  
-                                        errorMsg="비밀번호를 입력하세요"                                                                          
+                                        :errorMsg="error.pwErrorMsg"                                                                          
                                     />                
                                 </template>         
                             </MyInput>                          
@@ -49,15 +51,20 @@
                             buttonName="취소"                        
                             color="btn secondary"
                             size="medium"
-                            @click="$emit('closeLy')" 
+                            @click="$router.go(-1)" 
                         >  
                         </MyBtn>                    
                     </div>   
-                    <div>
-                        <router-link to="/Join">
+                    <div class="help-msg">
+                        <router-link to="/Register">
                             회원가입
                         </router-link>
-                        <p>아이디/비번을 잃어버리면 찾을 수 없습니다.</p>                           
+                        <router-link to="#" @click="isAlert(event)">
+                            아이디 찾기
+                        </router-link>                           
+                        <router-link to="#" @click="isAlert(event)">
+                            비밀번호 찾기
+                        </router-link>                          
                     </div>          
                 </form>
             </div>
@@ -71,38 +78,38 @@ import axios from 'axios';
 // import vue from "@vitejs/plugin-vue"
 import { ref, watch, computed, onMounted, nextTick, defineProps, defineEmits } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useUserStore } from "@/stores/user"
-const userStore = useUserStore()
+import { useUsersStore } from "@/stores/users"
+const userStore = useUsersStore()
 
-const props = defineProps({
- member: {
-    type: Object,
-    default: () => ({})
+import {isKor, isPw, isEmail} from "@/utils/check"
+
+const error = ref({
+    idErrorMsg: '',
+    pwErrorMsg: '' 
   }
-})
+)
 
 const userId = ref('')
 const password = ref('')
 
-const submitForm  = async () => {                
-    await userStore.signIn(userId.value, password.value)       
+const Validation = async () => { 
+    if(isKor(userId.value)) {
+        error.value.idErrorMsg = '한글로 된 이메일 주소는 지원하지 않습니다.'        
+        userId.value = ''
+    } else {
+        error.value.idErrorMsg = ''
+    }    
+}
+const submitForm  = async () => {       
+    if(!isEmail(userId.value)) {
+        error.value.pwErrorMsg = '정확한 이메일 형식을 입력하세요'        
+    } else {
+        await userStore.signIn(userId.value, password.value)
+    }
+    
+}
+const isAlert = (event) => {
+    alert('준비중입니다.')
 }
 </script>
 
-<style lang="scss">
-.login-page__form {
-    padding: 100px 0;
-    width: 100%;
-    max-width: 70%;
-    margin: 0 auto;
-    .title {
-        font-size: 18px;
-        margin-bottom:10px;
-    }
-    ul {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
-}
-</style>
