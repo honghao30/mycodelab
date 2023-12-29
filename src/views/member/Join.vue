@@ -70,8 +70,7 @@
                             buttonName="회원가입"
                             type="submit"
                             color="btn primary"                            
-                            size="medium"        
-                            :disabled="!userId || !password || !passwordRe || !Name"
+                            size="medium"                                    
                         >  
                         </MyBtn>                           
                         <MyBtn                            
@@ -90,11 +89,11 @@
 </template>
 
 <script setup>
-import Axios from "axios"
+import axios from "axios"
 import { ref, watch, computed, onMounted, nextTick, defineProps, defineEmits } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useUserStore } from "@/stores/user"
-const userStore = useUserStore()
+import { useUsersStore } from "@/stores/users"
+const userStore = useUsersStore()
 import {isKor, isPw, isEmail} from "@/utils/check"
 const getMember = JSON.parse(localStorage.getItem('member'))
 const MemberList = getMember._value
@@ -112,8 +111,8 @@ const error = ref({
 )
 
 const idCheck = async () => {   
-    let userIdExists = MemberList.some(member => member.id === userId.value)
-    console.log(userIdExists)  
+    // let userIdExists = MemberList.some(member => member.id === userId.value)
+    //console.log(userIdExists)  
     if(!userId.value) {
         error.value.idErrorMsg = '이메일 주소를 입력하세요.'
     } else if(isKor(userId.value)) {         
@@ -122,18 +121,19 @@ const idCheck = async () => {
     } else if(!isEmail(userId.value)) {        
         error.value.idErrorMsg = '정확한 이메일 주소를 입력하세요'
         userId.value = ''
-    }else if(!userIdExists) {        
-        error.value.idErrorMsg = '사용할 수 없는 이메일 입니다.'
-        userId.value = ''
     }else {
         error.value.idErrorMsg = ''
-    }  
+    }
+    // else if(!userIdExists) {        
+    //     error.value.idErrorMsg = '사용할 수 없는 이메일 입니다.'
+    //     userId.value = ''
+    // }      
 }
 const pwcheck =  async () => { 
     if(!password.value) {        
         error.value.pwErrorMsg = '비밀번호 확인을 입력 해주세요.'
         passwordRe.value = ''
-    } else if(password.value === passwordRe.value){
+    } else if(password.value !== passwordRe.value){
         error.value.pwErrorMsg = '비밀번호 확인을 다시 입력 해주세요.'
         passwordRe.value = ''        
     } else {
@@ -141,9 +141,23 @@ const pwcheck =  async () => {
     } 
 }
 const registration  = async () => {                
-    await userStore.registrations(userId.value, password.value,Name.value)       
-}
-const cancelJoinStep = () => {
-
+        axios
+        .post("https://new-2c9g.onrender.com/users",  JSON.stringify({
+                "userId": 'abcde',
+                "password": '홍성호',
+                "Name": "홍길동"
+            }), {
+              headers: {
+                "Content-Type": `application/json`,
+              },
+            })
+            .then((res) => {
+              console.log(res);
+            })
+            .catch(function (error) {
+                // 오류발생시 실행
+                console.log(error)
+            })      
+    // await userStore.registrations(userId.value, password.value,Name.value)       
 }
 </script>

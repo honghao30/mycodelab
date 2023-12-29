@@ -36,9 +36,9 @@ export const useUsersStore = defineStore('auth', {
                 localStorage.setItem("access_id", userId) 
                 localStorage.setItem('userId', user.userId); // 로컬 스토리지에 userId 저장
                 localStorage.setItem('userName', user.name); // 로컬 스토리지에 userName 저장
-                this.getUserInfo()            
+                this.getUserInfo()                        
                 alert('로그인 성공 했습니다.')
-                router.push("/shortsApp")
+                router.push("/")
             } else {
                 alert('회원 정보가 없습니다.')  
             }
@@ -63,8 +63,8 @@ export const useUsersStore = defineStore('auth', {
                 "Name": Name
             };
             console.log('전달완료', newUser)
-            getMember._value.push(newUser)
-            localStorage.setItem('member', JSON.stringify(getMember));
+            MemberList.push(newUser)
+            localStorage.setItem('member', JSON.stringify(getMember))          
             console.log('insert', MemberList)
         },
         logOut: function() {
