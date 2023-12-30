@@ -42,6 +42,10 @@ const gnbList = [
           'to': '/cmpTab',
         },
         {
+          'name': '테이블',
+          'to': '/cmpTable',
+        },        
+        {
           'name': 'SVG맵',
           'to': '/cmpKoreaMap',
         },
@@ -64,8 +68,8 @@ const gnbList = [
           'to': '/scrollEvent',
         },
         {
-          'name': '동영상 제어',
-          'to': '',
+          'name': '틱톡',
+          'to': 'TikTok',
         },
         {
           'name': '전국날씨',

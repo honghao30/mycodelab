@@ -21,6 +21,11 @@
         :speed="600"
         :parallax="true"
         navigation
+        :pagination="{ clickable: true,  }"
+        :autoplay="{ delay: 3000, disableOnInteraction: false }"
+        :effect="'fade'"
+        :onSwiper="onSwiper"
+        :onSlideChange="onSlide"
       >
         <swiper-slide>
           <img src="@/assets/images/main/main02.jpg" alt="">
@@ -45,27 +50,30 @@
         :level="3" 
         alignType="left" 
         pageTitle="애니메이션"
-    />    
-    <div class="guide-context">
-
-    </div>    
-    <Title 
-        :level="3" 
-        alignType="left" 
-        pageTitle="모달창 내 실행"
-    />    
-    <div class="guide-context">
-
-    </div>    
+    /> 
   </div>
 </template>
 
 <script setup>
-import { Swiper, SwiperSlide } from "swiper/vue";
-import luckCard from '@/components/minicard/card.vue'
+ // import Swiper core and required modules
+ import { Navigation, Pagination, A11y, EffectFade, Autoplay, Parallax  } from 'swiper/modules';
 
-import "swiper/components/navigation/navigation.scss"
-import "swiper/components/pagination/pagination.scss"
+// Import Swiper Vue.js components
+import { Swiper, SwiperSlide } from 'swiper/vue';
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
+import 'swiper/css/scrollbar'
+import 'swiper/css/parallax'
+
+const modules = [Pagination, Navigation, A11y, EffectFade, Autoplay, Parallax ]
+const onSwiper = (swiper) => {
+  console.log(swiper);
+};
+const onSlideChange = () => {
+  console.log('slide change');
+};
 </script>
 
 <style>
