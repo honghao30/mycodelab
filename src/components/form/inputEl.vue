@@ -1,14 +1,30 @@
 <template>
     <div class="input">
-        <label :for="randomId" v-if="label">{{ label }}</label>
+        <label :for="randomId" v-if="label">{{ label }}
+          <span v-if="required" :class="required">*</span>
+        </label>
         <input 
             :type="types"                                        
             :placeholder="placeholder" 
             :title="placeholder" 
-            :id="randomId"       
-            value=""     
-            @input="$emit('update:modelValue', $event.target.value)"     
+            :id="randomId"      
+            :ref="refInfo"        
+            :value="modelValue"     
+            :maxlength="maxlength"
+            @input="$emit('update:modelValue', $event.target.value)"    
+            @focusout="$emit('update:modelValue', $event.target.value)" 
          >
+         <MyBtn                            
+            buttonName="삭제"
+            iconOnly="true"
+            iconName="btn-close-circle"     
+            v-if="modelValue"                        
+            @click="ClearInput($event)"                                                                      
+        >  
+        </MyBtn>   
+        <div class="guide-text__input--bottom" v-if="guideMsg">                  
+            <p class="guide-text">{{ guideMsg }}</p>            
+        </div>                
         <div class="guide-text__input--bottom" v-if="errorMsg">                  
             <p class="error-text">{{ errorMsg }}</p>            
         </div>
@@ -16,10 +32,14 @@
 </template>
 
 <script setup>
-import { ref, defineProps, defineEmits, onBeforeMount, onUnmounted } from 'vue'
+import { ref, defineProps, defineEmits, onMounted, onBeforeMount, onUnmounted } from 'vue'
 const props = defineProps({
   label: {
     type: String,
+    default: ''
+  },
+  guideMsg: { 
+    type: String, 
     default: ''
   },
   placeholder: {
@@ -29,15 +49,35 @@ const props = defineProps({
   types: {
     type: String,
     default: 'text'
+  },
+  refInfo: {
+    type: String,
+    default: ''
+  },
+  maxlength: {
+    type: Number,
+    default: ''
   },  
   guideMsg: {
     type: Array,
     default: ''
   },  
+  autoComplete: {
+    type: Boolean,
+    default: ''
+  },
+  videoList: {
+    type: Object,
+    default: () => ({})
+  },
   errorMsg: {
     type: String,
     default: ''
   },  
+  required: {
+    type: Boolean,
+    default: false
+  },
   modelValue: String,
   disabled: {
     type: Boolean,
@@ -56,6 +96,19 @@ const randomNumber = () => {
   return Math.floor(tt)+M;
 }
 randomId.value = randomNumber()
+
+// const errorMsgCheck = ref(null)
+
+// const checkValue = (event) => {
+//   if (event.target.value === '') {
+//     errorMsgCheck.value = true
+//   } else {
+//     errorMsgCheck.value = false
+//   }
+// }
+const ClearInput = (event) => {  
+  emit('update:modelValue')    
+}
 </script>
 
 <style>

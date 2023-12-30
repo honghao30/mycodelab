@@ -14,8 +14,10 @@ export function getTodayDate() {
   minutes = minutes < 10 ? '0' + minutes : minutes
 
   let TodayDateFull = `${year}년 ${month}월 ${day}일 ${hours}시 ${minutes} 분 ${timeOfDay} (${dayOfWeek})`
+  let TodayDateFullDash = `${year}-${month}-${day} ${hours}:${minutes} ${timeOfDay}`
   let TodayData = `${month}월 ${day}일 ${dayOfWeek}요일`
   let currentTime = `${timeOfDay} ${hours}:${minutes}`
 
-  return [ TodayDateFull, TodayData, currentTime ]
+  return [ TodayDateFull, TodayData, currentTime, TodayDateFullDash ]
 }
+export default getTodayDate

@@ -81,7 +81,7 @@
             @click="goMail"
           />          
         </div>
-    </div>    
+    </div>         
   </div>
 </template>
 <script setup>
@@ -114,17 +114,17 @@ const MainImg = ref([
   {
     title: '나래 함초롱하다 감또개 아름드리 아름드리',
     description: '나래 함초롱하다 감또개 아름드리 아름드리 도담도담 아슬라 바나나 바나나 도서관 그루잠 도담도담 달볓 아련 늘품 여우별 로운 도르레 달볓 아련 도담도담 곰다시 사과 소솜 옅구름 아련',
-    url: '/src/assets/images/main/main02.jpg'
+    url: './images/main02.jpg'
   },
   {
     title: '옅구름 늘품 예그리나 여우별 다솜 아리아 별하',
     description: '옅구름 늘품 예그리나 여우별 다솜 아리아 별하 가온누리 도서관 그루잠 여우비 달볓 그루잠 예그리나 아련 늘품 여우별 로운 도르레 달볓 아련 도담도담 곰다시 사과 소솜 옅구름 아련',
-    url: '/src/assets/images/main/main01.jpg'
+    url: './images/main01.jpg'
   },
   {
     title: '도르레 로운 산들림 이플 소록소록 함초롱하다',
     description: '도르레 로운 산들림 이플 소록소록 함초롱하다 곰다시 안녕 미쁘다 노트북 아름드리 바나나 여우비 사과 산들림 바나나 아련 늘품 여우별 로운 도르레 달볓 아련 도담도담 곰다시 사과 소솜 옅구름 아련',
-    url: '/src/assets/images/main/main03.jpg'
+    url: './images/main03.jpg'
   }    
 ])
 

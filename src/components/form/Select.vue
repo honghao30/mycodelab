@@ -1,6 +1,6 @@
 <template>
   <div class="select__wrap">
-    <label :for="randomId" class="irtext" v-if="label">{{ label }}</label>
+    <label :for="randomId" v-if="label">{{ label }}</label>
     <div class="select">        
         <select :title="placeholder"  @change="$emit('update:modelValue', $event.target.value)"  >
           <option v-for="option in options" :key="option">{{ option.title }}</option>
@@ -21,7 +21,7 @@ label: {
 },
 placeholder: {
   type: String,
-  default: '입력하세요'
+  default: '선택하세요'
 },  
 guideMsg: {
   type: Array,

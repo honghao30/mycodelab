@@ -30,14 +30,34 @@ $textareaHeight: 100px;
     }
 }
 .input__wrap {
-    display: flex;
-    width: 100%;    
-    .input {
-        &:only-child {
-            width: 100%;
-        }
-    }
-    &+.input__wrap {
-        margin-top:10px;
-    }
+  display: flex;
+  align-items: center;    
+  width: 100%;    
+  gap: 5px;
+  .input {
+    position: relative;
+      &:only-child {
+          width: 100%;
+      }
+      .btn-close-circle {
+        right: 10px;
+      }
+  }
+  &+.input__wrap {
+      margin-top:10px;
+  } 
+}
+
+.select__wrap {
+  display: flex;  
+  flex-direction: column;
+  width: 100%;
+  gap: 5px;
+  align-items: flex-start;
+  label {
+    @include fontoption(16px, #000, 500, 25px);
+  }
+  select {
+    padding: 4px 40px 8px 16px;
+  }
 }

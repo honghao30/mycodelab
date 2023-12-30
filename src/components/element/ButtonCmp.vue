@@ -2,9 +2,8 @@
   <button
     type="button"
     class="btn"
-    :class="[iconOnly ? 'btn-' + iconName : [types, size, iconName]]"
-    :disabled="disabled"
-    @click="$emit('click')"
+    :class="[iconOnly ? 'btn-' + iconName : [types, size, iconName, activeClass]]"
+    :disabled="disabled"    
     @mousedown="$emit('mousedown')"
   >
     <i
@@ -43,6 +42,10 @@ const props = defineProps({
   iconOnly: {
     type: Boolean,
     default: false
+  },
+  activeClass: {
+    type: String,
+    default: ''
   }
 })
 </script>

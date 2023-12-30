@@ -1,0 +1,9 @@
+{"users": [
+    {"userId": "manage@the-51.com", "password": "1234", "name": "manage", "uploaded": [],"liked": [], "subscribed": []},
+    {"userId": "hongsh@the-51.com", "password": "1234",  "name": "홍성호", "uploaded": [],"liked": [], "subscribed": []},
+    {"userId": "bchoi@the-51.com", "password": "1234",  "name": "최봄", "uploaded": [],"liked": [], "subscribed": []},
+    {"userId": "jhbae@the-51.com", "password": "1234",  "name": "배정현", "uploaded": [],"liked": [], "subscribed": []},
+    {"userId": "ybjeong@the-51.com", "password": "1234",  "name": "정영빈", "uploaded": [],"liked": [], "subscribed": []},
+    {"userId": "chulsoo@the-51.com", "password": "1234",  "name": "배철수", "uploaded": [],"liked": [], "subscribed": []},
+    {"userId": "hyejin@the-51.com", "password": "1234",  "name": "김혜진", "uploaded": [],"liked": [], "subscribed": []}
+]}

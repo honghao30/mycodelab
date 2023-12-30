@@ -68,8 +68,8 @@ const gnbList = [
           'to': '/scrollEvent',
         },
         {
-          'name': '동영상 제어',
-          'to': '',
+          'name': '틱톡',
+          'to': 'TikTok',
         },
         {
           'name': '전국날씨',
