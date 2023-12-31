@@ -18,6 +18,7 @@
       </div>
     </div>
     <!-- //모달 -->
+    <Teleport to="body">
     <ModalView
       v-if="isModalViewed" @closeModal="isModalViewed = false"
       modalTitle="모달 컴포넌트"
@@ -30,6 +31,7 @@
         모달 창 제어 버튼등
       </template>       
     </ModalView>
+  </Teleport>
   </div>
 </template>
 
