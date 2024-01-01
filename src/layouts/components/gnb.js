@@ -1,19 +1,5 @@
 const gnbList = [
   {
-    'name': '영화정보',
-    'to': '',
-    'children': [
-        {
-          'name': '상영중 영화',
-          'to': '/MovieList',
-        },
-        {
-          'name': '박스오피스',
-          'to': '/BoxOffice',
-        }        
-      ]
-  },
-  {
     'name': '컴포넌트',
     'to': '',
     'children': [
@@ -56,16 +42,12 @@ const gnbList = [
       ]
   },
   {
-    'name': '이벤트',
+    'name': '토이플젝',
     'to': '',
     'children': [
         {
-          'name': 'swiper',
-          'to': '/cmpSwiper',
-        },
-        {
-          'name': '스크롤이벤트',
-          'to': '/scrollEvent',
+          'name': '영화커뮤니티',
+          'to': '/MovieList',
         },
         {
           'name': '틱톡',
@@ -74,9 +56,27 @@ const gnbList = [
         {
           'name': '전국날씨',
           'to': '/cmpKoreaWeather',
-        }           
+        }        
+        // {
+        //   'name': '박스오피스',
+        //   'to': '/BoxOffice',
+        // }        
       ]
-  },
+  },  
+  // {
+  //   'name': '이벤트',
+  //   'to': '',
+  //   'children': [
+  //       {
+  //         'name': 'swiper',
+  //         'to': '/cmpSwiper',
+  //       },
+  //       {
+  //         'name': '스크롤이벤트',
+  //         'to': '/scrollEvent',
+  //       }        
+  //     ]
+  // },
   {
     'name': '가이드',
     'to': '',

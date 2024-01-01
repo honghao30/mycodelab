@@ -33,6 +33,7 @@ const pinia = createPinia()
 
 const app = createApp(App)
 app.provide('$axios', axios)
+// app.config.globalProperties.$axios = axios; 
 app.component('font-awesome-icon', FontAwesomeIcon)
 createApp(App).use(ElementPlus).use(vuetify).use(pinia).use(router).use(globalComponents).mount('#app')
 app.directive('click-outside', ClickOutside)
