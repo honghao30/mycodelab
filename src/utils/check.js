@@ -58,10 +58,3 @@ export function chSp(value) {
   return false 
 }
 
-// 유틸 
-export function randomId() {
-  let N = 1000000;
-  let M = 1;
-  let tt = Math.random()*N;
-  return Math.floor(tt)+M;
-}

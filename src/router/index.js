@@ -18,10 +18,10 @@ const routes = [
     },   
     ...Main,
     // ...PubGuides,
-    // ...Join, //회원
+    ...Join, //회원
     // ...Movie, // 영화
     // ...cmpGuide, // 컴포넌트 가이드
-    // ...other // 기타  
+    ...other // 기타  
 ]
 // 라우터 생성
 const router = createRouter({
