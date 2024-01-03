@@ -4,7 +4,7 @@ export function randomId() {
     let M = 1;
     let tt = Math.random()*N;
     return Math.floor(tt)+M;
-  }
+}
   // 날짜 시간 셋팅
 export function getTodayDate(format) {
 let weekdays = ['일', '월', '화', '수', '목', '금', '토']
@@ -26,16 +26,19 @@ let TodayDateFullDash = `${year}-${month}-${day} ${hours}:${minutes} ${timeOfDay
 let TodayData = `${month}월 ${day}일 ${dayOfWeek}요일`
 let currentTime = `${timeOfDay} ${hours}:${minutes}`
 
-switch(format) {
-    case 'yy-mm-dd':
-    return TodayDateFullDash.slice(2);
-    case 'mm-dd':
-    return TodayDateFullDash.slice(5, 10);
-    case 'hh:mm':
-    return currentTime.slice(3);
-    default:
-    return TodayDateFull;
+  switch(format) {
+      case 'yy-mm-dd':
+      return TodayDateFullDash.slice(2);
+      case 'mm-dd':
+      return TodayDateFullDash.slice(5, 10);
+      case 'hh:mm':
+      return currentTime.slice(3);
+      default:
+      return TodayDateFullDash;
+  }
 }
-}
-export default getTodayDate
   
+export function RandomCode(length = 10, isNumbersOnly = false) {
+  const characters = `${isNumbersOnly ? '' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'}0123456789`;
+  return Array.from({length}, () => characters[Math.floor(Math.random() * characters.length)]).join('');
+}

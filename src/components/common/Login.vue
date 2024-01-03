@@ -7,7 +7,7 @@
                     <MyInput >
                         <template #input>
                             <InputEl                                        
-                                v-model="userId"
+                                v-model="userInfo.userId"
                                 required                                                
                                 placeholder="아이디를 입력하세요" 
                                 guideMsg="이메일 아이디를 입력하세요" 
@@ -20,7 +20,7 @@
                     <MyInput >
                         <template #input>
                             <InputEl                                        
-                                v-model="password"
+                                v-model="userInfo.password"
                                 required     
                                 types="password"                                          
                                 placeholder="비밀번호를 입력하세요"  
@@ -69,12 +69,18 @@
 // assets/components/_login.scss
 
 //import
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from "@/stores/auth"
 const authStore = useAuthStore()
 
 // ref && v-model
+const userInfo = reactive(
+    {
+        userId: '',
+        password: ''
+    }
+)
 const userId = ref('')
 const password = ref('')
 // const member = ref({
@@ -89,7 +95,7 @@ const error = ref({
 
 // function
 const submitLogin  = async () => {          
-   await authStore.signIn(userId, password) 
+   await authStore.signIn(userInfo) 
 }
 </script>
 
