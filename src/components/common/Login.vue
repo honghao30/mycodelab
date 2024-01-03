@@ -1,7 +1,7 @@
 <template>
     <div class="member-page__form">
         <p class="title">로그인이 필요한 서비스입니다.</p>
-        <form @submit.prevent="submitForm">
+        <form @submit.prevent="submitLogin">
             <ul>
                 <li>
                     <MyInput >
@@ -9,8 +9,7 @@
                             <InputEl                                        
                                 v-model="userId"
                                 required                                                
-                                placeholder="아이디를 입력하세요"    
-                                @focusout="Validation"
+                                placeholder="아이디를 입력하세요" 
                                 guideMsg="이메일 아이디를 입력하세요" 
                                 :errorMsg="error.idErrorMsg"                                                                   
                             />                
@@ -30,13 +29,12 @@
                         </template>         
                     </MyInput>                          
                 </li>                    
-            </ul>                
+            </ul>                          
             <div class="button__wrap">
                 <MyBtn                            
                     buttonName="로그인"
                     type="submit"
-                    color="btn primary"
-                    :disabled="!userId || !password"
+                    color="btn primary"                    
                     size="medium"                        
                 >  
                 </MyBtn>   
@@ -64,41 +62,34 @@
 </template>
 
 <script setup>
-import axios from 'axios';
-import { ref, watch, computed, onMounted, nextTick, defineProps, defineEmits } from 'vue'
+// 로그인 컴포넌트 구성
+// api/common/inside/basic.js(api)
+// components/Login.vue
+// stores/Auth.js
+// assets/components/_login.scss
+
+//import
+import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useUsersStore } from "@/stores/users"
-const userStore = useUsersStore()
+import { useAuthStore } from "@/stores/auth"
+const authStore = useAuthStore()
 
-import {isKor, isPw, isEmail} from "@/utils/check"
-
+// ref && v-model
+const userId = ref('')
+const password = ref('')
+// const member = ref({
+//     userId: '',
+//     password: ''
+// })
 const error = ref({
     idErrorMsg: '',
     pwErrorMsg: '' 
   }
 )
 
-const userId = ref('')
-const password = ref('')
-
-const Validation = async () => { 
-    if(isKor(userId.value)) {
-        error.value.idErrorMsg = '한글로 된 이메일 주소는 지원하지 않습니다.'        
-        userId.value = ''
-    } else {
-        error.value.idErrorMsg = ''
-    }    
-}
-const submitForm  = async () => {       
-    if(!isEmail(userId.value)) {
-        error.value.pwErrorMsg = '정확한 이메일 형식을 입력하세요'        
-    } else {
-        await userStore.signIn(userId.value, password.value)
-    }
-    
-}
-const isAlert = (event) => {
-    alert('준비중입니다.')
+// function
+const submitLogin  = async () => {          
+   await authStore.signIn(userId, password) 
 }
 </script>
 

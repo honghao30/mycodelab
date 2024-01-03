@@ -8,7 +8,7 @@ import Movie from './menus/movie'
 import cmpGuide from './menus/cmpGuide'
 import other from './menus/other'
 
-import { useUsersStore } from '@/stores/users'
+import { useAuthStore } from '@/stores/auth'
 
 // 라우터 
 const routes = [
@@ -30,7 +30,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to) => { // 로그인 상태 아닐 시 전역 네비게이션 가드 실행
-    const usersStore = useUsersStore() // loginStore 스토어 불러오기 (피니아 상태관리)
+    //const usersStore = useUsersStore() // loginStore 스토어 불러오기 (피니아 상태관리)
     // const authRequired = ['/Mypage'] // 로그인이 필요없는 페이지    
     // console.log(authRequired, '로그인url체크')
     
