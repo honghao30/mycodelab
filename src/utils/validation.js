@@ -1,4 +1,4 @@
-let jglibObj = {
+let checkVal = {
   isEmpty(value) {
     // 빈 값 체크
     if (value === undefined) {
@@ -27,16 +27,21 @@ let jglibObj = {
     }
     return false
   },
-  isChatbotId(chatbotId) {
-    // 챗봇아이디 유효성 검증
-    // 5-15자의 영문 대소문자,숫자,하이픈,언더바 입력 가능, 발신번호와 구분을 위해 전부 숫자만으로 입력하진 못함.
-    const regId = /^[a-zA-Z0-9-_]{1,15}$/
-    const regEng = /[a-zA-Z-_]/g
-    if (regId.test(chatbotId) && regEng.test(chatbotId)) {
+    // 한글 체크
+  isKor(value) {
+    let checkKor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+    if (checkKor.test(value)) {
       return true
-    }
-
-    return false
+    }  
+    return false 
+  },
+  // 특수문자 체크
+  characters(value) {
+    const regCh = /[~!@#$%<>^&*()]/g;
+    if (regCh.test(value)) {
+      return true
+    }  
+    return false 
   },
   isUserId(userId) {
     // 아이디 유효성 검증
@@ -59,174 +64,27 @@ let jglibObj = {
       return false
     }
   },
-  isPw(pw, userId, userPhoneNumber) {
+  isPassWord(value) {
     // 비밀번호 유효성 검증
     // 영문, 숫자 조합 10자리 이상, 영문, 숫자, 특수문자 조합 8자리 이상
     const regEn = /[a-z]/gi
     const regNum = /[0-9]/g
     const regCh = /[~!@#$%<>^&*()]/g
 
-    let valid = [regEn.test(pw), regNum.test(pw), regCh.test(pw)]
+    let valid = [regEn.test(value), regNum.test(value), regCh.test(value)]
     let validcount = valid.filter(v => v === true).length
 
     // 영문, 숫자 조합 10자리 이상
-    if (validcount === 2 && pw.length >= 10) {
+    if (validcount === 2 && value.length >= 6) {
       return true
     }
 
-    if (validcount === 3 && pw.length >= 8) {
+    if (validcount === 3 && value.length >= 4) {
       return true
     }
     return false
-  },
-  isVaildationPw(pw, userId, userPhoneNumber) {
-    // 비밀번호 유효성 검증
-    // 영문, 숫자 조합 10자리 이상, 영문, 숫자, 특수문자 조합 8자리 이상
-    const regEn = /[a-z]/gi
-    const regNum = /[0-9]/g
-    const regCh = /[!@$%^*]/g
-    const noRegCh = /[~`#\\&()-+=]/g
+  },  
 
-    let valid = [regEn.test(pw), regNum.test(pw), regCh.test(pw)]
-    let validcount = valid.filter(v => v === true).length
-
-    // 특수문자 제한 ( !@$%^* )
-    if (noRegCh.test(pw)) {
-      return {
-        code: 'errorSize',
-        message: '특수문자는 !, @, $, %, ^, * 만 사용 가능합니다.'
-      }
-    }
-
-    // 영문, 숫자 조합 10자리 이상
-    if (validcount === 1) {
-      return {
-        code: 'errorSize',
-        message:
-          '비밀번호는 영문, 숫자, 특수문자 중 2가지 이상을 조합하여 10자리 이상 또는 3가지 이상을 조합하여 8자리 이상으로 설정해 주세요.'
-      }
-    }
-
-    if (validcount === 2 && pw.length < 10) {
-      return {
-        code: 'errorSize',
-        message:
-          '비밀번호는 영문, 숫자, 특수문자 중 2가지 이상을 조합하여 10자리 이상 또는 3가지 이상을 조합하여 8자리 이상으로 설정해 주세요.'
-      }
-    }
-
-    // 영문, 숫자, 특수문자 조합 8자리 이상
-    if (validcount === 3 && pw.length < 8) {
-      return {
-        code: 'errorSize',
-        message:
-          '비밀번호는 영문, 숫자, 특수문자 중 2가지 이상을 조합하여 10자리 이상 또는 3가지 이상을 조합하여 8자리 이상으로 설정해 주세요.'
-      }
-    }
-
-    // 사용자 아이디와 동일한 비밀번호 체크
-    if (pw.indexOf(userId) > -1) {
-      return {
-        code: 'errorUsrId',
-        message: '비밀번호가 아이디와 동일합니다.'
-      }
-    }
-
-    // 연속적인 숫자 또는 문자 (예. 1234, abcd) 비밀번호 체크
-    let SamePass0 = 0 // 동일문자 카운트
-    let SamePass1 = 0 // 연속성(+) 카운드
-    let SamePass2 = 0 // 연속성(-) 카운드
-
-    let chrPass0
-    let chrPass1
-
-    for (let i = 0; i < pw.length; i++) {
-      chrPass0 = pw.charAt(i)
-      chrPass1 = pw.charAt(i + 1)
-
-      // 동일문자 카운트
-      if (chrPass0 === chrPass1) {
-        SamePass0 = SamePass0 + 1
-      } else {
-        SamePass0 = 0
-      }
-
-      // 연속성(+) 카운드
-      if (chrPass0.charCodeAt(0) - chrPass1.charCodeAt(0) === 1) {
-        SamePass1 = SamePass1 + 1
-      } else {
-        SamePass1 = 0
-      }
-
-      // 연속성(-) 카운드
-      if (chrPass0.charCodeAt(0) - chrPass1.charCodeAt(0) === -1) {
-        SamePass2 = SamePass2 + 1
-      } else {
-        SamePass2 = 0
-      }
-
-      if (SamePass0 > 2) {
-        return {
-          code: 'errorSame',
-          message: '동일한 문자를 4개이상 사용할 수 없습니다.'
-        }
-      }
-
-      if (SamePass1 > 2 || SamePass2 > 2) {
-        return {
-          code: 'errorSame',
-          message: '연속적인 숫자 또는 문자를 4개이상 사용할 수 없습니다.'
-        }
-      }
-    }
-
-    // if (SamePass1 > 1 || SamePass2 > 1) {
-    //   return {
-    //     code: 'errorSame',
-    //     message:
-    //       '연속된 문자열(1234 또는 4321, abcd, dcba 등)을<br> 3자 이상 사용 할 수 없습니다.'
-    //   }
-    // }
-
-    // 휴대폰번호 국번 또는 뒷자리 번호 비밀번호 체크
-    // let firstPhoneNumber = userPhoneNumber.substring(0, 3)
-    // let lastPhoneNumbe = userPhoneNumber.substring(7, 12)
-
-    // // 앞번호 3 or 4자리
-    // let middlePhoneNumber = userPhoneNumber
-    //   .substring(3, userPhoneNumber.length)
-    //   .substring(0, userPhoneNumber.length - 7)
-    // // 뒷번호 4자리
-    // let lastPhoneNumbe = userPhoneNumber.substring(
-    //   userPhoneNumber.length - 4,
-    //   userPhoneNumber.length
-    // )
-
-    // 앞번호 3 or 4자리
-    let middlePhoneNumber = this.mobileNumConverter(userPhoneNumber).split(
-      '-'
-    )[1]
-    // 뒷번호 4자리
-    let lastPhoneNumbe = this.mobileNumConverter(userPhoneNumber).split('-')[2]
-
-    if (pw.indexOf(middlePhoneNumber) > -1) {
-      return {
-        code: 'errorPhoneNumber',
-        message: '휴대폰번호 국번 또는 뒷자리 번호를 사용할수 없습니다.'
-      }
-    }
-
-    if (pw.indexOf(lastPhoneNumbe) > -1) {
-      return {
-        code: 'errorPhoneNumber',
-        message: '휴대폰번호 국번 또는 뒷자리 번호를 사용할수 없습니다.'
-      }
-    }
-    return {
-      code: 'success',
-      message: ''
-    }
-  },
   isEmail(email) {
     // 이메일 유효성 검증
     const regEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -604,64 +462,7 @@ let jglibObj = {
   },
   toUppsercaseAfterWhtespace(str) {
     return str === 'SNS' ? 'SNS' : str.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
-  },
-
-  // 소식 이미지 업로드 파일 체크
-  checkFeedImageSize(file, minW, minH, maxW, maxH) {
-    return new Promise((resolve, reject) => {
-      const _URL = window.URL || window.webkitURL
-      let img = new Image()
-      img.onload = () => {
-        const w = img.width
-        const h = img.height
-
-        if (w < minW || h < minH || w > maxW || h > maxH) {
-          resolve('size')
-        } else {
-          resolve('valid')
-        }
-      }
-      img.onabort = () => {
-        resolve('abort')
-      }
-      img.onerror = () => {
-        resolve('error')
-      }
-      img.src = _URL.createObjectURL(file)
-    })
-  },
-  // 소식 슬라이드 이미지 업로드 파일 체크
-  checkFeedSlideImageSize(file, slideType, minW, minH, maxW, maxH) {
-    return new Promise((resolve, reject) => {
-      const _URL = window.URL || window.webkitURL
-      let img = new Image()
-      img.onload = () => {
-        const w = img.width
-        const h = img.height
-
-        if (w < minW || h < minH || w > maxW || h > maxH) {
-          resolve('size')
-        } else {
-          if (slideType === 'gallery') {
-            if (w !== h) {
-              resolve('size')
-            } else {
-              resolve('valid')
-            }
-          } else {
-            resolve('valid')
-          }
-        }
-      }
-      img.onabort = () => {
-        resolve('abort')
-      }
-      img.onerror = () => {
-        resolve('error')
-      }
-      img.src = _URL.createObjectURL(file)
-    })
   }
 }
 
-export default jglibObj
+export default checkVal

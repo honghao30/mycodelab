@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 import { router } from '@/router'
 import { ref } from 'vue'
 import { RandomCode } from '@/utils/common'
+import crypto from "@/plugins/cryto.js"
 
 console.log(RandomCode(10,false))
 export const useAuthStore = defineStore('auth', {
@@ -35,6 +36,24 @@ export const useAuthStore = defineStore('auth', {
             console.log(err)
           })
         },
+        confirmId(idObj){          
+          let userId = idObj         
+          console.log(idObj, '들어왔다', userId)
+          axios.get(this.baseURL + '/users/')
+          .then(res => {            
+            const userList = res.data
+            let user = userList.find(user => user.userId === userId);
+            console.log(user)
+            if(user) {
+              alert('입력하신 이메일은 이미 사용중입니다.')     
+            } else {
+              alert('사용할수 있는 이메일 입니다.')
+            }        
+          })          
+          .catch(err => {
+              console.log(err)              
+          })             
+        },
         signIn(loginObj) {         
           let userId = loginObj.userId
           let password = loginObj.password
@@ -43,6 +62,9 @@ export const useAuthStore = defineStore('auth', {
             // 토큰 인증 서버 미비로 추후 준비되면 post로 수정예정            
             let token = RandomCode(20, false)  
             const userList = res.data
+            userList.map((item)=>{
+                item.password = crypto.decryptData(item.password);
+            })            
             let user = userList.find(user => user.userId === userId && user.password === password);
             if(user) {
               localStorage.setItem("access_token", token)
@@ -50,8 +72,7 @@ export const useAuthStore = defineStore('auth', {
               this.getUserInfo()         
             } else {
               alert('로그인 정보가 없습니다.')
-            }            
-                      
+            }        
           })          
           .catch(err => {
               console.log(err)

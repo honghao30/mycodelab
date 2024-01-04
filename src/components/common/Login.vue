@@ -10,7 +10,7 @@
                                 v-model="userInfo.userId"
                                 required                                                
                                 placeholder="아이디를 입력하세요" 
-                                guideMsg="이메일 아이디를 입력하세요" 
+                                :guideMsg="guideMsgId" 
                                 :errorMsg="error.idErrorMsg"                                                                   
                             />                
                         </template>         
@@ -22,7 +22,8 @@
                             <InputEl                                        
                                 v-model="userInfo.password"
                                 required     
-                                types="password"                                          
+                                types="password"     
+                                :guideMsg="guideMsgPw"                                      
                                 placeholder="비밀번호를 입력하세요"  
                                 :errorMsg="error.pwErrorMsg"                                                                          
                             />                
@@ -62,12 +63,6 @@
 </template>
 
 <script setup>
-// 로그인 컴포넌트 구성
-// api/common/inside/basic.js(api)
-// components/Login.vue
-// stores/Auth.js
-// assets/components/_login.scss
-
 //import
 import { reactive, ref } from 'vue'
 import { storeToRefs } from 'pinia'
@@ -81,6 +76,8 @@ const userInfo = reactive(
         password: ''
     }
 )
+const guideMsgId = ref(['이메일로 아이디를 입력하세요.'])
+const guideMsgPw = ref(['영문, 숫자 8자리 비밀번호를 입력하세요.'])
 const userId = ref('')
 const password = ref('')
 // const member = ref({
