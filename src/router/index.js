@@ -4,6 +4,7 @@ import NotFound from '@/views/errors/404.vue'
 import Main from './menus/Main'
 import PubGuides from './menus/pubGuide'
 import Join from './menus/member'
+import Apps from './menus/app'
 // import Movie from './menus/movie'
 // import cmpGuide from './menus/cmpGuide'
 // import other from './menus/other'
@@ -18,6 +19,7 @@ const routes = [
     },   
     ...Main,
     // ...PubGuides,
+    ...Apps,
     ...Join //회원
     // ...Movie, // 영화
     // ...cmpGuide, // 컴포넌트 가이드
