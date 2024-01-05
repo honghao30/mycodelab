@@ -30,6 +30,7 @@ import 'element-plus/dist/index.css'
 import './assets/scss/index.scss'
 
 const pinia = createPinia()
+window.Kakao.init("0bbc5d89494326867c3ccbffa49e7428");
 
 const app = createApp(App)
 app.provide('$axios', axios)

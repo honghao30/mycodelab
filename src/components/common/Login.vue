@@ -59,17 +59,30 @@
                 </router-link>                          
             </div>          
         </form>
+        <div class="sns__login">
+            <a id="custom-login-btn" @click="kakaoLogin()">
+            <img
+                src="https://k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg"
+                width="222"
+                alt="카카오 로그인 버튼"
+            />
+            </a>
+            <div @click="kakaoLogout()">로그아웃</div>    
+            <div id="google-signin-button"></div>              
+        </div>
     </div>  
 </template>
 
 <script setup>
 //import
-import { reactive, ref } from 'vue'
+import { reactive, ref, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from "@/stores/auth"
 const authStore = useAuthStore()
 
 // ref && v-model
+const kakao_account = ref(null);
+const ninkname = ref(null);
 const userInfo = reactive(
     {
         userId: '',
@@ -94,6 +107,39 @@ const error = ref({
 const submitLogin  = async () => {          
    await authStore.signIn(userInfo) 
 }
+
+const kakaoLogin = () => {
+  window.Kakao.Auth.login({
+    scope: "profile_image",
+    success: getKakaoAccount,
+  });
+}
+
+const getKakaoAccount = () => {
+  window.Kakao.API.request({
+    url: "/v2/user/me",
+    success: (res) => {
+      kakao_account.value = res.kakao_account;
+      ninkname.value = kakao_account.value.profile.ninkname;      
+      console.log("ninkname", ninkname.value);
+      //로그인처리구현
+
+      alert("로그인 성공!");
+    },
+    fail: (error) => {
+      console.log(error);
+    },
+  });
+}
+
+const kakaoLogout = () => {
+  window.Kakao.Auth.logout((res) => {
+    console.log(res);
+  });
+}
+
+// 구글 로그인
+
 </script>
 
 <style>
