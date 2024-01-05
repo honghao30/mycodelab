@@ -68,7 +68,19 @@
             />
             </a>
             <div @click="kakaoLogout()">로그아웃</div>    
-            <div id="google-signin-button"></div>              
+            <div> 
+                <button @click="handleGoogleAccessTokenLogin">Google</button>
+                <GoogleLogin :callback="callback" />
+                 <p>
+                {{ data }}
+                </p>
+                <button
+                type="button"
+                @click="handleGoogleAuthCodeLogin"
+                >
+                Google 
+                </button>
+            </div>        
         </div>
     </div>  
 </template>
@@ -139,7 +151,32 @@ const kakaoLogout = () => {
 }
 
 // 구글 로그인
+const data = ref()
 
+const callback = (response) => {
+  data.value = response
+}
+
+import { googleTokenLogin } from 'vue3-google-login'
+
+const GOOGLE_CLIENT_ID = '31662281107-vifc3im7p4vqm4gr1giabglve55egere.apps.googleusercontent.com'
+
+
+const handleGoogleAccessTokenLogin = () => {
+  googleTokenLogin({
+    clientId: GOOGLE_CLIENT_ID
+  }).then((response) => {
+    data.value = response
+  })
+}
+import { googleAuthCodeLogin } from 'vue3-google-login'
+const handleGoogleAuthCodeLogin = () => {
+  googleAuthCodeLogin({
+    clientId: GOOGLE_CLIENT_ID
+  }).then((response) => {
+    data.value = response
+  })
+}
 </script>
 
 <style>
